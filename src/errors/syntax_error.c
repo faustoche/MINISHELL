@@ -6,21 +6,17 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 22:29:51 by faustoche         #+#    #+#             */
-/*   Updated: 2025/02/26 13:46:08 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/02/26 16:12:11 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/*
-
-CA A INTEREET A FONCTIONNER JE DEVIENS FOU */
-
-
-
-
 int	syntax_error(char *input)
 {
+	char *var;
+
+	var = getenv("PATH");
 	if ((input[0] == '\\' && input[1] == '\\') || input[0] == '\\')
 	{
 		printf(ERR_CMD, input);
@@ -28,6 +24,10 @@ int	syntax_error(char *input)
 	}
 	if (input[0] == ';')
 	{
+		if (var)
+			printf("%s\n", var);
+		else
+			printf("variable not set\n");
 		printf(ERR_SYNTAX);
 		return (-1);
 	}

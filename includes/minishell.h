@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/02/26 10:12:46 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/02/26 15:44:03 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ typedef	struct s_lexer
 
 char	*prompt(void);
 void	print_welcome_message();
+int 	get_env(char *path);
 
 /* Lexer */
 
