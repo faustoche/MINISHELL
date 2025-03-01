@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:36:11 by faustoche         #+#    #+#             */
-/*   Updated: 2025/02/26 12:03:41 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/01 16:20:01 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ int	handle_word(t_lexer *lexer, int start)
 	int		end;
 	char	*word;
 	int		type;
+	t_env	*env_list;
 
 	end = start;
 	while (lexer->input[end] && !is_space(lexer->input[end])

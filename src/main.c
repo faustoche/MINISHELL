@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/02/26 15:47:50 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/01 16:17:57 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@ int	main(void)
 	char	*input;
 	t_token	*token_list;
 	t_cmd	*commands;
-
+	t_env	*env_vars;
+	
 	while (1)
 	{
 		input = prompt();
@@ -77,4 +78,13 @@ void	print_welcome_message(void)
 	printf("\033[1;36m       ******************\n\033[0m");
 	printf("\n");
 	printf("\n");
+}
+
+void	print_env(t_env *env_list)
+{
+	while (env_list)
+	{
+		printf("%s=%s\n", env_list->name, env_list->value);
+		env_list = env_list->next;
+	}
 }

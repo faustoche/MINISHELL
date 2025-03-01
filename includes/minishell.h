@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/02/26 15:44:03 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/01 15:53:23 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,13 @@
 
 /*------------- STRUCTURES --------------*/
 
+typedef struct s_env
+{
+	char			*name;
+	char			*value;
+	struct s_env	*next;
+}	t_env;
+
 typedef struct s_token
 {
 	char			*value;
@@ -89,6 +96,13 @@ typedef	struct s_lexer
 char	*prompt(void);
 void	print_welcome_message();
 int 	get_env(char *path);
+
+/* Env */
+
+t_env	*create_env_element(char *env);
+t_env	*init_env(char **envp);
+void 	free_env_list(t_env *env_list);
+int		free_elements(t_env *element);
 
 /* Lexer */
 
