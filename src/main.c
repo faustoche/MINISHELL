@@ -6,19 +6,27 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/01 16:17:57 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/03 20:49:02 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(void)
+int	main(int ac, char **av, char **envp)
 {
 	char	*input;
 	t_token	*token_list;
 	t_cmd	*commands;
-	t_env	*env_vars;
+	t_env	*env_list;
 	
+	(void)ac;
+	(void)av;
+	env_list = init_env(envp);
+	if (!env_list)
+	{
+		printf("Erreur d'initialisation des varaibles d'environnement\n");
+		return (-1);
+	}
 	while (1)
 	{
 		input = prompt();
@@ -33,6 +41,7 @@ int	main(void)
 			free(input);
 			continue ;
 		}
+		expand_tokens(token_list, env_list);
 		commands = parse_commands(token_list);
 		if (commands)
 		{
@@ -42,11 +51,10 @@ int	main(void)
 		free_token_list(token_list);
 		free(input);
 	}
+	free_env_list(env_list);
 	clear_history();
 	return (0);
 }
-
-/* Affiche le prompt et récupère l'entrée utilisateur */
 
 char	*prompt(void)
 {
@@ -78,13 +86,4 @@ void	print_welcome_message(void)
 	printf("\033[1;36m       ******************\n\033[0m");
 	printf("\n");
 	printf("\n");
-}
-
-void	print_env(t_env *env_list)
-{
-	while (env_list)
-	{
-		printf("%s=%s\n", env_list->name, env_list->value);
-		env_list = env_list->next;
-	}
 }
