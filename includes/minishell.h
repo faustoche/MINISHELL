@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/01 15:53:23 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/03 20:56:50 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@
 # define TOKEN_CLOSE_PARENT 	14
 # define TOKEN_AND 				15
 # define TOKEN_OR				16
+# define TOKEN_ENV_VAR			17
 
 /*--------------- DEFINES ERRORS --------------*/
 
@@ -44,6 +45,8 @@
 
 # include <unistd.h>
 # include <stdio.h>
+# include <string.h>
+# include <ctype.h>
 # include <stdlib.h>
 # include <sys/wait.h>
 # include <fcntl.h>			
@@ -95,16 +98,25 @@ typedef	struct s_lexer
 
 char	*prompt(void);
 void	print_welcome_message();
-int 	get_env(char *path);
 
 /* Env */
 
+int execute_env_command(t_cmd *cmd, t_env *env_list);
+void expand_tokens(t_token *token_list, t_env *env_list);
+char	*ft_realloc(char *str, size_t size);
+char	*expand_variable(t_env *env_list, char *str);
+char	*get_env_value(t_env *env_list, char *name);
 t_env	*create_env_element(char *env);
 t_env	*init_env(char **envp);
 void 	free_env_list(t_env *env_list);
 int		free_elements(t_env *element);
+void	print_env(char *env);
+t_env	*find_env(t_env *env, char *name);
+char	*replace_substring(char *str, char *start, char *end, char *replacement);
 
 /* Lexer */
+
+int	handle_special_char(t_lexer *lexer);
 
 t_token	*lexing(char *input);
 int 	single_quotes(t_lexer *lexer, int i);

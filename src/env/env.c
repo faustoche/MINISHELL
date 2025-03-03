@@ -6,13 +6,11 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:18:42 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/01 16:19:53 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/03 20:59:08 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* Créer un nouvel élément d'environnement */
 
 t_env	*create_env_element(char *env)
 {
@@ -24,7 +22,7 @@ t_env	*create_env_element(char *env)
 	element = malloc(sizeof(t_env));
 	if (!element)
 		return (NULL);
-	pos_equal = ft_strchr(env, "=");
+	pos_equal = ft_strchr(env, '=');
 	if (!pos_equal)
 	{
 		element->name = ft_strdup(env);
@@ -35,67 +33,121 @@ t_env	*create_env_element(char *env)
 		element->name = ft_strndup(env, pos_equal - env);
 		element->value = ft_strdup(pos_equal + 1);
 	}
-	free_elements(element);
+	if (!element->name || !element->value)
+	{
+		free_elements(element);
+		return (NULL);
+	}
 	element->next = NULL;
 	return (element);
 }
 
-t_env	*init_env(char **envp)
+char	*expand_variable(t_env *env_list, char *str)
 {
-	t_env	*env_list;
-	t_env	*current;
-	t_env	*new_element;
 	int		i;
+	int		j;
+	char	*result;
+	char	*name;
+	char	*value;
+	int		len;
 
-	env_list = NULL;
-	current = NULL;
+	if (!str)
+		return (NULL);
+	result = malloc(ft_strlen(str) * 2 + 1);
+	if (!result)
+		return (NULL);
 	i = 0;
-	while (envp[i])
+	j = 0;
+	while (str[i])
 	{
-		new_element = create_env_element(envp[i]);
-		if (!new_element)
+		if (str[i] == '$' && str[i + 1] && isalpha(str[i + 1])) // changer ici
 		{
-			free_env_list(env_list);
-			return (NULL);
-		}
-		if (!env_list)
-		{
-			env_list = new_element;
-			current = env_list;
+			i++;
+			len = 0;
+			while (str[i + len] && (isalnum(str[i + len]) || str[i + len] == '_')) // changer ici
+				len++;
+			name = ft_strndup(str + i, len);
+			if (!name)
+			{
+				free(result);
+				return (NULL);
+			}
+			value = get_env_value(env_list, name);
+			free(name);
+			if (value)
+			{
+				strcpy(result + j, value); // ft_strcpy ici
+				j += ft_strlen(value);
+			}
+			i += len;
 		}
 		else
-		{
-			current->next = new_element;
-			current = new_element;
-		}
-		i++;
+			result[j++] = str[i++];
 	}
-	return (env_list);
+	result[j] = '\0';
+	return (ft_realloc(result, j + 1));
 }
 
-void free_env_list(t_env *env_list)
+char	*ft_realloc(char *str, size_t size)
 {
-	t_env *tmp;
+    char *new_str;
     
-    while (env_list)
+    if (!str)
+        return (NULL);
+    
+    new_str = malloc(size);
+    if (!new_str)
     {
-		tmp = env_list;
-        env_list = env_list->next;
-        free(tmp->name);
-        free(tmp->value);
-        free(tmp);
+        free(str);
+        return (NULL);
+    }
+    
+    ft_strncpy(new_str, str, size - 1);
+    new_str[size - 1] = '\0';
+    free(str);
+    
+    return (new_str);
+}
+
+void expand_tokens(t_token *token_list, t_env *env_list)
+{
+    t_token	*token;
+    char	*expanded;
+    
+    token = token_list;
+    while (token)
+    {
+        if (token->value && ft_strchr(token->value, '$') && token->type != SINGLE_DEL)
+        {
+            expanded = expand_variable(env_list, token->value);
+            if (expanded)
+            {
+                free(token->value);
+                token->value = expanded;
+            }
+        }
+        token = token->next;
     }
 }
 
-int	free_elements(t_env *element)
+int execute_env_command(t_cmd *cmd, t_env *env_list)
 {
-	if (!element->name || !element->name)
-	{
-		if (element->name)
-			free(element->name);
-		if (element->value)
-			free(element->value);
-		free(element);
-		return (NULL);
-	}
+    int		i;
+    char	*expanded;
+	
+	i = 0;
+    while (cmd->args[i])
+    {
+        if (ft_strchr(cmd->args[i], '$'))
+        {
+            expanded = expand_variable(env_list, cmd->args[i]);
+            if (expanded)
+            {
+                free(cmd->args[i]);
+                cmd->args[i] = expanded;
+            }
+        }
+        i++;
+    }
+    return (0);
 }

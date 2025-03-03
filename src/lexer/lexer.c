@@ -6,53 +6,68 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:36:11 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/01 16:20:01 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/03 16:58:03 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+static void	init_lexer(t_lexer *lexer, char *input)
+{
+	lexer->input = input;
+	lexer->tokens = NULL;
+	lexer->pos = 0;
+	lexer->command = 1;
+}
+static void	skip_space(t_lexer *lexer)
+{
+	while (is_space(lexer->input[lexer->pos]))
+		lexer->pos++;
+}
+
 /* Analyse de l'entrée de caractère pour créer une liste de tokens */
 
 t_token	*lexing(char *input)
 {
-	t_lexer	lexer;
+	t_lexer lexer;
 
 	if (!input)
 		return (NULL);
-	lexer.input = input;
-	lexer.tokens = NULL;
-	lexer.pos = 0;
-	lexer.command = 1;
+	init_lexer(&lexer, input);
 	while (lexer.input[lexer.pos])
 	{
-		while (is_space(lexer.input[lexer.pos]))
-			lexer.pos++;
+		skip_space(&lexer);
 		if (!lexer.input[lexer.pos])
 			break ;
-		if (lexer.input[lexer.pos] == '\'')
-			lexer.pos = single_quotes(&lexer, lexer.pos);
-		else if (lexer.input[lexer.pos] == '"')
-			lexer.pos = double_quotes(&lexer, lexer.pos);
-		else if (character_error(input) == -1)
-			return (NULL);
-		else if (is_separator(lexer.input[lexer.pos]))
-		{
-			if (delimiter_error(&lexer.input[lexer.pos]) == -1)
-				return (NULL);
-			lexer.pos = handle_delimiter(&lexer, lexer.pos);
-		}
-		else if (syntax_error(input) == -1)
-			return (NULL);
-		else
-			lexer.pos = handle_word(&lexer, lexer.pos);
-		if (lexer.pos == -1)
+		if (!handle_special_char(&lexer))
 		{
 			free_token_list(lexer.tokens);
 			return (NULL);
 		}
 	}
 	return (lexer.tokens);
+}
+
+int	handle_special_char(t_lexer *lexer)
+{
+	char	c;
+
+	c = lexer->input[lexer->pos];
+	if (c == '\'')
+		lexer->pos = single_quotes(lexer, lexer->pos);
+	else if (c == '"')
+		lexer->pos = double_quotes(lexer, lexer->pos);
+	else if (character_error(lexer->input) == -1 || syntax_error(lexer->input) == -1)
+		return (0);
+	else if (is_separator(c))
+	{
+		if (delimiter_error(&lexer->input[lexer->pos]) == -1)
+			return (-1);
+		lexer->pos = handle_delimiter(lexer, lexer->pos);
+	}
+	else
+		lexer->pos = handle_word(lexer, lexer->pos);
+	return (lexer->pos != -1);
 }
 
 /* Ajouter des tokens a la liste chainee */
@@ -109,7 +124,6 @@ int	handle_word(t_lexer *lexer, int start)
 	int		end;
 	char	*word;
 	int		type;
-	t_env	*env_list;
 
 	end = start;
 	while (lexer->input[end] && !is_space(lexer->input[end])
