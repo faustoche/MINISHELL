@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/03 20:56:50 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/04 14:59:04 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ char	*get_env_value(t_env *env_list, char *name);
 t_env	*create_env_element(char *env);
 t_env	*init_env(char **envp);
 void 	free_env_list(t_env *env_list);
-int		free_elements(t_env *element);
+void		free_elements(t_env *element);
 void	print_env(char *env);
 t_env	*find_env(t_env *env, char *name);
 char	*replace_substring(char *str, char *start, char *end, char *replacement);

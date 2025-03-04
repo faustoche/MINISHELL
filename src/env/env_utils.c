@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:28:18 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/03 20:56:13 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/04 14:58:46 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,28 +59,25 @@ void free_env_list(t_env *env_list)
     }
 }
 
-int	free_elements(t_env *element)
+void	free_elements(t_env *element)
 {
 	if (element)
 	{
-		if (element->name)
-		{
-			free(element->name);
-			element->name = NULL;
-		}
-		if (element->value)
-		{
-			free(element->value);
-			element->value = NULL;
-		}
+		free(element->name);
+		free(element->value);
 		free(element);
-		element = NULL;
 	}
-	return (0);
 }
 
 char	*get_env_value(t_env *env_list, char *name)
 {
-	(void)env_list;
+	t_env	*current = env_list;
+
+	while (current)
+	{
+		if (ft_strcmp(current->name, name) == 0)
+			return (current->value);
+		current = current->next;
+	}	
 	return (getenv(name));
 }
