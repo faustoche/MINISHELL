@@ -57,7 +57,7 @@ RM = rm -rf
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	@echo "\033[1;33m\n🪩 COMPILING MINISHELL... 🪩\n"
+	@echo "\033[1;33m\n🪩  COMPILING MINISHELL... 🪩\n"
 	$(CC) $(OBJS) $(CFLAGS) $(LDFLAGS) -o $(NAME)
 	@echo "\033[1;32m💾 ./$(NAME) created 💾\n"
 
