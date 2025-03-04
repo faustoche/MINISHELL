@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:18:42 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/04 16:09:26 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/04 21:02:12 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_env	*create_env_element(char *env)
 
 	if (!env)
 		return (NULL);
-	element = malloc(sizeof(t_env)); // leak ici
+	element = malloc(sizeof(t_env));
 	if (!element)
 		return (NULL);
 	element->name = NULL;
@@ -33,15 +33,13 @@ t_env	*create_env_element(char *env)
 	}
 	else
 	{
-		element->name = ft_strndup(env, pos_equal - env); // leak ici
-		element->value = ft_strdup(pos_equal + 1); // leak ici
+		element->name = ft_strndup(env, pos_equal - env);
+		element->value = ft_strdup(pos_equal + 1);
 	}
 	if (!element->name || !element->value)
 	{
-		if (element->name)
-			free(element->name);
-		if (element->value)	
-			free(element->value);
+		free(element->name);
+        free(element->value);
 		free(element);
 		return (NULL);
 	}
