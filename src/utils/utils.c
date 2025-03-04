@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/04 11:57:37 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/04 21:07:46 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,23 @@ char	*ft_strdup(const char *s)
 {
 	char	*src;
 	int		len;
+	int		i;
 
 	len = 0;
 	while (s[len])
-	{
 		len++;
-	}
 	src = (char *) malloc(sizeof(char) * (len + 1));
 	if (!src)
 	{
 		return (NULL);
 	}
-	src[len] = '\0';
-	while (len >= 0)
+	i = 0;
+	while (i < len)
 	{
-		src[len] = s[len];
-		len--;
+		src[i] = s[i];
+		i++;
 	}
+	src[i] = '\0';
 	return (src);
 }
 
