@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 22:29:51 by faustoche         #+#    #+#             */
-/*   Updated: 2025/02/26 16:12:11 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/05 16:44:08 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	character_error(char *input)
 {
 	if (input[0] == '~')
 	{
-		printf("bash: $PATH:is a directory\n");
+		printf("bash: %s: Is a directory\n", getenv("HOME"));
 		return (-1);
 	}
 	if (input[0] == '*')
@@ -85,7 +85,7 @@ int	character_error(char *input)
 		printf("bash: Applications: command not found\n");
 		return (-1);
 	}
-	if (input[0] == '\'' && input[1] == '\'')
+	if ((input[0] == '\'' && input[1] == '\'') || (input[0] == '"' && input[1] == '"'))
 	{
 		printf("bash: Applications: command not found\n");
 		return (-1);

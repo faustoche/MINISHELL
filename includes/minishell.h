@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/04 14:59:04 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/05 15:17:42 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # define REDIR_APPEND 			6
 # define TOKEN_SEPARATOR 		7
 # define HEREDOC 				8
-# define SINGLE_DEL				9
-# define DOUBLE_DEL				10
+# define SINGLE_QUOTE			9
+# define DOUBLE_QUOTE			10
 # define TOKEN_EXPORT_KEY 		11
 # define TOKEN_EXPORT_VALUE 	12
 # define TOKEN_OPEN_PARENT 		13
@@ -104,7 +104,7 @@ void	print_welcome_message();
 int execute_env_command(t_cmd *cmd, t_env *env_list);
 void expand_tokens(t_token *token_list, t_env *env_list);
 char	*ft_realloc(char *str, size_t size);
-char	*expand_variable(t_env *env_list, char *str);
+char	*expand_variable(t_env *env_list, char *str, int quote_type);
 char	*get_env_value(t_env *env_list, char *name);
 t_env	*create_env_element(char *env);
 t_env	*init_env(char **envp);
@@ -190,6 +190,7 @@ char	*ft_strncpy(char *dest, char *src, unsigned int n);
 char	*ft_strdup(const char *s);
 void	print_commands(t_cmd *cmd);
 char	*ft_strndup(const char *s, size_t n);
+char    *ft_strcpy(char *dest, char *src);
 
 /* Exec */
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:18:42 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/04 21:02:12 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/05 16:38:42 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,6 @@ t_env	*create_env_element(char *env)
 	element = malloc(sizeof(t_env));
 	if (!element)
 		return (NULL);
-	element->name = NULL;
-	element->value = NULL;
-	element->next = NULL;
 	pos_equal = ft_strchr(env, '=');
 	if (!pos_equal)
 	{
@@ -37,17 +34,12 @@ t_env	*create_env_element(char *env)
 		element->value = ft_strdup(pos_equal + 1);
 	}
 	if (!element->name || !element->value)
-	{
-		free(element->name);
-        free(element->value);
-		free(element);
-		return (NULL);
-	}
+        free_elements(element);
 	element->next = NULL;
 	return (element);
 }
 
-char *expand_variable(t_env *env_list, char *str)
+char *expand_variable(t_env *env_list, char *str, int quote_type)
 {
     size_t	result_capacity;
 	char	*result;
@@ -56,19 +48,22 @@ char *expand_variable(t_env *env_list, char *str)
     char	*name;
 	char	*value;
     size_t	len;
+    char    *temp;
 
 	i = 0;
 	j = 0;
 	result_capacity = ft_strlen(str) + 1;
 	result = malloc(result_capacity);
     if (!str || !result)
-        return NULL;
+    return NULL;
+    if (quote_type == SINGLE_QUOTE)
+        return (ft_strdup(str));
     while (str[i])
     {
         if (j + 1 >= result_capacity)
         {
             result_capacity *= 2;
-            char *temp = realloc(result, result_capacity);
+            temp = ft_realloc(result, result_capacity);
             if (!temp)
             {
                 free(result);
@@ -96,7 +91,7 @@ char *expand_variable(t_env *env_list, char *str)
                 while (j + value_len + 1 >= result_capacity)
                 {
                     result_capacity *= 2;
-                    char *temp = realloc(result, result_capacity);
+                    temp = realloc(result, result_capacity); // Ici changer par realloc perso mais attention conditional jumps
                     if (!temp)
                     {
                         free(result);
@@ -126,9 +121,9 @@ void expand_tokens(t_token *token_list, t_env *env_list)
     token = token_list;
     while (token)
     {
-        if (token->value && ft_strchr(token->value, '$') && token->type != SINGLE_DEL)
+        if (token->value && ft_strchr(token->value, '$') && token->type != SINGLE_QUOTE)
         {
-            expanded = expand_variable(env_list, token->value);
+            expanded = expand_variable(env_list, token->value, token->type);
             if (expanded)
             {
                 free(token->value);
@@ -149,7 +144,7 @@ int execute_env_command(t_cmd *cmd, t_env *env_list)
     {
         if (ft_strchr(cmd->args[i], '$'))
         {
-            expanded = expand_variable(env_list, cmd->args[i]);
+            expanded = expand_variable(env_list, cmd->args[i], 0);
             if (expanded)
             {
                 free(cmd->args[i]);
