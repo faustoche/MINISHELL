@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/02/25 14:08:28 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/05 14:57:19 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ int	handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head)
 	}
 	if (pipe(&pipe_fd[1]) == -1)
 	{
-		printf("Pipe creation failed\n");
+		printf("Error : pipe creation failed\n");
 		return (-1);
 	}
 	while (1)

@@ -35,6 +35,7 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				errors/syntax_error.c\
 				utils/split.c\
 				utils/free.c\
+				utils/utils2.c\
 				utils/utils.c)
 
 SRCS			= ${MINISHELL}

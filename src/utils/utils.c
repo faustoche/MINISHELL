@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/04 21:07:46 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/05 10:02:17 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ char	*ft_strncpy(char *dest, char *src, unsigned int n)
 {
 	unsigned int	i;
 
+	if (!dest || !src)
+		return (NULL);
 	i = 0;
 	while (src[i] != '\0' && i < n)
 	{

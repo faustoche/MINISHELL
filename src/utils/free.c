@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/04 12:12:12 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/05 10:04:05 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,14 +81,17 @@ char	*ft_realloc(char *str, size_t size)
     
     if (!str)
         return (NULL);
-    
     new_str = malloc(size);
     if (!new_str)
     {
         free(str);
         return (NULL);
     }
-    
+	if (!str)
+	{
+		new_str[0] = '\0';
+		return (new_str);
+	}
     ft_strncpy(new_str, str, size - 1);
     new_str[size - 1] = '\0';
     free(str);
