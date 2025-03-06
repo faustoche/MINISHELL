@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_separator.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 10:08:09 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/02/25 22:47:56 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/06 09:21:31 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 
-/* Identification des délimiteur priorites */
+/* Identification des délimiteur priorites - pas encore utilisée */
 
 int	double_delimiter(char *input, int i)
 {

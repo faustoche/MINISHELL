@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/02/26 11:51:36 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 09:22:03 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,20 +49,3 @@ int	pipe_process(int file1, int pfile[2])
 	}
 	return (process);
 }
-/*
-int	syntax_check_pipe()
-{
-	// if arg[0] == "|" || arg[x] == "|"
-		// printf("parse error near '|'\n");
-	// if command 1 == arg && command 2 == rg
-	//Vérifier que chaque commande séparée par | a bien des arguments
-	//Après avoir séparé les commandes, vérifie que chaque t_cmd a bien un args[0] (éviter un pipe vide).
-	//Si une commande est vide après un |, afficher une erreur "Invalid null command".
-}
-*/
-/*
-Dans parse_commands(), chaque | doit créer un nouveau pipe entre deux commandes.
-Exemple de structure de données 
-*/
-
-// SI pas de commande, alors retour à la ligne

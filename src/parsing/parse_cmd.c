@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/02/26 11:45:39 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 09:13:57 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,6 @@ t_cmd	*init_command(void)
 	cmd->heredoc = -1;
 	return (cmd);
 }
-
-/* Convertiti la liste de tokens en structure de commande */
 
 t_cmd	*parse_commands(t_token *token_list)
 {
@@ -96,19 +94,3 @@ int	redirection_process(t_token **token, t_cmd **current, t_cmd **head)
 		*token = (*token)->next;
 	return (0);
 }
-
-/*
-Dans process token
-
-if ((*token)->type == TOKEN_OPEN_PAREN)
-    {
-        // Traitement de l'ouverture de parenthèse
-        // Stockage du contexte actuel et création d'un nouveau contexte
-    }
-    else if ((*token)->type == TOKEN_CLOSE_PAREN)
-    {
-        // Traitement de la fermeture de parenthèse
-        // Retour au contexte précédent
-    }
-
-*/

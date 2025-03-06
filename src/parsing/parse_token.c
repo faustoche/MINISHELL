@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/02/26 11:45:25 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 09:14:45 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,25 +41,6 @@ int	get_token_type(char *token, int *command)
 		*command = 0;
 		return (TOKEN_COMMAND);
 	}
-	return (TOKEN_ARGUMENT);
-}
-
-/* Find what type of token */
-
-int	find_token(char *token, int *command)
-{
-	if (is_separator(token[0]) || (token[0] == '>' && token[1] == '>'))
-	{
-		*command = 1;
-		return (get_token_type(token, command));
-	}
-	else if (*command)
-	{
-		*command = 0;
-		return (TOKEN_COMMAND);
-	}
-	else if (token[0] == '-')
-		return (TOKEN_ARGUMENT);
 	return (TOKEN_ARGUMENT);
 }
 

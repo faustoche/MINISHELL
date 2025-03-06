@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/05 15:17:42 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 09:32:38 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,62 +101,54 @@ void	print_welcome_message();
 
 /* Env */
 
-int execute_env_command(t_cmd *cmd, t_env *env_list);
-void expand_tokens(t_token *token_list, t_env *env_list);
-char	*ft_realloc(char *str, size_t size);
-char	*expand_variable(t_env *env_list, char *str, int quote_type);
-char	*get_env_value(t_env *env_list, char *name);
 t_env	*create_env_element(char *env);
+char	*expand_variable(t_env *env_list, char *str, int quote_type);
+void 	expand_tokens(t_token *token_list, t_env *env_list);
+char	*get_env_value(t_env *env_list, char *name);
 t_env	*init_env(char **envp);
-void 	free_env_list(t_env *env_list);
-void		free_elements(t_env *element);
-void	print_env(char *env);
-t_env	*find_env(t_env *env, char *name);
-char	*replace_substring(char *str, char *start, char *end, char *replacement);
+char    *expand_tilde(char *input);
+
+
+/* Syntax error */
+
+int		syntax_error(char *input);
+int		delimiter_error(char *input);
+int		character_error(char *input);
 
 /* Lexer */
 
-int	handle_special_char(t_lexer *lexer);
-
-t_token	*lexing(char *input);
 int 	single_quotes(t_lexer *lexer, int i);
 int 	double_quotes(t_lexer *lexer, int i);
 int		double_delimiter(char *input, int i);
 int 	handle_delimiter(t_lexer *lexer, int i);
+t_token	*lexing(char *input);
+int		handle_special_char(t_lexer *lexer);
 void	add_token(t_lexer *lexer, char *word, int length, int type);
-int		add_word_token(t_lexer *lexer, int start, int end);
-void	free_lexer(t_lexer *lexer);
 int 	handle_word(t_lexer *lexer, int start);
-int		syntax_error(char *input);
-int		delimiter_error(char *input);
-int		character_error(char *input);
-int		string_error(t_token *token);
 
 /* Parsing */
 
-	// Parse arguments
+// Parse arguments
 int		init_args(t_cmd *command);
 int		expand_args(t_cmd *command);
 int		add_args(t_cmd *command, char *arg);
 
-	// Parse command
+// Parse command
 t_cmd	*init_command(void);
 t_cmd	*parse_commands(t_token *token_list);
 int		process_token(t_token **token, t_cmd **current, t_cmd **head);
 int		redirection_token(t_token *token);
 int		redirection_process(t_token **token, t_cmd **current, t_cmd **head);
 
-	// Parse input
+// Parse input
 void	free_token_list(t_token *head);
 t_token	*parse_input(char *input);
-void	print_tokens(t_token *head);
 
-	// Parse token
+// Parse token
 int		get_token_type(char *token, int *command);
-int		find_token(char *token, int *command);
 int		handle_standard_token(t_cmd **current, t_cmd **head, char *value);
 
-	// Redirection
+// Redirection
 int		open_file(char *filename, int token);
 void	redirect_out(int fd);
 void	redirect_in(int fd);
@@ -166,31 +158,25 @@ int		handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head);
 
 /* Utils */
 
-	// Free
+// Free
+void 	free_env_list(t_env *env_list);
+void	free_elements(t_env *element);
 void	free_commands(t_cmd *cmd);
 void	free_tokens(char **tokens);
 void	quit_minislay(char *line, t_cmd *cmd, t_token *token);
-void 	free_token_list(t_token *head);
 void 	clean_exit(t_token *tokens, char *input, t_cmd *commands);
+char	*ft_realloc(char *str, size_t size);
 
-	// Split
-char	**ft_split(char *input);
-int		count_tokens(char *input);
-int		is_separator(int c);
-int		is_space(int c);
-int		handle_space(char *input, int i);
-int		handle_separator(char **tokens, int *count, char *input, int i);
-void	input_to_tokens(char **tokens, int *count, char *start, int length);
-int		handle_quotes(char **tokens, int *count, char *input, int i);
-int		check_word(char **tokens, int *count, char *input, int i);
-
-	// Utils
+// Utils
 int		ft_strcmp(char *s1, char *s2);
 char	*ft_strncpy(char *dest, char *src, unsigned int n);
 char	*ft_strdup(const char *s);
 void	print_commands(t_cmd *cmd);
 char	*ft_strndup(const char *s, size_t n);
 char    *ft_strcpy(char *dest, char *src);
+int		is_separator(int c);
+int		is_space(int c);
+void	skip_space(t_lexer *lexer);
 
 /* Exec */
 

@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/05 14:56:33 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 09:05:45 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	main(int ac, char **av, char **envp)
 	env_list = init_env(envp);
 	if (!env_list)
 	{
-		printf("Erreur d'initialisation des variables d'environnement\n");
+		printf("Error : env variable initialization\n");
 		return (-1);
 	}
 	while (1)

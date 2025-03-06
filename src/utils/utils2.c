@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 09:55:47 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/05 09:57:02 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 09:19:18 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,22 @@ char    *ft_strcpy(char *dest, char *src)
     }
     *dest = '\0';
     return (dest);
+}
+
+int	is_separator(int c)
+{
+	return (c == '|' || c == '>' || c == '<' || c == ';'
+		|| c == '&' || c == '(' || c == ')');
+}
+
+int	is_space(int c)
+{
+	return (c == ' ' || c == '\t' || c == '\n' || c == '\r'
+		|| c == '\v' || c == '\f');
+}
+
+void	skip_space(t_lexer *lexer)
+{
+	while (is_space(lexer->input[lexer->pos]))
+		lexer->pos++;
 }

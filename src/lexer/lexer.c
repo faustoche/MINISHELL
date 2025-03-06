@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:36:11 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/03 16:58:03 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/06 09:20:37 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,6 @@ static void	init_lexer(t_lexer *lexer, char *input)
 	lexer->tokens = NULL;
 	lexer->pos = 0;
 	lexer->command = 1;
-}
-static void	skip_space(t_lexer *lexer)
-{
-	while (is_space(lexer->input[lexer->pos]))
-		lexer->pos++;
 }
 
 /* Analyse de l'entrée de caractère pour créer une liste de tokens */
@@ -97,26 +92,6 @@ void	add_token(t_lexer *lexer, char *word, int length, int type)
 			current = current->next;
 		current->next = new_token;
 	}
-}
-
-/* Ajouter un mot a la liste existante */
-
-int	add_word_token(t_lexer *lexer, int start, int end)
-{
-	char	*word;
-
-	word = strndup(lexer->input + start, end - start);
-	if (!word)
-		return (-1);
-	add_token(lexer, word, end - start, TOKEN_ARGUMENT);
-	free(word);
-	return (0);
-}
-
-void	free_lexer(t_lexer *lexer)
-{
-	free_token_list(lexer->tokens);
-	free(lexer->input);
 }
 
 int	handle_word(t_lexer *lexer, int start)

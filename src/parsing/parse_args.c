@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/02/26 11:44:58 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 09:13:04 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,6 @@ int	init_args(t_cmd *command)
 	command->args[0] = NULL;
 	return (0);
 }
-
-/* Expand the number of args according to the input */
 
 int	expand_args(t_cmd *command)
 {
@@ -44,8 +42,6 @@ int	expand_args(t_cmd *command)
 	command->max_arg *= 2;
 	return (0);
 }
-
-/* Attention : un leak dans cette fonction */
 
 int	add_args(t_cmd *cmd, char *arg)
 {
