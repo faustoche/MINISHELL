@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 16:50:10 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/05 15:15:21 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 09:21:46 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,3 @@ int	double_quotes(t_lexer *lexer, int i)
 	}
 	return (0);
 }
-
-/*
-À prendre en compte selon bash : 
-
-> $USER : renvois fcrocq
-> '$USER' : renvois $USER
-> "$USER" : renvois fcrocq
-> '"$USER"' : renvois "$USER"
-> "'$USER'" : renvois 'fcrocq'
-
-
-*/

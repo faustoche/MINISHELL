@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:18:42 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/05 16:38:42 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 09:01:28 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,7 +110,7 @@ char *expand_variable(t_env *env_list, char *str, int quote_type)
             result[j++] = str[i++];
     }
     result[j] = '\0';
-    return result;
+    return (result);
 }
 
 void expand_tokens(t_token *token_list, t_env *env_list)
@@ -134,24 +134,48 @@ void expand_tokens(t_token *token_list, t_env *env_list)
     }
 }
 
-int execute_env_command(t_cmd *cmd, t_env *env_list)
+char	*get_env_value(t_env *env_list, char *name)
 {
-    int		i;
-    char	*expanded;
-	
+	t_env	*current = env_list;
+
+	while (current)
+	{
+		if (ft_strcmp(current->name, name) == 0)
+			return (current->value);
+		current = current->next;
+	}	
+	return (getenv(name));
+}
+
+t_env	*init_env(char **envp)
+{
+	t_env	*env_list;
+	t_env	*current;
+	t_env	*new_element;
+	int		i;
+
+	env_list = NULL;
+	current = NULL;
 	i = 0;
-    while (cmd->args[i])
-    {
-        if (ft_strchr(cmd->args[i], '$'))
-        {
-            expanded = expand_variable(env_list, cmd->args[i], 0);
-            if (expanded)
-            {
-                free(cmd->args[i]);
-                cmd->args[i] = expanded;
-            }
-        }
-        i++;
-    }
-    return (0);
+	while (envp[i])
+	{
+		new_element = create_env_element(envp[i]);
+		if (!new_element)
+		{
+			free_env_list(env_list);
+			return (NULL);
+		}
+		if (!env_list)
+		{
+			env_list = new_element;
+			current = env_list;
+		}
+		else
+		{
+			current->next = new_element;
+			current = new_element;
+		}
+		i++;
+	}
+	return (env_list);
 }

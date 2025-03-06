@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 22:29:51 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/05 16:44:08 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 09:23:14 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,20 +99,6 @@ int	character_error(char *input)
 	{
 		printf(ERR_DIR, input);
 		return (-1);
-	}
-	return (0);
-}
-
-int	string_error(t_token *token)
-{
-	if (token && token->type == TOKEN_ARGUMENT)
-	{
-		printf("bash: command not found\n");
-		return (-1);
-	}
-	while (token && token->type)
-	{
-		token = token->next;
 	}
 	return (0);
 }
