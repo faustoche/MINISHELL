@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/06 09:05:45 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 12:23:52 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	main(int ac, char **av, char **envp)
 	t_token	*token_list;
 	t_cmd	*commands;
 	t_env	*env_list;
-	
+
 	(void)ac;
 	(void)av;
 	env_list = init_env(envp);

@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 22:29:51 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/06 09:23:14 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 12:06:13 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	syntax_error(char *input)
 {
-	char *var;
+	char	*var;
 
 	var = getenv("PATH");
 	if ((input[0] == '\\' && input[1] == '\\') || input[0] == '\\')
@@ -85,7 +85,7 @@ int	character_error(char *input)
 		printf("bash: Applications: command not found\n");
 		return (-1);
 	}
-	if ((input[0] == '\'' && input[1] == '\'') || (input[0] == '"' && input[1] == '"'))
+	if ((input[0] == '\'' && input[1] == '\'' && input[2] == '\0') || (input[0] == '"' && input[1] == '"' && input[2] == '\0'))
 	{
 		printf("bash: Applications: command not found\n");
 		return (-1);

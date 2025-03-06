@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 09:55:47 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/06 09:19:18 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 11:14:10 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 char    *ft_strcpy(char *dest, char *src)
 {
-    while (*src != '\0')
-    {
-        *dest = *src;
-        dest++;
-        src++;
-    }
-    *dest = '\0';
-    return (dest);
+	while (*src != '\0')
+	{
+		*dest = *src;
+		dest++;
+		src++;
+	}
+	*dest = '\0';
+	return (dest);
 }
 
 int	is_separator(int c)
@@ -32,12 +32,11 @@ int	is_separator(int c)
 
 int	is_space(int c)
 {
-	return (c == ' ' || c == '\t' || c == '\n' || c == '\r'
-		|| c == '\v' || c == '\f');
+	return (c == ' ' || c == '\t' || c == '\n');
 }
 
 void	skip_space(t_lexer *lexer)
 {
-	while (is_space(lexer->input[lexer->pos]))
+	while (lexer->input[lexer->pos] && is_space(lexer->input[lexer->pos]))
 		lexer->pos++;
 }
