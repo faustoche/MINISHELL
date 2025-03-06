@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/06 09:13:04 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 14:31:53 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,14 @@ int	add_args(t_cmd *cmd, char *arg)
 	if (!cmd->args)
 	{
 		if (init_args(cmd) == -1)
-		return (-1);
+			return (-1);
 	}
 	if (cmd->nb_arg >= cmd->max_arg - 1)
 	{
 		if (expand_args(cmd) == -1)
 			return (-1);
-		}
-		cmd->args[cmd->nb_arg] = ft_strdup(arg);
+	}
+	cmd->args[cmd->nb_arg] = ft_strdup(arg);
 	if (!cmd->args[cmd->nb_arg])
 	{
 		i = -1;

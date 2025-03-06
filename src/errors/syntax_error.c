@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 22:29:51 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/06 12:06:13 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 14:29:07 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,16 @@ int	character_error(char *input)
 	if (input[0] == '/' && (input[1] == '\0' || input[1] == ' '))
 	{
 		printf(ERR_DIR, input);
+		return (-1);
+	}
+	return (0);
+}
+
+int	input_check(char *input)
+{
+	if (input[0] == TOKEN_ARGUMENT && input[1] == '\0')
+	{
+		printf(ERR_CMD, input);
 		return (-1);
 	}
 	return (0);

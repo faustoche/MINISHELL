@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:18:42 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/06 11:01:16 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 14:37:22 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,14 @@ char	*expand_variable(t_env *env_list, char *str, int quote_type)
 	char	*value;
 	size_t	len;
 	char	*temp;
+	size_t	value_len;
 
 	i = 0;
 	j = 0;
 	result_capacity = ft_strlen(str) + 1;
 	result = malloc(result_capacity);
 	if (!str || !result)
-	return NULL;
+		return (NULL);
 	if (quote_type == SINGLE_QUOTE)
 		return (ft_strdup(str));
 	while (str[i])
@@ -67,7 +68,7 @@ char	*expand_variable(t_env *env_list, char *str, int quote_type)
 			if (!temp)
 			{
 				free(result);
-				return NULL;
+				return (NULL);
 			}
 			result = temp;
 		}
@@ -81,13 +82,12 @@ char	*expand_variable(t_env *env_list, char *str, int quote_type)
 			if (!name)
 			{
 				free(result);
-				return NULL;
+				return (NULL);
 			}
 			value = get_env_value(env_list, name);
 			if (value)
 			{
-				size_t value_len = ft_strlen(value);
-
+				value_len = ft_strlen(value);
 				while (j + value_len + 1 >= result_capacity)
 				{
 					result_capacity *= 2;
@@ -96,11 +96,11 @@ char	*expand_variable(t_env *env_list, char *str, int quote_type)
 					{
 						free(result);
 						free(name);
-						return NULL;
+						return (NULL);
 					}
 					result = temp;
 				}
-				strcpy(result + j, value);
+				ft_strcpy(result + j, value);
 				j += value_len;
 			}
 			free(name);
@@ -113,15 +113,16 @@ char	*expand_variable(t_env *env_list, char *str, int quote_type)
 	return (result);
 }
 
-void expand_tokens(t_token *token_list, t_env *env_list)
+void	expand_tokens(t_token *token_list, t_env *env_list)
 {
 	t_token	*token;
 	char	*expanded;
-	
+
 	token = token_list;
 	while (token)
 	{
-		if (token->value && ft_strchr(token->value, '$') && token->type != SINGLE_QUOTE)
+		if (token->value && ft_strchr(token->value, '$')
+			&& token->type != SINGLE_QUOTE)
 		{
 			expanded = expand_variable(env_list, token->value, token->type);
 			if (expanded)
@@ -136,8 +137,9 @@ void expand_tokens(t_token *token_list, t_env *env_list)
 
 char	*get_env_value(t_env *env_list, char *name)
 {
-	t_env	*current = env_list;
+	t_env	*current;
 
+	current = env_list;
 	while (current)
 	{
 		if (ft_strcmp(current->name, name) == 0)

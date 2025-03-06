@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:36:11 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/06 12:16:01 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 14:34:32 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static void	init_lexer(t_lexer *lexer, char *input)
 
 t_token	*lexing(char *input)
 {
-	t_lexer lexer;
+	t_lexer	lexer;
 
 	if (!input || !*input)
 		return (NULL);
@@ -54,7 +54,8 @@ int	handle_special_char(t_lexer *lexer)
 		lexer->pos = single_quotes(lexer, lexer->pos);
 	else if (c == '"')
 		lexer->pos = double_quotes(lexer, lexer->pos);
-	else if (syntax_error(lexer->input) == -1)
+	else if (syntax_error(lexer->input) == -1
+		|| input_check(lexer->input) == -1)
 		return (0);
 	else if (is_separator(c))
 	{

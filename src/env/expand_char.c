@@ -6,16 +6,16 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 10:25:23 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/06 11:00:31 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 14:37:59 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char    *expand_tilde(char *input)
+char	*expand_tilde(char *input)
 {
-	char    *home;
-	char    *result;
+	char	*home;
+	char	*result;
 
 	if (!input || input[0] != '~')
 		return (ft_strdup(input));
@@ -29,16 +29,3 @@ char    *expand_tilde(char *input)
 	strcat(result, input + 1); // mettre le vrai depuis la libft
 	return (result);
 }
-
-
-/*
-À prendre en compte selon bash : 
-
-> $USER : renvois fcrocq
-> '$USER' : renvois $USER
-> "$USER" : renvois fcrocq
-> '"$USER"' : renvois "$USER"
-> "'$USER'" : renvois 'fcrocq'
-
-
-*/
