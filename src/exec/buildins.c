@@ -1,19 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_cmd.c                                         :+:      :+:    :+:   */
+/*   buildins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/03/06 14:32:29 by fcrocq           ###   ########.fr       */
+/*   Created: 2025/03/06 14:58:50 by fcrocq            #+#    #+#             */
+/*   Updated: 2025/03/06 16:49:24 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int execve(const char *pathname, char *const argv[], char *const envp[]);
+int is_builtins(char *cmd)
+{
+	if (ft_strcmp(cmd, "echo") == 0)
+		return (-1);
+	if (ft_strcmp(cmd, "cd") == 0)
+		return (-1);
+	if (ft_strcmp(cmd, "pwd") == 0)
+		return (-1);
+	if (ft_strcmp(cmd, "unset") == 0)
+			return (-1);
+	if (ft_strcmp(cmd, "export") == 0)
+			return (-1);
+	if (ft_strcmp(cmd, "env") == 0)
+		return (-1);
+	if (ft_strcmp(cmd, "exit") == 0)
+		return (-1);
+	return (0);
+}
 
-//argv tableau de str (1er elem nom du prog en general)
-//envp tableau de str avec variables d'enviro a passer au prog
-//-1 si erreur, sinon pas de retour car remplace prog appelant
+int	buildins_execution(char **arg)
+{
+	
+}

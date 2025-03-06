@@ -6,24 +6,24 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:28:18 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/06 09:01:23 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 14:31:27 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void free_env_list(t_env *env_list)
+void	free_env_list(t_env *env_list)
 {
-	t_env *tmp;
-    
-    while (env_list)
-    {
+	t_env	*tmp;
+
+	while (env_list)
+	{
 		tmp = env_list;
-        env_list = env_list->next;
-        free(tmp->name);
-        free(tmp->value);
-        free(tmp);
-    }
+		env_list = env_list->next;
+		free(tmp->name);
+		free(tmp->value);
+		free(tmp);
+	}
 }
 
 void	free_elements(t_env *element)
@@ -35,4 +35,3 @@ void	free_elements(t_env *element)
 		free(element);
 	}
 }
-

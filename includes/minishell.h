@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/06 09:32:38 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 14:24:34 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ char    *expand_tilde(char *input);
 int		syntax_error(char *input);
 int		delimiter_error(char *input);
 int		character_error(char *input);
+int		input_check(char *input);
 
 /* Lexer */
 

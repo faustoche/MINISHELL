@@ -6,13 +6,13 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 09:55:47 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/06 11:14:10 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 14:29:56 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char    *ft_strcpy(char *dest, char *src)
+char	*ft_strcpy(char *dest, char *src)
 {
 	while (*src != '\0')
 	{

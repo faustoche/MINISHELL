@@ -1,19 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_cmd.c                                         :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/03/06 14:32:29 by fcrocq           ###   ########.fr       */
+/*   Created: 2025/03/06 16:52:28 by fcrocq            #+#    #+#             */
+/*   Updated: 2025/03/06 16:52:42 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int execve(const char *pathname, char *const argv[], char *const envp[]);
+void	ft_echo(int	arg, char **list_args)
+{
+	int	i;
 
-//argv tableau de str (1er elem nom du prog en general)
-//envp tableau de str avec variables d'enviro a passer au prog
-//-1 si erreur, sinon pas de retour car remplace prog appelant
+	i = 1;
+	if (arg > 1)
+	{
+		while (i < arg)
+		{
+			printf("%s", list_args[i]);
+			if (i < arg - 1)
+				printf(" ");
+			i++;
+		}
+		printf("\n");
+	}
+}

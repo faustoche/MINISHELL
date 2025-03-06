@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/06 10:59:19 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/06 14:29:37 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ void	clean_exit(t_token *tokens, char *input, t_cmd *commands)
 
 char	*ft_realloc(char *str, size_t size)
 {
-	char *new_str;
-	
+	char	*new_str;
+
 	if (!str)
 		return (NULL);
 	new_str = malloc(size);
@@ -95,6 +95,5 @@ char	*ft_realloc(char *str, size_t size)
 	ft_strncpy(new_str, str, size - 1);
 	new_str[size - 1] = '\0';
 	free(str);
-	
 	return (new_str);
 }
