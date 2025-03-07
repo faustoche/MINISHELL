@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/07 10:01:54 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/07 11:47:11 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,16 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef	struct s_expand
+{
+	char	*result;
+	size_t	capacity;
+	size_t	i;
+	size_t	j;
+	t_env	*env_list;
+	char	*str;
+}	t_expand;
+
 typedef struct s_token
 {
 	char			*value;
@@ -102,12 +112,15 @@ void	print_welcome_message();
 /* Env */
 
 t_env	*create_env_element(char *env);
-char	*allocate_result(char *str);
-char	*expand_single_quote(char *str);
-char	*resize_result(char *result, size_t *capacity);
-char	*extract_name(char *str, size_t *i);
-char	*append_env_value(char *result, char *value, size_t *j, size_t *capacity);
+char	*init_expand_result(const char *str, t_expand *exp);
+int	resize_result_buffer(t_expand *exp);
+char	*extract_variable_name(t_expand *exp, size_t *len);
+int	check_buffer_size(t_expand *exp);
+int	copy_variable_value(t_expand *exp, char *value, char *name);
+int	process_variable(t_expand *exp);
+int	expand_loop(t_expand *exp);
 char	*expand_variable(t_env *env_list, char *str, int quote_type);
+
 void 	expand_tokens(t_token *token_list, t_env *env_list);
 char	*get_env_value(t_env *env_list, char *name);
 t_env	*init_env(char **envp);
