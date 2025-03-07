@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/06 14:24:34 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/07 10:01:54 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,11 @@ void	print_welcome_message();
 /* Env */
 
 t_env	*create_env_element(char *env);
+char	*allocate_result(char *str);
+char	*expand_single_quote(char *str);
+char	*resize_result(char *result, size_t *capacity);
+char	*extract_name(char *str, size_t *i);
+char	*append_env_value(char *result, char *value, size_t *j, size_t *capacity);
 char	*expand_variable(t_env *env_list, char *str, int quote_type);
 void 	expand_tokens(t_token *token_list, t_env *env_list);
 char	*get_env_value(t_env *env_list, char *name);
