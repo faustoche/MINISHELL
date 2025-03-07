@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/07 11:47:11 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/07 15:20:58 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,13 @@ typedef struct s_token
 typedef struct s_cmd
 {
 	char			**args;
-	char			*in;
-	char			*out;
-	int				pipe;
-	int				append;
-	size_t			max_arg;
-	size_t			nb_arg;
-	int				heredoc;
+	char			*in; // redirection input
+	char			*out; // redirection output
+	int				pipe; // pipe | 
+	int				append; // >>
+	int				heredoc; // < 
+	size_t			max_arg; // 
+	size_t			nb_arg; //
 	struct s_cmd	*next;
 }	t_cmd;
 
@@ -109,16 +109,25 @@ typedef	struct s_lexer
 char	*prompt(void);
 void	print_welcome_message();
 
+/* BuilDins*/
+
+int 	is_builtins(char *cmd);
+int		builtins_execution(char **arg);
+
+	//echo
+int		echo_check(int arg, char **list_args);
+void	ft_echo(int	arg);
+
 /* Env */
 
 t_env	*create_env_element(char *env);
 char	*init_expand_result(const char *str, t_expand *exp);
-int	resize_result_buffer(t_expand *exp);
+int		resize_result_buffer(t_expand *exp);
 char	*extract_variable_name(t_expand *exp, size_t *len);
-int	check_buffer_size(t_expand *exp);
-int	copy_variable_value(t_expand *exp, char *value, char *name);
-int	process_variable(t_expand *exp);
-int	expand_loop(t_expand *exp);
+int		check_buffer_size(t_expand *exp);
+int		copy_variable_value(t_expand *exp, char *value, char *name);
+int		process_variable(t_expand *exp);
+int		expand_loop(t_expand *exp);
 char	*expand_variable(t_env *env_list, char *str, int quote_type);
 
 void 	expand_tokens(t_token *token_list, t_env *env_list);
