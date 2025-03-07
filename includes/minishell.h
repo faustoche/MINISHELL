@@ -157,9 +157,9 @@ int 	handle_word(t_lexer *lexer, int start);
 /* Parsing */
 
 // Parse arguments
-int		init_args(t_cmd *command);
-int		expand_args(t_cmd *command);
-int		add_args(t_cmd *command, char *arg);
+int		init_args(t_cmd *cmd);
+int		expand_args(t_cmd *cmd);
+int		add_args(t_token *token, t_cmd *cmd);
 
 // Parse command
 t_cmd	*init_command(void);
@@ -174,13 +174,13 @@ t_token	*parse_input(char *input);
 
 // Parse token
 int		get_token_type(char *token, int *command);
-int		handle_standard_token(t_cmd **current, t_cmd **head, char *value);
+int		handle_standard_token(t_token **token, t_cmd **current, t_cmd **head);
 
 // Redirection
 int		open_file(char *filename, int token);
 void	redirect_out(int fd);
 void	redirect_in(int fd);
-int		handle_redirection(t_cmd *current, t_token *token, t_cmd *head);
+int		handle_redirection(t_token *token, t_cmd *current, t_cmd *head);
 int		redirection(t_cmd *cmd, char *file, int out, int append);
 int		handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head);
 

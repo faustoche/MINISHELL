@@ -44,7 +44,7 @@ int	get_token_type(char *token, int *command)
 	return (TOKEN_ARGUMENT);
 }
 
-int	handle_standard_token(t_cmd **current, t_cmd **head, char *value)
+int	handle_standard_token(t_token **token, t_cmd **current, t_cmd **head)
 {
 	t_cmd	*new_cmd;
 
@@ -62,7 +62,7 @@ int	handle_standard_token(t_cmd **current, t_cmd **head, char *value)
 			(*current)->next = new_cmd;
 		*current = new_cmd;
 	}
-	if (add_args(*current, value) == -1)
+	if (add_args(*token, *current) == -1)
 	{
 		free_commands(*head);
 		return (-1);

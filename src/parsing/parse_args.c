@@ -12,38 +12,38 @@
 
 #include "minishell.h"
 
-int	init_args(t_cmd *command)
+int	init_args(t_cmd *cmd)
 {
-	command->max_arg = 4;
-	command->args = malloc(sizeof(char *) * (command->max_arg + 1));
-	if (!command->args)
+	cmd->max_arg = 4;
+	cmd->args = malloc(sizeof(char *) * (cmd->max_arg + 1));
+	if (!cmd->args)
 		return (-1);
-	command->nb_arg = 0;
-	command->args[0] = NULL;
+	cmd->nb_arg = 0;
+	cmd->args[0] = NULL;
 	return (0);
 }
 
-int	expand_args(t_cmd *command)
+int	expand_args(t_cmd *cmd)
 {
 	char	**new_args;
 	size_t	i;
 
 	i = 0;
-	new_args = malloc(sizeof(char *) * (command->max_arg * 2 + 1));
+	new_args = malloc(sizeof(char *) * (cmd->max_arg * 2 + 1));
 	if (!new_args)
 		return (-1);
-	while (i <= command->nb_arg)
+	while (i <= cmd->nb_arg)
 	{
-		new_args[i] = command->args[i];
+		new_args[i] = cmd->args[i];
 		i++;
 	}
-	free(command->args);
-	command->args = new_args;
-	command->max_arg *= 2;
+	free(cmd->args);
+	cmd->args = new_args;
+	cmd->max_arg *= 2;
 	return (0);
 }
 
-int	add_args(t_cmd *cmd, char *arg)
+int	add_args(t_token *token, t_cmd *cmd)
 {
 	int	i;
 
@@ -57,7 +57,7 @@ int	add_args(t_cmd *cmd, char *arg)
 		if (expand_args(cmd) == -1)
 			return (-1);
 	}
-	cmd->args[cmd->nb_arg] = ft_strdup(arg);
+	cmd->args[cmd->nb_arg] = ft_strdup(token->value);
 	if (!cmd->args[cmd->nb_arg])
 	{
 		i = -1;

@@ -53,7 +53,7 @@ void	redirect_in(int fd)
 
 /* According to the token, redirect in the right direction */
 
-int	handle_redirection(t_cmd *current, t_token *token, t_cmd *head)
+int	handle_redirection(t_token *token, t_cmd *current, t_cmd *head)
 {
 	if (!current || !token->next)
 	{
