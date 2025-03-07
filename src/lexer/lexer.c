@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:36:11 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/06 14:34:32 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/07 10:48:15 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ static void	init_lexer(t_lexer *lexer, char *input)
 t_token	*lexing(char *input)
 {
 	t_lexer	lexer;
+	int		result;
 
 	if (!input || !*input)
 		return (NULL);
@@ -36,7 +37,8 @@ t_token	*lexing(char *input)
 		skip_space(&lexer);
 		if (!lexer.input[lexer.pos])
 			break ;
-		if (!handle_special_char(&lexer))
+		result = handle_special_char(&lexer);
+		if (result <= 0)
 		{
 			free_token_list(lexer.tokens);
 			return (NULL);
@@ -56,7 +58,7 @@ int	handle_special_char(t_lexer *lexer)
 		lexer->pos = double_quotes(lexer, lexer->pos);
 	else if (syntax_error(lexer->input) == -1
 		|| input_check(lexer->input) == -1)
-		return (0);
+		return (-1);
 	else if (is_separator(c))
 	{
 		if (delimiter_error(&lexer->input[lexer->pos]) == -1)
@@ -65,7 +67,9 @@ int	handle_special_char(t_lexer *lexer)
 	}
 	else
 		lexer->pos = handle_word(lexer, lexer->pos);
-	return (lexer->pos != -1);
+	if (lexer->pos == -1)
+		return (-1);
+	return (1);
 }
 
 /* Ajouter des tokens a la liste chainee */

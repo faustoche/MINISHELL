@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:18:42 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/06 14:37:22 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/07 11:00:55 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,77 +39,136 @@ t_env	*create_env_element(char *env)
 	return (element);
 }
 
-char	*expand_variable(t_env *env_list, char *str, int quote_type)
+char	*init_expand_result(const char *str)
 {
 	size_t	result_capacity;
 	char	*result;
-	size_t	i;
-	size_t	j;
+
+	result = malloc(result_capacity);
+	result_capacity = ft_strlen(str) + 1;
+	if (!result)
+		return (NULL);
+	return (result);
+}
+
+char	*resize_result_buffer(char *result, size_t *capacity)
+{
+	char	*temp;
+
+	*capacity *= 2;
+	temp = ft_realloc(result, *capacity);
+	if (!temp)
+	{
+		free(result);
+		return (NULL);
+	}
+	return (temp);
+}
+
+char	*extract_variable_name(const char *str, size_t *i, size_t *len)
+{
+	size_t start;
+
+	start = *i;
+	while (str[*i] && (isalnum(str[*i]) || str[*i] == '_'))
+		(*i)++;
+	*len = *i - start;
+	return (ft_strndup(str + start, *len));
+}
+
+int	copy_variable_value(char **result, size_t *j, size_t *capacity, char *value, char *name)
+{
+	size_t	value_len;
+	char	*temp;
+	
+	if (!value)
+	{
+		free(name);
+		return (1);
+	}
+	value_len = ft_strlen(value);
+	while (*j + value_len + 1 >= *capacity)
+	{
+		*capacity *= 2;
+		temp = ft_realloc(*result, *capacity);
+		if (!temp)
+		{
+			free(*result);
+			free(name);
+			return (0);
+		}
+		*result = temp;
+	}
+	ft_strcpy(*result + *j, value);
+	*j += value_len;
+	free(name);
+	return (1);
+}
+
+int	process_variable(char *str, size_t *i, char **result, size_t *j, size_t *result_capacity, t_env *env_list)
+{
+	size_t	len;
 	char	*name;
 	char	*value;
-	size_t	len;
-	char	*temp;
-	size_t	value_len;
+
+	(*i)++;
+	name = extract_variable_name(str, i, &len);
+	if (!name)
+	{
+		free(*result);
+		return (0);
+	}
+	value = get_env_value(env_list, name);
+	return (copy_variable_value(result, j, result_capacity, value, name));
+}
+
+int	check_buffer_size(char **result, size_t *result_capacity, size_t j)
+{
+	if (j + 1 >= *result_capacity)
+	{
+		*result = resize_result_buffer(*result, result_capacity);
+		if (!(*result))
+			return (0);
+	}
+	return (1);
+}
+
+int	expand_loop(t_env *env_list, char *str, char **result, size_t *result_capacity)
+{
+	size_t	i;
+	size_t	j;
 
 	i = 0;
 	j = 0;
-	result_capacity = ft_strlen(str) + 1;
-	result = malloc(result_capacity);
-	if (!str || !result)
-		return (NULL);
-	if (quote_type == SINGLE_QUOTE)
-		return (ft_strdup(str));
 	while (str[i])
 	{
-		if (j + 1 >= result_capacity)
-		{
-			result_capacity *= 2;
-			temp = ft_realloc(result, result_capacity);
-			if (!temp)
-			{
-				free(result);
-				return (NULL);
-			}
-			result = temp;
-		}
+		if (!check_buffer_size(result, result_capacity, j))
+			return (0);
 		if (str[i] == '$' && str[i + 1] && isalpha(str[i + 1]))
 		{
-			i++;
-			len = 0;
-			while (str[i + len] && (isalnum(str[i + len]) || str[i + len] == '_'))
-				len++;
-			name = ft_strndup(str + i, len);
-			if (!name)
-			{
-				free(result);
-				return (NULL);
-			}
-			value = get_env_value(env_list, name);
-			if (value)
-			{
-				value_len = ft_strlen(value);
-				while (j + value_len + 1 >= result_capacity)
-				{
-					result_capacity *= 2;
-					temp = realloc(result, result_capacity); // Ici changer par realloc perso mais attention conditional jumps
-					if (!temp)
-					{
-						free(result);
-						free(name);
-						return (NULL);
-					}
-					result = temp;
-				}
-				ft_strcpy(result + j, value);
-				j += value_len;
-			}
-			free(name);
-			i += len;
+			if (!process_variable(str, &i, result, &j, result_capacity, env_list))
+				return (0);
 		}
 		else
-			result[j++] = str[i++];
+			(*result)[j++] = str[i++];
 	}
-	result[j] = '\0';
+	(*result)[j] = '\0';
+	return (1);
+}
+
+char	*expand_variable(t_env *env_list, char *str, int quote_type)
+{
+	size_t result_capacity;
+	char *result;
+
+	if (quote_type == SINGLE_QUOTE)
+		return (ft_strdup(str));
+	result = init_expand_result(str);
+	if (!result)
+		return (NULL);
+	result_capacity = ft_strlen(str) + 1;
+	if (!expand_loop(env_list, str, &result, &result_capacity))
+		return (NULL);
 	return (result);
 }
 
@@ -181,3 +240,77 @@ t_env	*init_env(char **envp)
 	}
 	return (env_list);
 }
+
+// char	*expand_variable(t_env *env_list, char *str, int quote_type)
+// {
+// 	size_t	result_capacity;
+// 	char	*result;
+// 	size_t	i;
+// 	size_t	j;
+// 	char	*name;
+// 	char	*value;
+// 	size_t	len;
+// 	char	*temp;
+// 	size_t	value_len;
+
+// 	i = 0;
+// 	j = 0;
+// 	result_capacity = ft_strlen(str) + 1;
+// 	result = malloc(result_capacity);
+// 	if (!str || !result)
+// 		return (NULL);
+// 	if (quote_type == SINGLE_QUOTE)
+// 		return (ft_strdup(str));
+// 	while (str[i])
+// 	{
+// 		if (j + 1 >= result_capacity)
+// 		{
+// 			result_capacity *= 2;
+// 			temp = ft_realloc(result, result_capacity);
+// 			if (!temp)
+// 			{
+// 				free(result);
+// 				return (NULL);
+// 			}
+// 			result = temp;
+// 		}
+// 		if (str[i] == '$' && str[i + 1] && isalpha(str[i + 1]))
+// 		{
+// 			i++;
+// 			len = 0;
+// 			while (str[i + len] && (isalnum(str[i + len]) || str[i + len] == '_'))
+// 				len++;
+// 			name = ft_strndup(str + i, len);
+// 			if (!name)
+// 			{
+// 				free(result);
+// 				return (NULL);
+// 			}
+// 			value = get_env_value(env_list, name);
+// 			if (value)
+// 			{
+// 				value_len = ft_strlen(value);
+// 				while (j + value_len + 1 >= result_capacity)
+// 				{
+// 					result_capacity *= 2;
+// 					temp = realloc(result, result_capacity); // Ici changer par realloc perso mais attention conditional jumps
+// 					if (!temp)
+// 					{
+// 						free(result);
+// 						free(name);
+// 						return (NULL);
+// 					}
+// 					result = temp;
+// 				}
+// 				ft_strcpy(result + j, value);
+// 				j += value_len;
+// 			}
+// 			free(name);
+// 			i += len;
+// 		}
+// 		else
+// 			result[j++] = str[i++];
+// 	}
+// 	result[j] = '\0';
+// 	return (result);
+// }
