@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 14:58:50 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/07 11:12:06 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/07 15:19:19 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,8 @@ int is_builtins(char *cmd)
 
 int	builtins_execution(char **arg)
 {
-	
+	int	result;
+
+	if (ft_strcmp(arg[0], "echo") == 0)
+		result = ft_echo(arg);
 }
