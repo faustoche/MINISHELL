@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:36:11 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/07 10:48:15 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/07 11:15:31 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ t_token	*lexing(char *input)
 		if (!lexer.input[lexer.pos])
 			break ;
 		result = handle_special_char(&lexer);
-		if (result <= 0)
+		if (result < 0)
 		{
 			free_token_list(lexer.tokens);
 			return (NULL);
@@ -69,7 +69,7 @@ int	handle_special_char(t_lexer *lexer)
 		lexer->pos = handle_word(lexer, lexer->pos);
 	if (lexer->pos == -1)
 		return (-1);
-	return (1);
+	return (0);
 }
 
 /* Ajouter des tokens a la liste chainee */

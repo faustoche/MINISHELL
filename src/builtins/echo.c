@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:52:28 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/07 08:14:25 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/07 11:12:49 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	ft_echo(int	arg, char **list_args)
 {
 	int	i;
+	int	newline;
 
 	i = 1;
 	if (arg > 1)

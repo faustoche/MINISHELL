@@ -1,31 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_char.c                                      :+:      :+:    :+:   */
+/*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/05 10:25:23 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/06 14:37:59 by fcrocq           ###   ########.fr       */
+/*   Created: 2025/03/06 14:58:50 by fcrocq            #+#    #+#             */
+/*   Updated: 2025/03/07 11:12:06 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*expand_tilde(char *input)
+int is_builtins(char *cmd)
 {
-	char	*home;
-	char	*result;
+	if (ft_strcmp(cmd, "echo") == 0)
+		return (-1);
+	if (ft_strcmp(cmd, "cd") == 0)
+		return (-1);
+	if (ft_strcmp(cmd, "pwd") == 0)
+		return (-1);
+	if (ft_strcmp(cmd, "unset") == 0)
+			return (-1);
+	if (ft_strcmp(cmd, "export") == 0)
+			return (-1);
+	if (ft_strcmp(cmd, "env") == 0)
+		return (-1);
+	if (ft_strcmp(cmd, "exit") == 0)
+		return (-1);
+	return (0);
+}
 
-	if (!input || input[0] != '~')
-		return (ft_strdup(input));
-	home = getenv("HOME");
-	if (!home)
-		return (ft_strdup(input));
-	result = malloc(ft_strlen(home) + ft_strlen(input));
-	if (!result)
-		return (NULL);
-	ft_strcpy(result, home);
-	strcat(result, input + 1); // mettre le vrai depuis la libft
-	return (result);
+int	builtins_execution(char **arg)
+{
+	
 }
