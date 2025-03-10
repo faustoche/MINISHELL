@@ -3,68 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/06 14:30:25 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/10 20:22:32 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	ft_strcmp(char *s1, char *s2)
-{
-	int	i;
-
-	i = 0;
-	while (s1[i] != '\0' && s2[i] != '\0' && s1[i] == s2[i])
-		i++;
-	return (s1[i] - s2[i]);
-}
-
-char	*ft_strncpy(char *dest, char *src, unsigned int n)
-{
-	unsigned int	i;
-
-	if (!dest || !src)
-		return (NULL);
-	i = 0;
-	while (src[i] != '\0' && i < n)
-	{
-		dest[i] = src[i];
-		++i;
-	}
-	while (i < n)
-	{
-		dest[i] = '\0';
-		i++;
-	}
-	return (dest);
-}
-
-char	*ft_strdup(const char *s)
-{
-	char	*src;
-	int		len;
-	int		i;
-
-	len = 0;
-	while (s[len])
-		len++;
-	src = (char *) malloc(sizeof(char) * (len + 1));
-	if (!src)
-	{
-		return (NULL);
-	}
-	i = 0;
-	while (i < len)
-	{
-		src[i] = s[i];
-		i++;
-	}
-	src[i] = '\0';
-	return (src);
-}
 
 void	print_commands(t_cmd *cmd)
 {
@@ -92,20 +38,19 @@ void	print_commands(t_cmd *cmd)
 	}
 }
 
-char	*ft_strndup(const char *s, size_t n)
+int	is_separator(int c)
 {
-	char	*dup;
-	size_t	i;
+	return (c == '|' || c == '>' || c == '<' || c == ';'
+		|| c == '&' || c == '(' || c == ')');
+}
 
-	dup = (char *)malloc(n + 1);
-	if (!dup)
-		return (NULL);
-	i = 0;
-	while (i < n && s[i])
-	{
-		dup[i] = s[i];
-		i++;
-	}
-	dup[i] = '\0';
-	return (dup);
+int	is_space(int c)
+{
+	return (c == ' ' || c == '\t' || c == '\n');
+}
+
+void	skip_space(t_lexer *lexer)
+{
+	while (lexer->input[lexer->pos] && is_space(lexer->input[lexer->pos]))
+		lexer->pos++;
 }
