@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 10:55:47 by faustoche         #+#    #+#             */
-/*   Updated: 2024/11/27 18:47:06 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/10 20:19:33 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,25 +19,49 @@ char	*ft_strdup(const char *s)
 {
 	char	*src;
 	int		len;
+	int		i;
 
 	len = 0;
 	while (s[len])
-	{
 		len++;
-	}
 	src = (char *) malloc(sizeof(char) * (len + 1));
 	if (!src)
 	{
 		return (NULL);
 	}
-	src[len] = '\0';
-	while (len >= 0)
+	i = 0;
+	while (i < len)
 	{
-		src[len] = s[len];
-		len--;
+		src[i] = s[i];
+		i++;
 	}
+	src[i] = '\0';
 	return (src);
 }
+
+// char	*ft_strdup(const char *s)
+// {
+// 	char	*src;
+// 	int		len;
+
+// 	len = 0;
+// 	while (s[len])
+// 	{
+// 		len++;
+// 	}
+// 	src = (char *) malloc(sizeof(char) * (len + 1));
+// 	if (!src)
+// 	{
+// 		return (NULL);
+// 	}
+// 	src[len] = '\0';
+// 	while (len >= 0)
+// 	{
+// 		src[len] = s[len];
+// 		len--;
+// 	}
+// 	return (src);
+// }
 /*
 #include <stdio.h>
 
