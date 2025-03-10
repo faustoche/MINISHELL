@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/07 15:20:58 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/09 16:03:26 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@
 # include <sys/wait.h>
 # include <fcntl.h>			
 # include <signal.h>
+# include <dirent.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include "../src/get_next_line/get_next_line.h"
@@ -112,11 +113,11 @@ void	print_welcome_message();
 /* BuilDins*/
 
 int 	is_builtins(char *cmd);
-int		builtins_execution(char **arg);
+int	builtins_execution(t_cmd *cmd);
+void	execute_commands(t_cmd *cmd);
 
 	//echo
-int		echo_check(int arg, char **list_args);
-void	ft_echo(int	arg);
+	void	ft_echo(t_cmd *cmd);
 
 /* Env */
 

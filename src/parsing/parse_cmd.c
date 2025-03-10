@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/06 09:13:57 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/09 12:58:24 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,12 @@ t_cmd	*init_command(void)
 	return (cmd);
 }
 
+// ici ajouter une partie pour les bonus
+
+
+
+
+
 t_cmd	*parse_commands(t_token *token_list)
 {
 	t_cmd	*head;
@@ -51,7 +57,7 @@ t_cmd	*parse_commands(t_token *token_list)
 
 int	process_token(t_token **token, t_cmd **current, t_cmd **head)
 {
-	if (redirection_token(*token) || (*token)->type == HEREDOC)
+	if ((*token)->type == HEREDOC)
 	{
 		if (redirection_process(token, current, head))
 			return (-1);
@@ -61,6 +67,11 @@ int	process_token(t_token **token, t_cmd **current, t_cmd **head)
 		if (handle_pipe(current) == -1)
 			return (-1);
 	}
+	// else if ((*token)->type == TOKEN_AND || (*token)->type == TOKEN_OR)
+	// {
+	// 	if (// gestion bonus)
+	// 		return (-1);
+	// }
 	else if ((*token)->type == TOKEN_SEPARATOR)
 		*current = NULL;
 	else
