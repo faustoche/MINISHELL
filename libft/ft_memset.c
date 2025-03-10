@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 10:55:47 by faustoche         #+#    #+#             */
-/*   Updated: 2024/11/27 18:46:34 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/07 20:14:38 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,9 @@ mémoire pointée par s avec l'octet c.    */
 
 void	*ft_memset(void *s, int c, size_t n)
 {
-	void			*str_ptr;
 	unsigned char	temp;
 	unsigned char	*char_ptr;
 
-	str_ptr = 0;
 	char_ptr = (unsigned char *)s;
 	while (n--)
 	{

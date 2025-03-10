@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/07 15:02:42 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/10 10:49:17 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	main(int ac, char **av, char **envp)
 		commands = parse_commands(token_list);
 		if (commands)
 		{
-			print_commands(commands); // execute commande a la place ici
+			//execute_commands(commands);
 			free_commands(commands);
 		}
 		free_token_list(token_list);
