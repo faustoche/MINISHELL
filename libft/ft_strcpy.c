@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils2.c                                           :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/05 09:55:47 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/06 14:29:56 by fcrocq           ###   ########.fr       */
+/*   Created: 2025/03/10 20:18:28 by faustoche         #+#    #+#             */
+/*   Updated: 2025/03/10 20:18:58 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
 char	*ft_strcpy(char *dest, char *src)
 {
@@ -22,21 +22,4 @@ char	*ft_strcpy(char *dest, char *src)
 	}
 	*dest = '\0';
 	return (dest);
-}
-
-int	is_separator(int c)
-{
-	return (c == '|' || c == '>' || c == '<' || c == ';'
-		|| c == '&' || c == '(' || c == ')');
-}
-
-int	is_space(int c)
-{
-	return (c == ' ' || c == '\t' || c == '\n');
-}
-
-void	skip_space(t_lexer *lexer)
-{
-	while (lexer->input[lexer->pos] && is_space(lexer->input[lexer->pos]))
-		lexer->pos++;
 }
