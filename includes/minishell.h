@@ -110,7 +110,7 @@ typedef	struct s_lexer
 char	*prompt(void);
 void	print_welcome_message();
 
-/* BuilDins*/
+/* BuilTTTTTTins*/
 
 int 	is_builtins(char *cmd);
 int	builtins_execution(t_cmd *cmd);

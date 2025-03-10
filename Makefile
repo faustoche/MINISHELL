@@ -22,6 +22,7 @@ OBJS_DIR		= obj
 MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				get_next_line/get_next_line.c\
 				get_next_line/get_next_line_utils.c\
+				exec/exec_cmd.c\
 				exec/pipe.c\
 				parsing/parse_args.c\
 				parsing/parse_cmd.c\
