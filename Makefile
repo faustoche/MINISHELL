@@ -41,7 +41,6 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				errors/syntax_error.c\
 				utils/env_utils.c\
 				utils/free.c\
-				utils/utils2.c\
 				utils/utils.c\
 				bonus/priorities.c\
 				bonus/wildcards.c)
@@ -49,15 +48,14 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 SRCS			= ${MINISHELL}
 MINISHELL_OBJS	= ${MINISHELL:${SRCS_DIR}/%.c=$(OBJS_DIR)/%.o}
 OBJS			= $(MINISHELL_OBJS)
-#LIBFT 			= -L$(LIBFT_DIR) -lft -l:libft.a
+LIBFT 			= -L$(LIBFT_DIR) -lft -l:libft.a
 
 # ************************************************************************ #
 #                    			 COMPILATION                               #
 # ************************************************************************ #
 
 CC          = cc
-CFLAGS      = -Wall -Werror -Wextra -g3 -I$(INCLUDES_MINI) 
-#-I$(INCLUDES_LIB)
+CFLAGS      = -Wall -Werror -Wextra -g3 -I$(INCLUDES_MINI) -I$(INCLUDES_LIB)
 LDFLAGS		= -lreadline # option pour l'éditeur de liens
 RM = rm -rf
 
@@ -67,8 +65,7 @@ RM = rm -rf
 
 all: $(NAME)
 
-$(NAME): $(OBJS) 
-#$(LIBFT_DIR)/libft.a
+$(NAME): $(OBJS) $(LIBFT_DIR)/libft.a
 	@echo "\033[1;33m\n🪩  COMPILING MINISHELL... 🪩\n"
 	$(CC) $(OBJS) $(CFLAGS) $(LDFLAGS) $(LIBFT) -o $(NAME) -s
 	@echo "\033[1;32m💾 ./$(NAME) created 💾\n"
@@ -85,10 +82,10 @@ $(OBJS_DIR):
 #                          LIBFT COMPILATION                               #
 # ************************************************************************ #
 
-#$(LIBFT_DIR)/libft.a:
-#	@echo "\033[1;33m\n🔨 COMPILING LIBFT... 🔨\n"
-#	@$(MAKE) -C $(LIBFT_DIR) -s
-#	@echo "\033[1;32m💾 LIBFT COMPILED 💾\n"
+$(LIBFT_DIR)/libft.a:
+	@echo "\033[1;33m\n🔨 COMPILING LIBFT... 🔨\n"
+	@$(MAKE) -C $(LIBFT_DIR) -s
+	@echo "\033[1;32m💾 LIBFT COMPILED 💾\n"
 
 # ************************************************************************ #
 #                  		     CLEANUP SESSION                               #

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/09 12:58:24 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/11 08:22:24 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_cmd	*parse_commands(t_token *token_list)
 
 int	process_token(t_token **token, t_cmd **current, t_cmd **head)
 {
-	if ((*token)->type == HEREDOC)
+	if (redirection_token(*token))
 	{
 		if (redirection_process(token, current, head))
 			return (-1);
