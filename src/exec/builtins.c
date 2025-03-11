@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 14:58:50 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/07 15:19:19 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/08 15:32:14 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,52 @@ int is_builtins(char *cmd)
 	return (0);
 }
 
-int	builtins_execution(char **arg)
+int	builtins_execution(t_cmd *cmd)
 {
-	int	result;
+	if (!cmd || !cmd->args || !cmd->args[0])
+		return (0);
+	if (ft_strcmp(cmd->args[0], "echo") == 0)
+	{
+		ft_echo(cmd);
+		return (1);
+	}
+	// if (ft_strcmp(cmd->args[0], "cd") == 0)
+	// {
+	// 	ft_echo(cmd);
+	// 	return (1);
+	// }
+	// if (ft_strcmp(cmd->args[0], "pwd") == 0)
+	// {
+	// 	ft_echo(cmd);
+	// 	return (1);
+	// }
+	//builtins_execution2(cmd);
+	return (0);
+}
 
-	if (ft_strcmp(arg[0], "echo") == 0)
-		result = ft_echo(arg);
+int	builtins_execution2(t_cmd *cmd)
+{
+	if (!cmd || !cmd->args || !cmd->args[0])
+		return (0);
+	// if (ft_strcmp(cmd->args[0], "unset") == 0)
+	// {
+	// 	ft_echo(cmd);
+	// 	return (1);
+	// }
+	// if (ft_strcmp(cmd->args[0], "export") == 0)
+	// {
+	// 	ft_echo(cmd);
+	// 	return (1);
+	// }
+	// if (ft_strcmp(cmd->args[0], "env") == 0)
+	// {
+	// 	ft_echo(cmd);
+	// 	return (1);
+	// }
+	// if (ft_strcmp(cmd->args[0], "exit") == 0)
+	// {
+	// 	ft_echo(cmd);
+	// 	return (1);
+	// }
+	return (0);
 }

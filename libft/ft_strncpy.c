@@ -1,38 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   ft_strncpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/06 16:52:28 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/07 20:38:01 by faustoche        ###   ########.fr       */
+/*   Created: 2025/03/10 20:22:01 by faustoche         #+#    #+#             */
+/*   Updated: 2025/03/10 20:22:15 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	ft_echo(t_cmd *cmd)
+char	*ft_strncpy(char *dest, char *src, unsigned int n)
 {
-	size_t	i;
-	int		newline;
+	unsigned int	i;
 
-	newline = 1;
-	i = 1;
-	if (cmd->nb_arg > 1 && ft_strcmp(cmd->args[1], "-n") == 0)
+	if (!dest || !src)
+		return (NULL);
+	i = 0;
+	while (src[i] != '\0' && i < n)
 	{
-		newline = 0;
-		i = 2;
+		dest[i] = src[i];
+		++i;
 	}
-	else
-		i = 1;
-	while (i < cmd->nb_arg)
+	while (i < n)
 	{
-		printf("%s", cmd->args[i]);
-		if (i < cmd->nb_arg - 1)
-			printf(" ");
+		dest[i] = '\0';
 		i++;
 	}
-	if (newline)
-		printf("\n");
+	return (dest);
 }

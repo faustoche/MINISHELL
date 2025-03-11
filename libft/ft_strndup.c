@@ -1,38 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   ft_strndup.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/06 16:52:28 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/07 20:38:01 by faustoche        ###   ########.fr       */
+/*   Created: 2025/03/10 20:20:15 by faustoche         #+#    #+#             */
+/*   Updated: 2025/03/10 20:20:42 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-void	ft_echo(t_cmd *cmd)
+char	*ft_strndup(const char *s, size_t n)
 {
+	char	*dup;
 	size_t	i;
-	int		newline;
 
-	newline = 1;
-	i = 1;
-	if (cmd->nb_arg > 1 && ft_strcmp(cmd->args[1], "-n") == 0)
+	dup = (char *)malloc(n + 1);
+	if (!dup)
+		return (NULL);
+	i = 0;
+	while (i < n && s[i])
 	{
-		newline = 0;
-		i = 2;
-	}
-	else
-		i = 1;
-	while (i < cmd->nb_arg)
-	{
-		printf("%s", cmd->args[i]);
-		if (i < cmd->nb_arg - 1)
-			printf(" ");
+		dup[i] = s[i];
 		i++;
 	}
-	if (newline)
-		printf("\n");
+	dup[i] = '\0';
+	return (dup);
 }

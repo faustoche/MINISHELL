@@ -12,24 +12,6 @@
 
 #include "minishell.h"
 
-/* Resizes the result buffer if necessary */
-
-int	resize_result_buffer(t_expand *exp)
-{
-	char	*temp;
-	
-	exp->capacity *= 2;
-	temp = ft_realloc(exp->result, exp->capacity);
-	if (!temp)
-	{
-		free(exp->result);
-		exp->result = NULL;
-		return (0);
-	}
-	exp->result = temp;
-	return (1);
-}
-
 /* Extracts the name of the variable */
 
 char	*extract_variable_name(t_expand *exp, size_t *len)
@@ -43,18 +25,6 @@ char	*extract_variable_name(t_expand *exp, size_t *len)
 	*len = exp->i - start;
 	return (ft_strndup(exp->str + start, *len));
 }
-
-/* Checks and resizes buffer if necessary */
-
-int	check_buffer_size(t_expand *exp)
-{
-	if (exp->j + 1 >= exp->capacity)
-	{
-		if (!resize_result_buffer(exp))
-			return (0);
-		}
-		return (1);
-	}
 	
 /* Copies the variable value into the result buffer */
 	
@@ -100,4 +70,34 @@ int	process_variable(t_expand *exp)
 	}
 	value = get_env_value(exp->env_list, name);
 	return (copy_variable_value(exp, value, name));
+}
+
+/* Resizes the result buffer if necessary */
+
+int	resize_result_buffer(t_expand *exp)
+{
+	char	*temp;
+	
+	exp->capacity *= 2;
+	temp = ft_realloc(exp->result, exp->capacity);
+	if (!temp)
+	{
+		free(exp->result);
+		exp->result = NULL;
+		return (0);
+	}
+	exp->result = temp;
+	return (1);
+}
+
+/* Checks and resizes buffer if necessary */
+
+int	check_buffer_size(t_expand *exp)
+{
+	if (exp->j + 1 >= exp->capacity)
+	{
+		if (!resize_result_buffer(exp))
+			return (0);
+		}
+		return (1);
 }

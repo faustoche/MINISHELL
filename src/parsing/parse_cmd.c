@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/07 15:26:45 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/11 08:22:24 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,12 @@ t_cmd	*init_command(void)
 	cmd->heredoc = -1;
 	return (cmd);
 }
+
+// ici ajouter une partie pour les bonus
+
+
+
+
 
 t_cmd	*parse_commands(t_token *token_list)
 {
@@ -61,11 +67,16 @@ int	process_token(t_token **token, t_cmd **current, t_cmd **head)
 		if (handle_pipe(current) == -1)
 			return (-1);
 	}
+	// else if ((*token)->type == TOKEN_AND || (*token)->type == TOKEN_OR)
+	// {
+	// 	if (// gestion bonus)
+	// 		return (-1);
+	// }
 	else if ((*token)->type == TOKEN_SEPARATOR)
 		*current = NULL;
 	else
 	{
-		if (handle_standard_token(current, head, (*token)->value))
+		if (handle_standard_token(token, current, head))
 			return (-1);
 	}
 	if (*token)
@@ -87,7 +98,7 @@ int	redirection_process(t_token **token, t_cmd **current, t_cmd **head)
 		free_commands(*head);
 		return (-1);
 	}
-	if (handle_redirection(*current, *token, *head) == -1)
+	if (handle_redirection(*token, *current, *head) == -1)
 		return (-1);
 	*token = (*token)->next;
 	if (*token)
