@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/06 09:13:57 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/07 15:26:45 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ t_cmd	*parse_commands(t_token *token_list)
 
 int	process_token(t_token **token, t_cmd **current, t_cmd **head)
 {
-	if (redirection_token(*token) || (*token)->type == HEREDOC)
+	if (redirection_token(*token))
 	{
 		if (redirection_process(token, current, head))
 			return (-1);
