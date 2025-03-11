@@ -45,7 +45,7 @@ int	main(int ac, char **av, char **envp)
 		commands = parse_commands(token_list);
 		if (commands)
 		{
-			//execute_commands(commands);
+			execute_commands(commands)
 			free_commands(commands);
 		}
 		free_token_list(token_list);

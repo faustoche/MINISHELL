@@ -30,6 +30,34 @@ char	*expand_tilde(char *input)
 	return (result);
 }
 
+/* Main function to expand variables */
+
+char	*expand_variable(t_env *env_list, char *str, int quote_type)
+{
+	t_expand	exp;
+
+	if (quote_type == SINGLE_QUOTE)
+		return (ft_strdup(str));
+	exp.env_list = env_list;
+	if (!init_expand_result(str, &exp))
+		return (NULL);
+	if (!expand_loop(&exp))
+		return (NULL);
+	return (exp.result);
+}
+
+char	*init_expand_result(const char *str, t_expand *exp)
+{
+	exp->capacity = ft_strlen(str) + 1;
+	exp->result = malloc(exp->capacity);
+	exp->i = 0;
+	exp->j = 0;
+	exp->str = (char *)str;
+	if (!exp->result)
+		return (NULL);
+	return (exp->result);
+}
+
 /* Main expansion loop */
 
 int	expand_loop(t_expand *exp)
@@ -48,22 +76,6 @@ int	expand_loop(t_expand *exp)
 	}
 	exp->result[exp->j] = '\0';
 	return (1);
-}
-
-/* Main function to expand variables */
-
-char	*expand_variable(t_env *env_list, char *str, int quote_type)
-{
-	t_expand	exp;
-
-	if (quote_type == SINGLE_QUOTE)
-		return (ft_strdup(str));
-	exp.env_list = env_list;
-	if (!init_expand_result(str, &exp))
-		return (NULL);
-	if (!expand_loop(&exp))
-		return (NULL);
-	return (exp.result);
 }
 
 void	expand_tokens(t_token *token_list, t_env *env_list)
@@ -86,16 +98,4 @@ void	expand_tokens(t_token *token_list, t_env *env_list)
 		}
 		token = token->next;
 	}
-}
-
-char	*init_expand_result(const char *str, t_expand *exp)
-{
-	exp->capacity = ft_strlen(str) + 1;
-	exp->result = malloc(exp->capacity);
-	exp->i = 0;
-	exp->j = 0;
-	exp->str = (char *)str;
-	if (!exp->result)
-		return (NULL);
-	return (exp->result);
 }
