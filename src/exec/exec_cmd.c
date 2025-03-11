@@ -42,6 +42,9 @@
 // 		current = current->next;
 // 	}
 // }
+//argv tableau de str (1er elem nom du prog en general)
+//envp tableau de str avec variables d'enviro a passer au prog
+//-1 si erreur, sinon pas de retour car remplace prog appelant
 
 void	execute_commands(t_cmd *cmd)
 {
@@ -58,6 +61,7 @@ void	execute_commands(t_cmd *cmd)
 				printf(ERR_CMD, current->args[0]);
 			else
 				printf("Empty command\n");
+                printf(ERR_CMD, current->args[0]);
 		}
 		current = current->next;
 	}
