@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/06 09:22:03 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/11 13:43:14 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	handle_pipe(t_cmd **current)
 
 	if (!(*current))
 	{
-		printf("oups erreur pipe\n");
+		printf("Error : cannot create pipe\n");
 		return (-1);
 	}
 	new_cmd = init_command();
@@ -48,4 +48,25 @@ int	pipe_process(int file1, int pfile[2])
 		exit (EXIT_FAILURE);
 	}
 	return (process);
+}
+
+
+
+
+/* Savoir combien de commandes à exécuter et combien de processus à créer */
+
+int	count_pipes(char *input)
+{
+	int	i;
+	int	pipe;
+
+	i = 0;
+	pipe = 0;
+	while (input[i])
+	{
+		if (input[i] == '|')
+			pipe++;
+		i++;
+	}
+	return (pipe);
 }
