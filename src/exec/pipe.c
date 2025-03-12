@@ -3,23 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/11 16:30:51 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/12 18:12:56 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// DEFINIR NB CMDS ET VOIR POUR LE CMD
-// VOIR L'APPEL A LA FONCTION 
-
 int	handle_pipe(t_cmd *cmd, int	i, int old_fd)
 {
 	int	pid;
 	int	pipefd[2];
+	int	nb_cmds;
 
+	nb_cmds = count_pipe(cmd);
 	if (i >= nb_cmds)
 		return (0);
 	if (i != nb_cmds - 1)
@@ -57,3 +56,18 @@ int	handle_pipe(t_cmd *cmd, int	i, int old_fd)
 		waitpid(pid, NULL, 0);
 	return (-1);
 }
+
+int	count_pipe(t_cmd *cmd)
+{
+	int	count;
+
+	count = 0;
+	while (cmd)
+	{
+		count++;
+		cmd = cmd->next;
+	}
+	return (count);
+}
+
+// execute pipeline ici

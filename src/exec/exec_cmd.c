@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/03/08 15:32:19 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/12 18:10:41 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@
 //envp tableau de str avec variables d'enviro a passer au prog
 //-1 si erreur, sinon pas de retour car remplace prog appelant
 
+
+
 void	execute_commands(t_cmd *cmd)
 {
 	t_cmd	*current;
@@ -61,7 +63,7 @@ void	execute_commands(t_cmd *cmd)
 				printf(ERR_CMD, current->args[0]);
 			else
 				printf("Empty command\n");
-                printf(ERR_CMD, current->args[0]);
+	        	printf(ERR_CMD, current->args[0]);
 		}
 		current = current->next;
 	}
