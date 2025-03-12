@@ -6,67 +6,54 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/11 13:43:14 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/11 16:30:51 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	handle_pipe(t_cmd **current)
+// DEFINIR NB CMDS ET VOIR POUR LE CMD
+// VOIR L'APPEL A LA FONCTION 
+
+int	handle_pipe(t_cmd *cmd, int	i, int old_fd)
 {
-	t_cmd	*new_cmd;
+	int	pid;
+	int	pipefd[2];
 
-	if (!(*current))
+	if (i >= nb_cmds)
+		return (0);
+	if (i != nb_cmds - 1)
+		pipe(pipefd);
+	else
 	{
-		printf("Error : cannot create pipe\n");
-		return (-1);
+		pipefd[0] = -1;
+		pipefd[1] = -1;
 	}
-	new_cmd = init_command();
-	if (!new_cmd)
-		return (-1);
-	(*current)->next = new_cmd;
-	*current = new_cmd;
-	return (0);
-}
-
-int	pipe_process(int file1, int pfile[2])
-{
-	int	process;
-
-	process = fork();
-	if (process == 0)
+	pid = fork();
+	if (pid == 0)
 	{
-		dup2(file1, STDIN_FILENO);
-		dup2(pfile[1], STDOUT_FILENO);
-		close (file1);
-		close(pfile[0]);
-		close (pfile[1]);
+		if (old_fd != -1)
+		{
+			dup2(old_fd, STDIN_FILENO);
+			close (old_fd);
+		}
+		if (i != nb_cmds - 1)
+		{
+			close(pipefd[0]);
+			dup2(pipefd[1], STDOUT_FILENO);
+		}
+		close(pipefd[1]);
+		// execute command
+		return (0);
 	}
-	else if (process < 0)
+	else
 	{
-		printf("Error creating the processs\n");
-		exit (EXIT_FAILURE);
+		close(pipefd[1]);
+		if (old_fd != -1)
+			close(old_fd);
+		handle_pipe(cmd, i + 1, pipefd[0]);
 	}
-	return (process);
-}
-
-
-
-
-/* Savoir combien de commandes à exécuter et combien de processus à créer */
-
-int	count_pipes(char *input)
-{
-	int	i;
-	int	pipe;
-
-	i = 0;
-	pipe = 0;
-	while (input[i])
-	{
-		if (input[i] == '|')
-			pipe++;
-		i++;
-	}
-	return (pipe);
+	if (i == 0)
+		waitpid(pid, NULL, 0);
+	return (-1);
 }
