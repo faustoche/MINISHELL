@@ -12,10 +12,74 @@
 
 #include "minishell.h"
 
+// recuperer PATH (get_env_value)
+// split la chaine
+// while tab non vide, parcourir le tableau et recup la chaine puis concatener avec arg
+// checker si executable trouve (if access == 0)
+// si trouve, sort de la boucle et continue avec execve
+// si trouve nulle part, print ERR_CMD
+
+
+char	*find_pathname(char *arg)
+{
+	size_t	len;
+	char 	*pathname;
+
+	len = 6 + ft_strlen(arg);
+	pathname = malloc(sizeof(char) * len);
+	if (!pathname)
+		return (NULL);
+	ft_strcpy(pathname, "/bin/");
+	ft_strlcat(pathname, arg, len);
+	return (pathname);
+}
+
+
+
+void	execute_commands(t_cmd *cmd)
+{
+	t_cmd	*current;
+	int		pid;
+	char	*pathname;
+
+
+	current = cmd;
+	pathname = find_pathname(current->args[0]);
+	while (current)
+	{
+		if (current->args && current->args[0] && is_builtins(current->args[0]))
+			builtins_execution(current);
+		else
+		{
+			pid = fork();
+			if (pid == -1)
+			{
+				perror("Fork failed\n");
+				exit(EXIT_FAILURE); //free et return
+			}
+         	if (pid == 0) //dans process fils
+			{
+				if (access(pathname, F_OK) == -1 || access(pathname, X_OK) == -1)
+					printf(ERR_CMD, current->args[0]);
+				else if (execve(pathname, current->args, NULL) == -1)
+				{
+					perror("execve failed"); // quelle gestion erreur ici?
+					exit(EXIT_FAILURE);
+				}
+			}
+			else //dans process parent, verifier ensuite comment s'est termine le fils
+				waitpid(pid, NULL, 0);
+		}
+		current = current->next;
+	}
+	free(pathname);
+	free(current);
+}
+
+
 // void	execute_commands(t_cmd *cmd)
 // {
 // 	t_cmd	*current;
-// 	int		pid;
 
 // 	current = cmd;
 // 	while (current)
@@ -24,47 +88,13 @@
 // 			builtins_execution(current);
 // 		else
 // 		{
-// 			pid = fork();
-// 			if (pid == -1)
-// 			{
-// 				perror("Fork failed\n");
-// 				exit(EXIT_FAILURE);
-// 			}
-//          	if (pid == 0) //dans process fils
-// 			{
-// 				if (execve("/bin/ls", current->args, NULL) == -1)
-// 					perror("execve failed\n");
-// 				exit(EXIT_FAILURE);
-// 			}
-// 			else //dans process parent, verifier ensuite comment s'est termine le fils
-// 				waitpid(pid, NULL, 0);
+// 			if (current->args && current->args[0]) // ici execve a la place du if else
+// 				printf(ERR_CMD, current->args[0]);
+// 			else
+// 				printf("Empty command\n");
+//                 printf(ERR_CMD, current->args[0]);
 // 		}
 // 		current = current->next;
 // 	}
 // }
-//argv tableau de str (1er elem nom du prog en general)
-//envp tableau de str avec variables d'enviro a passer au prog
-//-1 si erreur, sinon pas de retour car remplace prog appelant
 
-
-
-void	execute_commands(t_cmd *cmd)
-{
-	t_cmd	*current;
-
-	current = cmd;
-	while (current)
-	{
-		if (current->args && current->args[0] && is_builtins(current->args[0]))
-			builtins_execution(current);
-		else
-		{
-			if (current->args && current->args[0]) // ici execve a la place du if else
-				printf(ERR_CMD, current->args[0]);
-			else
-				printf("Empty command\n");
-	        	printf(ERR_CMD, current->args[0]);
-		}
-		current = current->next;
-	}
-}

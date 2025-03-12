@@ -118,10 +118,16 @@ void	print_welcome_message();
 
 int 	is_builtins(char *cmd);
 int	builtins_execution(t_cmd *cmd);
-void	execute_commands(t_cmd *cmd);
 
 	//echo
 	void	ft_echo(t_cmd *cmd);
+
+/* Exec */
+
+void	execute_commands(t_cmd *cmd);
+char	*find_pathname(char *arg);
+
+
 
 /* Env */
 
