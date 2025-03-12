@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:36:11 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/07 11:15:31 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/12 18:06:02 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,17 @@ t_token	*lexing(char *input)
 			return (NULL);
 		}
 	}
+	t_token *current = lexer.tokens;
+    while (current)
+    {
+        if (current->type == TOKEN_PIPE && !current->next)
+        {
+            printf(ERR_SYNTAX);
+            free_token_list(lexer.tokens);
+            return (NULL);
+        }
+        current = current->next;
+    }
 	return (lexer.tokens);
 }
 

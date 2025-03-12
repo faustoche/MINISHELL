@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/11 13:43:00 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/12 17:10:07 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,9 @@ typedef	struct s_lexer
 }	t_lexer;
 
 /*-------------- FUNCTIONS --------------*/
+
+void	execute_pipeline(t_cmd *cmd);
+int	count_pipe(t_cmd *cmd);
 
 /* Main */
 
@@ -216,6 +219,6 @@ void	skip_space(t_lexer *lexer);
 
 /* Exec */
 
-int		handle_pipe(t_cmd **current);
+int	handle_pipe(t_cmd *cmd, int	i, int old_fd);
 
 #endif

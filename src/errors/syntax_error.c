@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   syntax_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 22:29:51 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/07 08:43:40 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/12 18:05:20 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,27 +49,20 @@ int	syntax_error(char *input)
 int	delimiter_error(char *input)
 {
 	if (input[0] == '&' && input[1] != '&')
-	{
-		printf(ERR_SYNTAX);
-		return (-1);
-	}
-	if (input[0] == '|' && input[1] != '|')
-	{
-		printf(ERR_SYNTAX);
-		return (-1);
-	}
-	if ((input[0] == '&' && input[1] == '&' && input[2] == '&')
-		|| (input[0] == '&' && input[1] == '&' && input[2] == '\0'))
-	{
-		printf(ERR_SYNTAX);
-		return (-1);
-	}
-	if ((input[0] == '|' && input[1] == '|' && input[2] == '|')
-		|| (input[0] == '|' && input[1] == '|' && input[2] == '\0'))
-	{
-		printf(ERR_SYNTAX);
-		return (-1);
-	}
+    {
+        printf(ERR_SYNTAX);
+        return (-1);
+    }
+    if (input[0] == '&' && input[1] == '&' && input[2] == '&')
+    {
+        printf(ERR_SYNTAX);
+        return (-1);
+    }
+    if (input[0] == '|' && input[1] == '|' && input[2] == '|')
+    {
+        printf(ERR_SYNTAX);
+        return (-1);
+    }
 	return (0);
 }
 

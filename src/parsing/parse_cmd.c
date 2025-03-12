@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/11 08:22:24 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/12 18:06:40 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,6 @@ t_cmd	*init_command(void)
 	cmd->heredoc = -1;
 	return (cmd);
 }
-
-// ici ajouter une partie pour les bonus
-
-
-
-
 
 t_cmd	*parse_commands(t_token *token_list)
 {
@@ -59,14 +53,20 @@ int	process_token(t_token **token, t_cmd **current, t_cmd **head)
 {
 	if (redirection_token(*token))
 	{
+		if (!(*token)->next || (*token)->next->type != TOKEN_ARGUMENT)
+        {
+            printf(ERR_SYNTAX);
+            free_commands(*head);
+            return (-1);
+        }
 		if (redirection_process(token, current, head))
 			return (-1);
 	}
-	else if ((*token)->type == TOKEN_PIPE)
-	{
-		if (handle_pipe(current) == -1)
-			return (-1);
-	}
+	// else if ((*token)->type == TOKEN_PIPE)
+	// {
+	// 	if (handle_pipe(current) == -1)
+	// 		return (-1);
+	// }
 	// else if ((*token)->type == TOKEN_AND || (*token)->type == TOKEN_OR)
 	// {
 	// 	if (// gestion bonus)

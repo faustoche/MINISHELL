@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/03/08 15:32:19 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/12 18:10:41 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ char	*find_pathname(char *arg)
 	ft_strlcat(pathname, arg, len);
 	return (pathname);
 }
+
+
 
 void	execute_commands(t_cmd *cmd)
 {
@@ -95,3 +97,4 @@ void	execute_commands(t_cmd *cmd)
 // 		current = current->next;
 // 	}
 // }
+

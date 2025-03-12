@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_separator.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 10:08:09 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/06 14:34:01 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/12 17:59:55 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,5 @@ int	handle_delimiter(t_lexer *lexer, int i)
 	free(delim);
 	if (type == TOKEN_PIPE || type == TOKEN_SEPARATOR)
 		lexer->command = 1;
-	lexer->command = 1;
 	return (i + len);
 }
