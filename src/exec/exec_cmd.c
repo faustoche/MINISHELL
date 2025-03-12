@@ -12,16 +12,24 @@
 
 #include "minishell.h"
 
+// recuperer PATH (get_env_value)
+// split la chaine
+// while tab non vide, parcourir le tableau et recup la chaine puis concatener avec arg
+// checker si executable trouve (if access == 0)
+// si trouve, sort de la boucle et continue avec execve
+// si trouve nulle part, print ERR_CMD
+
+
 char	*find_pathname(char *arg)
 {
 	size_t	len;
 	char 	*pathname;
 
-	pathname = malloc(sizeof(char) * 6);
+	len = 6 + ft_strlen(arg);
+	pathname = malloc(sizeof(char) * len);
 	if (!pathname)
 		return (NULL);
 	ft_strcpy(pathname, "/bin/");
-	len = 6 + ft_strlen(arg);
 	ft_strlcat(pathname, arg, len);
 	return (pathname);
 }
@@ -49,15 +57,21 @@ void	execute_commands(t_cmd *cmd)
 			}
          	if (pid == 0) //dans process fils
 			{
-				if (execve(pathname, current->args, NULL) == -1)
-					perror("execve failed");
-				exit(EXIT_FAILURE);
+				if (access(pathname, F_OK) == -1 || access(pathname, X_OK) == -1)
+					printf(ERR_CMD, current->args[0]);
+				else if (execve(pathname, current->args, NULL) == -1)
+				{
+					perror("execve failed"); // quelle gestion erreur ici?
+					exit(EXIT_FAILURE);
+				}
 			}
 			else //dans process parent, verifier ensuite comment s'est termine le fils
 				waitpid(pid, NULL, 0);
 		}
 		current = current->next;
 	}
+	free(pathname);
+	free(current);
 }
 
 

@@ -62,11 +62,11 @@ int	process_token(t_token **token, t_cmd **current, t_cmd **head)
 		if (redirection_process(token, current, head))
 			return (-1);
 	}
-	else if ((*token)->type == TOKEN_PIPE)
-	{
-		if (handle_pipe(current) == -1)
-			return (-1);
-	}
+	// else if ((*token)->type == TOKEN_PIPE)
+	// {
+	// 	if (handle_pipe(current) == -1)
+	// 		return (-1);
+	// }
 	// else if ((*token)->type == TOKEN_AND || (*token)->type == TOKEN_OR)
 	// {
 	// 	if (// gestion bonus)
