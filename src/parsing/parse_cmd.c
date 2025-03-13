@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/12 18:06:40 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/13 11:29:26 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,30 +49,49 @@ t_cmd	*parse_commands(t_token *token_list)
 	return (head);
 }
 
-int	process_token(t_token **token, t_cmd **current, t_cmd **head)
+/* Séparation de la commande process token qui était trop longue pour gérer les pipes */
+
+int	process_pipe_token(t_token **token, t_cmd **current, t_cmd **head)
 {
-	if (redirection_token(*token))
+	t_cmd *new_cmd;
+
+	if (!*current)
 	{
-		if (!(*token)->next || (*token)->next->type != TOKEN_ARGUMENT)
-        {
-            printf(ERR_SYNTAX);
-            free_commands(*head);
-            return (-1);
-        }
-		if (redirection_process(token, current, head))
-			return (-1);
+		printf(ERR_SYNTAX);
+		free_commands(*head);
+		return (-1);
 	}
-	// else if ((*token)->type == TOKEN_PIPE)
-	// {
-	// 	if (handle_pipe(current) == -1)
-	// 		return (-1);
-	// }
-	// else if ((*token)->type == TOKEN_AND || (*token)->type == TOKEN_OR)
-	// {
-	// 	if (// gestion bonus)
-	// 		return (-1);
-	// }
-	else if ((*token)->type == TOKEN_SEPARATOR)
+	new_cmd = init_command();
+	if (!new_cmd)
+	{
+		free_commands(*head);
+		return (-1);
+	}
+	(*current)->next = new_cmd;
+	*current = new_cmd;
+	*token = (*token)->next;
+	return (0);
+}
+
+int	process_redirection_token(t_token **token, t_cmd **current, t_cmd **head)
+{
+	if (!(*token)->next || (*token)->next->type != TOKEN_ARGUMENT)
+	{
+		printf(ERR_SYNTAX);
+		free_commands(*head);
+		return (-1);
+	}
+	if (handle_redirection(*token, *current, *head) == -1)
+		return (-1);
+	*token = (*token)->next;
+	if (*token)
+		*token = (*token)->next;
+	return (0);
+}
+
+int	process_other_token(t_token **token, t_cmd **current, t_cmd **head)
+{
+	if ((*token)->type == TOKEN_SEPARATOR)
 		*current = NULL;
 	else
 	{
@@ -84,10 +103,23 @@ int	process_token(t_token **token, t_cmd **current, t_cmd **head)
 	return (0);
 }
 
+/* Selon le token concerné, j'appelle les fonctions correspondantes */
+
+int	process_token(t_token **token, t_cmd **current, t_cmd **head)
+{
+	if ((*token)->type == TOKEN_PIPE)
+		return (process_pipe_token(token, current, head));
+	else if (redirection_token(*token))
+		return (process_redirection_token(token, current, head));
+	else
+		return (process_other_token(token, current, head));
+}
+
 int	redirection_token(t_token *token)
 {
 	return (token->type == REDIR_OUT || token->type == REDIR_APPEND
-		|| token->type == REDIR_IN || token->type == HEREDOC);
+		|| token->type == REDIR_IN || token->type == HEREDOC
+		|| token->type == TOKEN_PIPE);
 }
 
 int	redirection_process(t_token **token, t_cmd **current, t_cmd **head)

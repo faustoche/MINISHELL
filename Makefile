@@ -48,7 +48,8 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 SRCS			= ${MINISHELL}
 MINISHELL_OBJS	= ${MINISHELL:${SRCS_DIR}/%.c=$(OBJS_DIR)/%.o}
 OBJS			= $(MINISHELL_OBJS)
-LIBFT 			= -L$(LIBFT_DIR) -lft -l:libft.a
+LIBFT 			= -L$(LIBFT_DIR) -lft
+# -l:libft.a
 
 # ************************************************************************ #
 #                    			 COMPILATION                               #

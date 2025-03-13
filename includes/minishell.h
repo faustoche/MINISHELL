@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/12 17:10:07 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/13 11:33:16 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,18 @@ typedef	struct s_lexer
 
 /*-------------- FUNCTIONS --------------*/
 
-void	execute_pipeline(t_cmd *cmd);
-int	count_pipe(t_cmd *cmd);
+void	handle_single_command(t_cmd *cmd);
+void	handle_pipe_error(int pipefd[2]);
+void	output_to_pipe(int pipefd[2]);
+void	execute_pipeline_cmd(t_cmd *cmd);
+int 	setup_pipe(int pipefd[2]);
+pid_t 	create_process();
+void 	setup_parent_pipe_io(int pipefd[2], int *stdin_save);
+void 	restore_parent_io(int stdin_save, pid_t pid);
+void	execute_child(t_cmd *cmd, int pipefd[2]);
+void 	execute_parent_pipeline(t_cmd *cmd, int pipefd[2], pid_t pid);
+void 	execute_pipeline(t_cmd *cmd);
+int 	has_pipes(t_cmd *cmd);
 
 /* Main */
 
