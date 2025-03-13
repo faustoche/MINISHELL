@@ -135,7 +135,7 @@ int	builtins_execution(t_cmd *cmd);
 /* Exec */
 
 void	execute_commands(t_cmd *cmd);
-char	*find_pathname(char *arg);
+
 
 
 
