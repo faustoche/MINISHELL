@@ -1,16 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe.c                                             :+:      :+:    :+:   */
+/*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/13 11:32:45 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/13 13:00:54 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/* Quand il n'y a qu'une seule commande (echo "hello") */
 
 void	handle_single_command(t_cmd *cmd)
 {
@@ -21,11 +23,15 @@ void	handle_single_command(t_cmd *cmd)
 	}
 }
 
+/* Fermeture des fd */
+
 void	handle_pipe_error(int pipefd[2])
 {
 	close(pipefd[0]);
 	close(pipefd[1]);
 }
+
+/* Redirige la sortie standard vers le pipe d'écriture */
 
 void	output_to_pipe(int pipefd[2])
 {
@@ -33,6 +39,8 @@ void	output_to_pipe(int pipefd[2])
 	dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[1]);
 }
+
+/* Exécute la commande */
 
 void	execute_pipeline_cmd(t_cmd *cmd)
 {
@@ -58,7 +66,9 @@ void	execute_pipeline_cmd(t_cmd *cmd)
     }
 }
 
-int setup_pipe(int pipefd[2])
+/* Crée un pipe entre deux processus */
+
+int create_pipe(int pipefd[2])
 {
     if (pipe(pipefd) == -1)
     {
@@ -68,6 +78,8 @@ int setup_pipe(int pipefd[2])
     return (0);
 }
 
+/* Crée un processus enfant avec fork() */
+
 pid_t create_process()
 {
     pid_t pid = fork();
@@ -76,7 +88,12 @@ pid_t create_process()
     return (pid);
 }
 
-void setup_parent_pipe_io(int pipefd[2], int *stdin_save)
+/* 
+Configure l'entrée standard du parent pour lire depuis le pipe 
+Sauvegarde l'ancienne entrée  et redirige l'entrée vers lecture pipe 
+*/
+
+void setup_parent_pipe(int pipefd[2], int *stdin_save)
 {
     close(pipefd[1]);
     *stdin_save = dup(STDIN_FILENO);
@@ -84,13 +101,19 @@ void setup_parent_pipe_io(int pipefd[2], int *stdin_save)
     close(pipefd[0]);
 }
 
-void restore_parent_io(int stdin_save, pid_t pid)
+/* Restaure l'entrée standard et attend la fin de processus enfant */
+
+void restore_parent(int stdin_save, pid_t pid)
 {
     dup2(stdin_save, STDIN_FILENO);
     close(stdin_save);
     waitpid(pid, NULL, 0);
 }
 
+/* 
+Configure la sortie du processus enfant et exécute la commande
+Le processus enfant écrit son output dans le pipe
+*/
 
 void	execute_child(t_cmd *cmd, int pipefd[2])
 {
@@ -99,14 +122,22 @@ void	execute_child(t_cmd *cmd, int pipefd[2])
     exit(EXIT_SUCCESS);
 }
 
+/*
+Configure l'entrée standard du parent et exécute la commande
+Permet d'exécuter en chaîne les commandes
+*/
+
+
 void execute_parent_pipeline(t_cmd *cmd, int pipefd[2], pid_t pid)
 {
     int stdin_save;
     
-    setup_parent_pipe_io(pipefd, &stdin_save);
+    setup_parent_pipe(pipefd, &stdin_save);
     execute_pipeline(cmd->next);
-    restore_parent_io(stdin_save, pid);
+    restore_parent(stdin_save, pid);
 }
+
+/* Exécute la suite de commande */
 
 void execute_pipeline(t_cmd *cmd)
 {
@@ -120,7 +151,7 @@ void execute_pipeline(t_cmd *cmd)
     if (!cmd->next)
         return;
         
-    if (setup_pipe(pipefd) == -1)
+    if (create_pipe(pipefd) == -1)
         return;
     
     pid = create_process();
