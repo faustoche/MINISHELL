@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/13 13:00:54 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/13 13:08:00 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,11 @@ void setup_parent_pipe(int pipefd[2], int *stdin_save)
     close(pipefd[0]);
 }
 
-/* Restaure l'entrée standard et attend la fin de processus enfant */
+/* 
+Restaure l'entrée standard et attend la fin de processus enfant
+On restaure la copie qu'on a fait, une fois la commande exécuté on restaure
+l'entrée pour éviter des comportements inattendus
+*/
 
 void restore_parent(int stdin_save, pid_t pid)
 {
