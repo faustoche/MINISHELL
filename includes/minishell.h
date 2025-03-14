@@ -135,8 +135,8 @@ int	builtins_execution(t_cmd *cmd);
 /* Exec */
 
 void	execute_commands(t_cmd *cmd);
-
-
+char	*build_pathname(char *directory, char *arg);
+char	*find_binary_path(char *arg);
 
 
 /* Env */
