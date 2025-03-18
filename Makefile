@@ -40,6 +40,7 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				env/env_utils.c\
 				builtins/cd.c\
 				builtins/echo.c\
+				builtins/exit.c\
 				exec/builtins.c\
 				errors/syntax_error.c\
 				utils/env_utils.c\
@@ -59,7 +60,7 @@ LIBFT 			= -L$(LIBFT_DIR) -lft
 # ************************************************************************ #
 
 CC          = cc
-CFLAGS      = -Wall -Werror -Wextra -g3 -I$(INCLUDES_MINI) -I$(INCLUDES_LIB)
+CFLAGS      = -Wall -Werror -Wextra -g3 -fsanitize=address -I$(INCLUDES_MINI) -I$(INCLUDES_LIB)
 LDFLAGS		= -lreadline # option pour l'éditeur de liens
 RM = rm -rf
 

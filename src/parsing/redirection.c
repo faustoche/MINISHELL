@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/13 19:32:13 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/18 16:48:38 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ int	handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head)
 		free_commands(head);
 		return (-1);
 	}
-	if (pipe(&pipe_fd[1]) == -1)
+	if (pipe(pipe_fd) == -1)
 	{
 		printf("Error : pipe creation failed\n");
 		return (-1);
@@ -213,6 +213,7 @@ int	handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head)
 		write(pipe_fd[1], "\n", 1);
 		free(line);
 	}
+	close(pipe_fd[1]);
 	cmd->heredoc = pipe_fd[0];
 	return (0);
 }
