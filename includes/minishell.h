@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/13 13:02:57 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/13 21:12:33 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,18 +106,21 @@ typedef	struct s_lexer
 
 /*-------------- FUNCTIONS --------------*/
 
-void	handle_single_command(t_cmd *cmd);
-void	handle_pipe_error(int pipefd[2]);
-void	output_to_pipe(int pipefd[2]);
 void	execute_pipeline_cmd(t_cmd *cmd);
-int 	create_pipe(int pipefd[2]);
-pid_t 	create_process();
-void 	setup_parent_pipe(int pipefd[2], int *stdin_save);
-void 	restore_parent(int stdin_save, pid_t pid);
 void	execute_child(t_cmd *cmd, int pipefd[2]);
 void 	execute_parent_pipeline(t_cmd *cmd, int pipefd[2], pid_t pid);
 void 	execute_pipeline(t_cmd *cmd);
+void	handle_pipe_error(int pipefd[2]);
+int 	create_pipe(int pipefd[2]);
+pid_t 	create_process();
 int 	has_pipes(t_cmd *cmd);
+pid_t	create_pipe_and_fork(int pipefd[2]);
+void 	execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, int *stdin_save);
+void 	execute_redirection(t_cmd *cmd);
+void	handle_pipe(int pipefd[2], int mode, int *stdin_save);
+int		is_redirection(t_cmd *cmd);
+char	*find_binary_path(char *arg);
+void	redirect(int fd, int std_fd);
 
 /* Main */
 
@@ -229,6 +232,6 @@ void	skip_space(t_lexer *lexer);
 
 /* Exec */
 
-int	handle_pipe(t_cmd *cmd, int	i, int old_fd);
+void    handle_pipe(int pipefd[2], int mode, int *stdin_save);
 
 #endif
