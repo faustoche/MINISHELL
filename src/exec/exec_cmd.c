@@ -14,7 +14,7 @@
 
 /* Complete pathname by adding '/' and name of binary */
 
-static char	*build_pathname(char *directory, char *arg)
+char	*build_pathname(char *directory, char *arg)
 {
 	char	*binary_path;
 	int		j;
@@ -40,7 +40,7 @@ static char	*build_pathname(char *directory, char *arg)
 
 /* Check each directory in PATH to find binary_path */
 
-static char	*find_binary_path(char *arg)
+char	*find_binary_path(char *arg)
 {
 	char	*path_env;
 	char	**split_path;
@@ -56,11 +56,13 @@ static char	*find_binary_path(char *arg)
 	{
 		binary_path = build_pathname(split_path[i], arg);
 		if (!access(binary_path, F_OK))
-			break ;
+		{
+			free(split_path);
+			return (binary_path);
+		}
 		i++;
 	}
-	free(split_path);
-	return (binary_path);
+	return (NULL);
 }
 
 /* Create child process and execute */
@@ -109,7 +111,7 @@ void	execute_commands(t_cmd *cmd)
 		else
 		{
 			binary_path = find_binary_path(current->args[0]);
-			printf("binary path : %s\n", binary_path); //a retirer
+			//printf("binary path : %s\n", binary_path);
 			execute_child_process(current->args, binary_path);
 			free(binary_path);
 		}
