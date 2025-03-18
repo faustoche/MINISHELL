@@ -39,6 +39,7 @@
 # define ERR_SYNTAX "bash: syntax error near unexpected token\n"
 # define ERR_CMD "bash: %s: command not found\n"
 # define ERR_DIR "bash: %s: is a directory\n"
+# define ERR_ARG "bash: %s: too many arguments\n"
 # define ERR_INVALID_TOK
 
 /*-------------- LIBRARIES --------------*/
