@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/13 13:08:00 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/18 11:45:58 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ void	execute_pipeline_cmd(t_cmd *cmd)
         builtins_execution(cmd);
     else if (cmd->args && cmd->args[0])
     {
-        pathname = find_pathname(cmd->args[0]);
+        pathname = find_binary_path(cmd->args[0]);
         if (!pathname || (execve(pathname, cmd->args, NULL) == -1))
         {
             if (pathname)

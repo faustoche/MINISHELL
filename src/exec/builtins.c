@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 14:58:50 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/08 15:32:14 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/18 11:46:56 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	builtins_execution(t_cmd *cmd)
 	}
 	// if (ft_strcmp(cmd->args[0], "cd") == 0)
 	// {
-	// 	ft_echo(cmd);
+	// 	ft_cd(cmd);
 	// 	return (1);
 	// }
 	// if (ft_strcmp(cmd->args[0], "pwd") == 0)
