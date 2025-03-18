@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/13 11:31:54 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/13 19:31:13 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ int	main(int ac, char **av, char **envp)
 		{
 			if (has_pipes(commands))
 				execute_pipeline(commands);
+			else if (is_redirection(commands))
+				execute_redirection(commands);
 			else
 				execute_commands(commands);
 			free_commands(commands);

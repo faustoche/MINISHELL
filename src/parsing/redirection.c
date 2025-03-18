@@ -3,14 +3,96 @@
 /*                                                        :::      ::::::::   */
 /*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/06 09:15:29 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/13 19:32:13 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// void execute_redirections(t_cmd *cmd)
+// {
+//     pid_t pid;
+//     int status;
+//     int fd_in = -1;
+//     int fd_out = -1;
+//     char *binary_path = NULL;
+
+//     pid = fork();
+//     if (pid == -1)
+//     {
+//         perror("Fork failed");
+//         return;
+//     }
+    
+//     if (pid == 0) // Dans le processus fils
+//     {
+//         // Gérer les redirections d'entrée
+//         if (cmd->in)
+//         {
+//             fd_in = open_file(cmd->in, REDIR_IN);
+//             redirect_in(fd_in);
+//         }
+//         else if (cmd->heredoc != -1)
+//         {
+//             redirect_in(cmd->heredoc);
+//         }
+        
+//         // Gérer les redirections de sortie
+//         if (cmd->out)
+//         {
+//             if (cmd->append)
+//                 fd_out = open_file(cmd->out, REDIR_APPEND);
+//             else
+//                 fd_out = open_file(cmd->out, REDIR_OUT);
+//             redirect_out(fd_out);
+//         }
+        
+//         // Exécuter la commande
+//         if (cmd->args && cmd->args[0])
+//         {
+//             if (is_builtins(cmd->args[0]))
+//             {
+//                 builtins_execution(cmd);
+//                 exit(EXIT_SUCCESS);
+//             }
+//             else
+//             {
+//                 binary_path = find_binary_path(cmd->args[0]);
+//                 if (!binary_path)
+//                 {
+//                     printf(ERR_CMD, cmd->args[0]);
+//                     exit(EXIT_FAILURE);
+//                 }
+                
+//                 if (access(binary_path, X_OK) == -1)
+//                 {
+//                     printf(ERR_CMD, cmd->args[0]);
+//                     free(binary_path);
+//                     exit(EXIT_FAILURE);
+//                 }
+                
+//                 if (execve(binary_path, cmd->args, NULL) == -1)
+//                 {
+//                     perror("Execve failed");
+//                     free(binary_path);
+//                     exit(EXIT_FAILURE);
+//                 }
+//             }
+//         }
+//         exit(EXIT_SUCCESS);
+//     }
+//     else // Dans le processus parent
+//     {
+//         if (waitpid(pid, &status, 0) == -1)
+//         {
+//             perror("waitpid failed");
+//             return;
+//         }
+//     }
+// }
 
 /* Ouvre le fichier en fonction de la redirection */
 
@@ -33,23 +115,30 @@ int	open_file(char *filename, int token)
 	return (fd);
 }
 
-/* RRedirige la sortie standard vers un fichier */
-
-void	redirect_out(int fd)
+void	redirect(int fd, int std_fd)
 {
-	if (dup2(fd, STDOUT_FILENO) == -1)
-		perror("dup2 failed for out");
+	if (dup2(fd, std_fd) == -1)
+		perror("error : dup2 failed\n");
 	close(fd);
 }
 
-/* Redirige l'entrée standard depuis un fichier */
+// /* RRedirige la sortie standard vers un fichier */
 
-void	redirect_in(int fd)
-{
-	if (dup2(fd, STDIN_FILENO) == -1)
-		perror("dup2 failed for in");
-	close(fd);
-}
+// void	redirect_out(int fd)
+// {
+// 	if (dup2(fd, STDOUT_FILENO) == -1)
+// 		perror("dup2 failed for out");
+// 	close(fd);
+// }
+
+// /* Redirige l'entrée standard depuis un fichier */
+
+// void	redirect_in(int fd)
+// {
+// 	if (dup2(fd, STDIN_FILENO) == -1)
+// 		perror("dup2 failed for in");
+// 	close(fd);
+// }
 
 /* According to the token, redirect in the right direction */
 

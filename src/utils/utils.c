@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/10 20:22:32 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/13 19:09:35 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,9 @@ void	skip_space(t_lexer *lexer)
 {
 	while (lexer->input[lexer->pos] && is_space(lexer->input[lexer->pos]))
 		lexer->pos++;
+}
+
+int	is_redirection(t_cmd *cmd)
+{
+	return (cmd->in || cmd->out || cmd->heredoc);
 }
