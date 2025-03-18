@@ -135,6 +135,9 @@ int	builtins_execution(t_cmd *cmd);
 	//echo
 	void	ft_echo(t_cmd *cmd);
 
+	//cd
+	int		ft_cd(t_cmd *cmd);
+
 /* Exec */
 
 void	execute_commands(t_cmd *cmd);

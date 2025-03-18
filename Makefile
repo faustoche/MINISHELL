@@ -38,6 +38,7 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				env/env.c\
 				env/expand.c\
 				env/env_utils.c\
+				builtins/cd.c\
 				builtins/echo.c\
 				exec/builtins.c\
 				errors/syntax_error.c\
