@@ -40,11 +40,11 @@ int	builtins_execution(t_cmd *cmd)
 		ft_echo(cmd);
 		return (1);
 	}
-	// if (ft_strcmp(cmd->args[0], "cd") == 0)
-	// {
-	// 	ft_cd(cmd);
-	// 	return (1);
-	// }
+	if (ft_strcmp(cmd->args[0], "cd") == 0)
+	{
+		ft_cd(cmd);
+		return (1);
+	}
 	// if (ft_strcmp(cmd->args[0], "pwd") == 0)
 	// {
 	// 	ft_echo(cmd);

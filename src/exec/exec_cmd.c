@@ -65,11 +65,24 @@ char	*find_binary_path(char *arg)
 	return (NULL);
 }
 
-/* Create child process and execute */
-
 static void	execute_child_process(char **args, char *binary_path)
 {
+	if (access(binary_path, X_OK) == -1)
+		printf(ERR_CMD, args[0]);
+	else if (execve(binary_path, args, NULL) == -1)
+	{
+		perror("Execve failed");
+		exit(EXIT_FAILURE);
+	}
+}
+
+/* Create child process and execute */
+
+static void	create_child_process(char **args, char *binary_path)
+{
 	pid_t	pid;
+	pid_t	result;
+	int		status;
 
 	pid = fork();
 	if (pid == -1)
@@ -78,22 +91,17 @@ static void	execute_child_process(char **args, char *binary_path)
 		return ;
 	}
 	if (pid == 0) //dans process fils
+		execute_child_process(args, binary_path);
+	else if (pid > 0)
 	{
-		if (access(binary_path, X_OK) == -1)
-			printf(ERR_CMD, args[0]);
-		else if (execve(binary_path, args, NULL) == -1)
-		{
-			perror("Execve failed"); // quelle gestion erreur ici?
-			return ;
-		}
-	}
-	else if (pid > 0) //dans process parent, verifier ensuite comment s'est termine le fils
-	{
-		if (waitpid(pid, NULL, 0) == -1)
+		result = waitpid(pid, &status, 0);
+		if (result == -1)
 		{
 			perror("waitpid failed");
 			return ;
 		}
+		else if (!WIFEXITED(status))
+			printf("Processus fils termine anormalement.");
 	}
 }
 
@@ -111,8 +119,7 @@ void	execute_commands(t_cmd *cmd)
 		else
 		{
 			binary_path = find_binary_path(current->args[0]);
-			//printf("binary path : %s\n", binary_path);
-			execute_child_process(current->args, binary_path);
+			create_child_process(current->args, binary_path);
 			free(binary_path);
 		}
 		current = current->next;
