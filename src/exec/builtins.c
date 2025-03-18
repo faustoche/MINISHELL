@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 14:58:50 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/18 11:46:56 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/18 18:16:52 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ int	builtins_execution(t_cmd *cmd)
 	// 	ft_echo(cmd);
 	// 	return (1);
 	// }
-	//builtins_execution2(cmd);
+	builtins_execution2(cmd);
 	return (0);
 }
 
@@ -73,10 +73,10 @@ int	builtins_execution2(t_cmd *cmd)
 	// 	ft_echo(cmd);
 	// 	return (1);
 	// }
-	// if (ft_strcmp(cmd->args[0], "exit") == 0)
-	// {
-	// 	ft_echo(cmd);
-	// 	return (1);
-	// }
+	if (ft_strcmp(cmd->args[0], "exit") == 0)
+	{
+		ft_exit();
+		return (1);
+	}
 	return (0);
 }

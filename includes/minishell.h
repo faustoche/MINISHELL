@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/13 21:12:33 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/18 18:17:22 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ void	handle_pipe(int pipefd[2], int mode, int *stdin_save);
 int		is_redirection(t_cmd *cmd);
 char	*find_binary_path(char *arg);
 void	redirect(int fd, int std_fd);
+void	ft_exit(void);
 
 /* Main */
 
@@ -131,6 +132,7 @@ void	print_welcome_message();
 
 int 	is_builtins(char *cmd);
 int	builtins_execution(t_cmd *cmd);
+int	builtins_execution2(t_cmd *cmd);
 
 	//echo
 	void	ft_echo(t_cmd *cmd);
