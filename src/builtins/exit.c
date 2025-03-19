@@ -3,42 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   exit.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 18:14:36 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/19 08:44:03 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/19 11:51:57 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+/*
+- le code de sortie doit obligatoirement être un chiffre car c'est le code
+	retour que exit attend
+- Pourquoi atoi ? Les codes de sortie linux sont limités à 8 bits (0-255)
+- Si l'utilisateur entre une valeur en dehors de ça (exemple : exit 1000)
+- Le shell doit ramener cette valeur dans la plage 0-255
+- 1000 % 256 = 232 donc exit 1000 = exit 232
+*/
+
 void	ft_exit(t_cmd *cmd)
 {
-	char	*msg;
 	int		exit_code;
-	
-	msg = "exit\nAdieu\n";
-	write(1, msg, ft_strlen(msg));
-	exit_code = 0; // code de sortie par défault
+
+	printf("Adieu 🪦\n");
+	exit_code = 0;
 	if (cmd->args[1])
 	{
-		if (is_numeric(cmd->args[1]))
+		if (!is_numeric(cmd->args[1]))
 		{
-			printf("minislay: trop de chiffres, verifier vrai message"); // le code de sortie doit obligatoirement etre un chiffre car c'est ce que exit attned
-			exit(255); // l'exit code de base
+			printf("minislay : exit: %s: numeric argument required\n", cmd->args[1]);
+			exit(255);
 		}
 		else if (cmd->args[2])
 		{
-			printf("erreur trop d'arguments");
+			printf("minislay : exit: too many arguments\n");
 			return ;
 		}
 		else
 			exit_code = ft_atoi(cmd->args[1]) % 256;
 	}
 	exit(exit_code);
+	// ici ajouter une fonction pour quitter et clean le programme
 }
-
-// pourquoi atoi ? les codes de sortie linux sont limités à 8 bits (0-255)
-// si l'utilisateur entre une valeur en dehors de ca (exit 1000)
-// LE SHELL DOIT RAmener cette valeur dans la plage 0-255
-// 1000 % 256 = 232 donc exit 1000 = exit 232

@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 13:35:02 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/11 08:46:46 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/19 12:02:12 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,21 @@
 // 	return (matches);
 // }
 
+// void	free_wildcards(char **matches)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	if (!matches)
+//     return ;
+// 	while (matches[i])
+// 	{
+//         free(matches[i]);
+// 		i++;
+// 	}
+// 	free(matches);
+// }
+
 // void	expand_command_arg(t_cmd *cmd)
 // {
 // 	int		i;
@@ -74,21 +89,6 @@
 // 		cmd->args[i] = expanded_args;
 // 		i++;
 // 	}
-// }
-
-// void	free_wildcards(char **matches)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	if (!matches)
-// 		return ;
-// 	while (matches[i])
-// 	{
-// 		free(matches[i]);
-// 		i++;
-// 	}
-// 	free(matches);
 // }
 
 /* Pour tester */
