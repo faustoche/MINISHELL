@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/19 08:43:40 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/19 16:25:26 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,13 @@ typedef	struct s_lexer
 
 /*-------------- FUNCTIONS --------------*/
 
+/* BONUSES */
+
+int	match_wildcard(char *sign, char *name);
+char	**expand_wildcards(char *sign);
+void	free_wildcards(char **matches);
+
+
 void	execute_pipeline_cmd(t_cmd *cmd);
 void	execute_child(t_cmd *cmd, int pipefd[2]);
 void 	execute_parent_pipeline(t_cmd *cmd, int pipefd[2], pid_t pid);
@@ -122,7 +129,6 @@ void	handle_pipe(int pipefd[2], int mode, int *stdin_save);
 int		is_redirection(t_cmd *cmd);
 char	*find_binary_path(char *arg);
 void	redirect(int fd, int std_fd);
-void	ft_exit(t_cmd *cmd);
 
 /* Main */
 
@@ -135,11 +141,14 @@ int 	is_builtins(char *cmd);
 int	builtins_execution(t_cmd *cmd);
 int	builtins_execution2(t_cmd *cmd);
 
-	//echo
-	void	ft_echo(t_cmd *cmd);
+//echo
+void	ft_echo(t_cmd *cmd);
 
-	//cd
-	int		ft_cd(t_cmd *cmd);
+//cd
+int		ft_cd(t_cmd *cmd);
+
+// exit
+void	ft_exit(t_cmd *cmd);
 
 /* Exec */
 
@@ -163,8 +172,6 @@ char	*expand_variable(t_env *env_list, char *str, int quote_type);
 void 	expand_tokens(t_token *token_list, t_env *env_list);
 char	*get_env_value(t_env *env_list, char *name);
 t_env	*init_env(char **envp);
-char    *expand_tilde(char *input);
-
 
 /* Syntax error */
 
@@ -235,7 +242,7 @@ char    *ft_strcpy(char *dest, char *src);
 int		is_separator(int c);
 int		is_space(int c);
 void	skip_space(t_lexer *lexer);
-int is_numeric(char *str);
+int 	is_numeric(char *str);
 
 /* Exec */
 

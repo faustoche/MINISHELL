@@ -6,74 +6,75 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 13:35:02 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/19 12:02:12 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/19 12:11:12 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// int	match_wildcard(char *sign, char *name)
-// {
-// 	if (!sign || !name)
-// 		return (0);
-// 	if (*sign == '*' && *name == '\0')
-// 		return (match_wildcard(sign + 1, name));
-// 	if (*sign == '*')
-// 	{
-// 		while (*name)
-// 		{
-// 			if (match_wildcard(sign + 1, name))
-// 				return (1);
-// 			name++;
-// 		}
-// 		return (match_wildcard(sign + 1, name));
-// 	}
-// 	if (*sign == '?' || *sign == *name)
-// 		return (match_wildcard(sign + 1, name + 1));
-// 	return (0);
-// }
+int	match_wildcard(char *sign, char *name)
+{
+	if (!sign || !name)
+		return (0);
+	if (*sign == '*' && *name == '\0')
+		return (match_wildcard(sign + 1, name));
+	if (*sign == '*')
+	{
+		while (*name)
+		{
+			if (match_wildcard(sign + 1, name))
+				return (1);
+			name++;
+		}
+		return (match_wildcard(sign + 1, name));
+	}
+	if (*sign == '?' || *sign == *name)
+		return (match_wildcard(sign + 1, name + 1));
+	return (0);
+}
 
-// char	**expand_wildcards(char *sign)
-// {
-// 	DIR				*dir;
-// 	struct dirent	*entry;
-// 	char			**matches;
-// 	int				count;
+char	**expand_wildcards(char *sign)
+{
+	DIR				*dir;
+	struct dirent	*entry;
+	char			**matches;
+	int				count;
 	
-// 	count = 0;
-// 	dir = opendir(".");
-// 	if (!dir)
-// 	{
-// 		perror("opendir failed\n");
-// 		return (NULL);
-// 	}
-// 	matches = malloc(sizeof(char *) * 100);
-// 	if (!matches)
-// 		return (NULL);
-// 	while (entry == readdir(dir))
-// 	{
-// 		if (match_wildcard(sign, entry->d_name))
-// 			matches[count++] = ft_strdup(entry->d_name);
-// 	}
-// 	matches[count] = NULL;
-// 	closedir(dir);
-// 	return (matches);
-// }
+	count = 0;
+    entry = NULL;
+	dir = opendir(".");
+	if (!dir)
+	{
+		perror("opendir failed\n");
+		return (NULL);
+	}
+	matches = malloc(sizeof(char *) * 100);
+	if (!matches)
+		return (NULL);
+	while (entry == readdir(dir))
+	{
+		if (match_wildcard(sign, entry->d_name))
+			matches[count++] = ft_strdup(entry->d_name);
+	}
+	matches[count] = NULL;
+	closedir(dir);
+	return (matches);
+}
 
-// void	free_wildcards(char **matches)
-// {
-// 	int	i;
+void	free_wildcards(char **matches)
+{
+	int	i;
 
-// 	i = 0;
-// 	if (!matches)
-//     return ;
-// 	while (matches[i])
-// 	{
-//         free(matches[i]);
-// 		i++;
-// 	}
-// 	free(matches);
-// }
+	i = 0;
+	if (!matches)
+    return ;
+	while (matches[i])
+	{
+        free(matches[i]);
+		i++;
+	}
+	free(matches);
+}
 
 // void	expand_command_arg(t_cmd *cmd)
 // {
