@@ -33,7 +33,7 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				parsing/redirection.c\
 				lexer/lexer.c\
 				lexer/lexer_quotes.c\
-				lexer/lexer_export.c\
+				lexer/lexer_error.c\
 				lexer/lexer_separator.c\
 				env/env.c\
 				env/expand.c\
@@ -42,7 +42,6 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				builtins/echo.c\
 				builtins/exit.c\
 				exec/builtins.c\
-				errors/syntax_error.c\
 				utils/env_utils.c\
 				utils/free.c\
 				utils/utils.c\
@@ -60,7 +59,7 @@ LIBFT 			= -L$(LIBFT_DIR) -lft
 # ************************************************************************ #
 
 CC          = cc
-CFLAGS      = -Wall -Werror -Wextra -g3 -fsanitize=address -I$(INCLUDES_MINI) -I$(INCLUDES_LIB)
+CFLAGS      = -Wall -Werror -Wextra -g3 -I$(INCLUDES_MINI) -I$(INCLUDES_LIB)
 LDFLAGS		= -lreadline # option pour l'éditeur de liens
 RM = rm -rf
 

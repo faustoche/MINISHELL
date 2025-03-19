@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/18 15:31:41 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/19 16:27:12 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	execute_pipeline_cmd(t_cmd *cmd)
         if (!pathname || (execve(pathname, cmd->args, NULL) == -1))
         {
             if (pathname)
-            free(pathname);
+            free(pathname); // leak?
             printf(ERR_CMD, cmd->args[0]);
             exit(EXIT_FAILURE);
         }
