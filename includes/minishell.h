@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/19 16:25:26 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/19 21:48:17 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,9 +109,17 @@ typedef	struct s_lexer
 
 /* BONUSES */
 
+char	**init_matches(void);
+void	clean_matches(char **matches, int count, DIR *dir);
+int	add_match(char **matches, int count, char *name);
+char	**handle_no_matches(char *sign);
+int collect_matches(char **matches, DIR *dir, char *sign);
 int	match_wildcard(char *sign, char *name);
 char	**expand_wildcards(char *sign);
 void	free_wildcards(char **matches);
+void apply_wildcards_to_args(t_cmd *cmd);
+void add_token_to_list(t_token **token_list, char *word, int length, int type);
+
 
 
 void	execute_pipeline_cmd(t_cmd *cmd);
@@ -169,7 +177,10 @@ int		process_variable(t_expand *exp);
 int		expand_loop(t_expand *exp);
 char	*expand_variable(t_env *env_list, char *str, int quote_type);
 
-void 	expand_tokens(t_token *token_list, t_env *env_list);
+void	expand_variable_in_token(t_token *token, t_env *env_list);
+void	add_wildcard_tokens(t_lexer *lexer, char **matches, int start_index);
+void	expand_wildcard_in_token(t_token *token, t_lexer *lexer);
+void	expand_tokens(t_token *token_list, t_env *env_list);
 char	*get_env_value(t_env *env_list, char *name);
 t_env	*init_env(char **envp);
 
