@@ -31,7 +31,7 @@ int is_builtins(char *cmd)
 	return (0);
 }
 
-int	builtins_execution(t_cmd *cmd)
+int	builtins_execution(t_cmd *cmd, t_env *env_list)
 {
 	if (!cmd || !cmd->args || !cmd->args[0])
 		return (0);
@@ -42,7 +42,7 @@ int	builtins_execution(t_cmd *cmd)
 	}
 	if (ft_strcmp(cmd->args[0], "cd") == 0)
 	{
-		ft_cd(cmd);
+		ft_cd(cmd, env_list);
 		return (1);
 	}
 	// if (ft_strcmp(cmd->args[0], "pwd") == 0)

@@ -22,7 +22,7 @@
 	// recupérer le nouveau repertoire (PWD) et l'enregistrer
 	// nettoyer la mémoire (getcwd utilise malloc) et retourner le statut
 
-int ft_cd(t_cmd *cmd)
+int ft_cd(t_cmd *cmd, t_env *env_list)
 {
 	char	*pwd;
 	char	*home;
@@ -39,7 +39,12 @@ int ft_cd(t_cmd *cmd)
 		res = chdir(home);
 		if (res == -1)
 			perror("cd");
-		//si a fonctionne, met a jour oldpwd
+		else if (!res)
+		{
+			//remplacer la valeur de OLDPWD dans env_list
+			get_env_value(env_list, "OLDPWD");
+			env_list->value = 
+		}
 	}
 	else if (cmd->nb_arg == 2)
 	{
