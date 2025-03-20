@@ -12,53 +12,87 @@
 
 #include "minishell.h"
 
-static char	*find_parent_dir(char *dir)
-{
-	char	*res;
-	int		i;
-	size_t	end;
+/* chdir retour -1 si chemin invalide? ou si pas d'acces? */
 
-	res = NULL;
-	i = 0;
-	while (dir[i] != '\0')
-		i++;
-	while (dir[i] != '/')
-		i--;
-	end = i;
-	res = ft_substr(dir, 0, end);
-	return (res);
-}
+	// récupérer la commande cd
+	// chercher la variable HOME
+	// sauvegarder l'ancien répertoire (OLDPWD)
+	// exécuter cd et gérer les erreurs
+	// mettre à jour OLDPWD si cd a reussi
+	// recupérer le nouveau repertoire (PWD) et l'enregistrer
+	// nettoyer la mémoire (getcwd utilise malloc) et retourner le statut
 
 int ft_cd(t_cmd *cmd)
 {
-	char	*current_dir;
-	char	*home_dir;
-	char	*new;
+	char	*pwd;
+	char	*home;
+	int		res;
 
-	home_dir = getenv("HOME");
-	current_dir = getcwd(NULL, 0);
-	printf("current_dir before chdir: %s\n", current_dir);
+	pwd = getcwd(NULL, 0);
+	home = getenv("HOME");
+	printf("pwd before chdir: %s\n", pwd);
+
 	if (cmd->nb_arg > 2)
 		printf(ERR_ARG, cmd->args[0]);
 	else if (cmd->nb_arg == 1)
-		chdir(home_dir);
+	{
+		res = chdir(home);
+		if (res == -1)
+			perror("cd");
+		//si a fonctionne, met a jour oldpwd
+	}
 	else if (cmd->nb_arg == 2)
 	{
-		if (ft_strcmp(cmd->args[1], "..") == 0)
-		{
-			new = find_parent_dir(current_dir);
-			chdir(new);
-			free(new);
-		}
+		res = chdir(cmd->args[1]);
+		if (res == -1)
+			perror("cd");
+		//si a fonctionne, met a jour oldpwd
 	}
-	current_dir = getcwd(NULL, 0);
-	printf("current_dir apres chdir: %s\n", current_dir);
-	// récupérer la commande cd
-	// chercher la variable HOME
-	// sauvegarder l'ancien répertoire (OLDpwd)
-	// exécuter cd et gérer les erreurs
-	// mettre à jour OLDpwd si cd a reussi
-	// recupérer le nouveau repertoire (pwd) et l'enregistrer
-	// nettoyer la mémoire et retourner le statut
+	pwd = getcwd(NULL, 0);
+	printf("pwd after chdir: %s\n", pwd);
 	return(0);
 }
+
+// static char	*find_parent_dir(char *dir)
+// {
+// 	char	*res;
+// 	int		i;
+// 	size_t	end;
+
+// 	res = NULL;
+// 	i = 0;
+// 	while (dir[i] != '\0')
+// 		i++;
+// 	while (dir[i] != '/')
+// 		i--;
+// 	end = i;
+// 	res = ft_substr(dir, 0, end);
+// 	return (res);
+// }
+
+// int ft_cd(t_cmd *cmd)
+// {
+// 	char	*pwd;
+// 	char	*home;
+// 	char	*new;
+
+// 	home = getenv("HOME");
+// 	pwd = getcwd(NULL, 0);
+// 	printf("pwd before chdir: %s\n", pwd);
+// 	if (cmd->nb_arg > 2)
+// 		printf(ERR_ARG, cmd->args[0]);
+// 	else if (cmd->nb_arg == 1)
+// 		chdir(home); // checker si erreur
+// 	else if (cmd->nb_arg == 2)
+// 	{
+// 		if (ft_strcmp(cmd->args[1], "..") == 0)
+// 		{
+// 			new = find_parent_dir(pwd);
+// 			chdir(new);
+// 			free(new);
+// 		}
+// 	}
+// 	pwd = getcwd(NULL, 0);
+// 	printf("pwd apres chdir: %s\n", pwd);
+// 	return(0);
+// }
