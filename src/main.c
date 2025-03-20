@@ -50,7 +50,7 @@ int	main(int ac, char **av, char **envp)
 			else if (is_redirection(commands))
 				execute_redirection(commands);
 			else
-				execute_commands(commands);
+				execute_commands(commands, env_list);
 			free_commands(commands);
 		}
 		free_token_list(token_list);
