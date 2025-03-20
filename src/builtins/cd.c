@@ -39,6 +39,10 @@ int ft_cd(t_cmd *cmd)
 		res = chdir(home);
 		if (res == -1)
 			perror("cd");
+		else if (!res)
+		{
+			
+		}
 		//si a fonctionne, met a jour oldpwd
 	}
 	else if (cmd->nb_arg == 2)
