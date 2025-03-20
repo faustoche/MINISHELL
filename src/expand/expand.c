@@ -3,14 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/05 10:25:23 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/19 21:50:44 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/20 10:42:56 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// Si rien a expand, retirer le dollar
+// echo $HO : n'affiche rien
+
 
 /* Main function to expand variables */
 

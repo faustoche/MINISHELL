@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtins.c                                         :+:      :+:    :+:   */
+/*   exec_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 14:58:50 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/19 08:44:19 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/20 15:06:20 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	builtins_execution2(t_cmd *cmd)
 	// }
 	// if (ft_strcmp(cmd->args[0], "env") == 0)
 	// {
-	// 	ft_echo(cmd);
+	// 	ft_env(cmd);
 	// 	return (1);
 	// }
 	if (ft_strcmp(cmd->args[0], "exit") == 0)
