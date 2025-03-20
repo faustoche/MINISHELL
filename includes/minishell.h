@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/19 21:48:17 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/20 15:03:02 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_cmd
 	size_t			max_arg; // 
 	size_t			nb_arg; //
 	struct s_cmd	*next;
+	int				exit_status;
 }	t_cmd;
 
 typedef	struct s_lexer
@@ -109,16 +110,17 @@ typedef	struct s_lexer
 
 /* BONUSES */
 
+void    ft_env(t_cmd *cmd);
 char	**init_matches(void);
 void	clean_matches(char **matches, int count, DIR *dir);
-int	add_match(char **matches, int count, char *name);
+int		add_match(char **matches, int count, char *name);
 char	**handle_no_matches(char *sign);
-int collect_matches(char **matches, DIR *dir, char *sign);
-int	match_wildcard(char *sign, char *name);
+int 	collect_matches(char **matches, DIR *dir, char *sign);
+int		match_wildcard(char *sign, char *name);
 char	**expand_wildcards(char *sign);
 void	free_wildcards(char **matches);
-void apply_wildcards_to_args(t_cmd *cmd);
-void add_token_to_list(t_token **token_list, char *word, int length, int type);
+void 	apply_wildcards_to_args(t_cmd *cmd);
+void 	add_token_to_list(t_token **token_list, char *word, int length, int type);
 
 
 
