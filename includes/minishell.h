@@ -148,21 +148,21 @@ void	print_welcome_message();
 /* BuilTTTTTTins*/
 
 int 	is_builtins(char *cmd);
-int	builtins_execution(t_cmd *cmd, t_env *env_list);
+int	builtins_execution(t_cmd *cmd);
 int	builtins_execution2(t_cmd *cmd);
 
 //echo
 void	ft_echo(t_cmd *cmd);
 
 //cd
-int		ft_cd(t_cmd *cmd, t_env *env_list);
+int		ft_cd(t_cmd *cmd);
 
 // exit
 void	ft_exit(t_cmd *cmd);
 
 /* Exec */
 
-void	execute_commands(t_cmd *cmd, t_env *env_list);
+void	execute_commands(t_cmd *cmd);
 char	*build_pathname(char *directory, char *arg);
 char	*find_binary_path(char *arg);
 
