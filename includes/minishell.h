@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/20 15:03:02 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/21 13:00:47 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,6 +95,7 @@ typedef struct s_cmd
 	size_t			max_arg; // 
 	size_t			nb_arg; //
 	struct s_cmd	*next;
+	t_env			*env_list;
 	int				exit_status;
 }	t_cmd;
 
@@ -213,10 +214,11 @@ int		add_args(t_token *token, t_cmd *cmd);
 
 // Parse command
 t_cmd	*init_command(void);
-t_cmd	*parse_commands(t_token *token_list);
-int		process_token(t_token **token, t_cmd **current, t_cmd **head);
+t_cmd	*parse_commands(t_token *token_lis, t_env *env_list);
+int		process_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env_list);
 int		redirection_token(t_token *token);
 int		redirection_process(t_token **token, t_cmd **current, t_cmd **head);
+int	process_other_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env_list);
 
 // Parse input
 void	free_token_list(t_token *head);
@@ -224,7 +226,7 @@ t_token	*parse_input(char *input);
 
 // Parse token
 int		get_token_type(char *token, int *command);
-int		handle_standard_token(t_token **token, t_cmd **current, t_cmd **head);
+int		handle_standard_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env_list);
 
 // Redirection
 int		open_file(char *filename, int token);
