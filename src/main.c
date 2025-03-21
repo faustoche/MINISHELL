@@ -42,7 +42,7 @@ int	main(int ac, char **av, char **envp)
 			continue ;
 		}
 		expand_tokens(token_list, env_list);
-		commands = parse_commands(token_list);
+		commands = parse_commands(token_list, env_list);
 		if (commands)
 		{
 			if (has_pipes(commands))

@@ -13,6 +13,7 @@
 #include "minishell.h"
 
 /* chdir retour -1 si chemin invalide? ou si pas d'acces? */
+/* cd - doit print le chemin apres avoir fait un "cd $OLDPWD" */
 
 	// récupérer la commande cd
 	// chercher la variable HOME
@@ -25,35 +26,34 @@
 int ft_cd(t_cmd *cmd)
 {
 	char	*pwd;
+	//char	*old_pwd;
 	char	*home;
 	int		res;
 
-	pwd = getcwd(NULL, 0);
+	pwd = getcwd(NULL, 0); // checker repertoire courant A RETIRER
 	home = getenv("HOME");
 	printf("pwd before chdir: %s\n", pwd);
 
 	if (cmd->nb_arg > 2)
 		printf(ERR_ARG, cmd->args[0]);
-	else if (cmd->nb_arg == 1)
+	else if (cmd->nb_arg == 1) //"cd"
 	{
 		res = chdir(home);
 		if (res == -1)
 			perror("cd");
 		// else if (!res)
-		// {
-		// 	//remplacer la valeur de OLDPWD dans env_list
-		// 	get_env_value(env_list, "OLDPWD");
-		// 	env_list->value = 
-		// }
+		// 	old_pwd = get_env_value(cmd->env_list, "OLDPWD");
+		// 	//mettre a jour OLDPWD dans les variables d'enviro
 	}
-	else if (cmd->nb_arg == 2)
+	else if (cmd->nb_arg == 2) //"cd /un/path"
 	{
 		res = chdir(cmd->args[1]);
 		if (res == -1)
 			perror("cd");
-		//si a fonctionne, met a jour oldpwd
+		// else if (!res)
+		// 	old_pwd = get_env_value(cmd->env_list, "OLDPWD");
 	}
-	pwd = getcwd(NULL, 0);
+	pwd = getcwd(NULL, 0); // checker repertoire courant, A RETIRER
 	printf("pwd after chdir: %s\n", pwd);
 	return(0);
 }
