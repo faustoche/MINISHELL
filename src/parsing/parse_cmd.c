@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/13 11:29:26 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/21 12:58:49 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,11 @@ t_cmd	*init_command(void)
 	cmd->nb_arg = 0;
 	cmd->max_arg = 0;
 	cmd->heredoc = -1;
+	cmd->env_list = NULL;
 	return (cmd);
 }
 
-t_cmd	*parse_commands(t_token *token_list)
+t_cmd	*parse_commands(t_token *token_list, t_env *env_list)
 {
 	t_cmd	*head;
 	t_cmd	*current ;
@@ -41,7 +42,7 @@ t_cmd	*parse_commands(t_token *token_list)
 	token = token_list;
 	while (token)
 	{
-		if (process_token(&token, &current, &head))
+		if (process_token(&token, &current, &head, env_list))
 			return (NULL);
 	}
 	if (head == NULL)
@@ -89,13 +90,13 @@ int	process_redirection_token(t_token **token, t_cmd **current, t_cmd **head)
 	return (0);
 }
 
-int	process_other_token(t_token **token, t_cmd **current, t_cmd **head)
+int	process_other_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env_list)
 {
 	if ((*token)->type == TOKEN_SEPARATOR)
 		*current = NULL;
 	else
 	{
-		if (handle_standard_token(token, current, head))
+		if (handle_standard_token(token, current, head, env_list))
 			return (-1);
 	}
 	if (*token)
@@ -105,14 +106,14 @@ int	process_other_token(t_token **token, t_cmd **current, t_cmd **head)
 
 /* Selon le token concerné, j'appelle les fonctions correspondantes */
 
-int	process_token(t_token **token, t_cmd **current, t_cmd **head)
+int	process_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env_list)
 {
 	if ((*token)->type == TOKEN_PIPE)
 		return (process_pipe_token(token, current, head));
 	else if (redirection_token(*token))
 		return (process_redirection_token(token, current, head));
 	else
-		return (process_other_token(token, current, head));
+		return (process_other_token(token, current, head, env_list));
 }
 
 int	redirection_token(t_token *token)
