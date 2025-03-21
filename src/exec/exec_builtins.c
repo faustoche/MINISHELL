@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 14:58:50 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/21 12:46:57 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/21 16:53:29 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,11 @@ int	builtins_execution2(t_cmd *cmd)
 	// 	ft_echo(cmd);
 	// 	return (1);
 	// }
-	// if (ft_strcmp(cmd->args[0], "env") == 0)
-	// {
-	// 	ft_env(cmd);
-	// 	return (1);
-	// }
+	if (ft_strcmp(cmd->args[0], "env") == 0)
+	{
+		ft_env(cmd);
+		return (1);
+	}
 	if (ft_strcmp(cmd->args[0], "exit") == 0)
 	{
 		ft_exit(cmd);
