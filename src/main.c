@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/21 12:47:01 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/21 16:53:43 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	main(int ac, char **av, char **envp)
 			continue ;
 		}
 		expand_tokens(token_list, env_list);
-		commands = parse_commands(token_list);
+		commands = parse_commands(token_list, env_list);
 		if (commands)
 		{
 			if (has_pipes(commands))
