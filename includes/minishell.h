@@ -156,7 +156,7 @@ int	builtins_execution2(t_cmd *cmd);
 void	ft_echo(t_cmd *cmd);
 
 //cd
-int		ft_cd(t_cmd *cmd);
+void		ft_cd(t_cmd *cmd);
 
 // exit
 void	ft_exit(t_cmd *cmd);

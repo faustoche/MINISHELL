@@ -22,40 +22,58 @@
 	// recupérer le nouveau repertoire (PWD) et l'enregistrer
 	// nettoyer la mémoire (getcwd utilise malloc) et retourner le statut
 
-int ft_cd(t_cmd *cmd)
+static void	print_cwd(void)
 {
-	char	*pwd;
+	char *cwd;
+
+	cwd = getcwd(NULL, 0);
+	printf("%s\n", cwd);
+	free(cwd);
+}
+
+void ft_cd(t_cmd *cmd)
+{
 	char	*home;
-	int		res;
+	char	*old_pwd;
+	char	*new_dir;
 
-	pwd = getcwd(NULL, 0);
 	home = getenv("HOME");
-	printf("pwd before chdir: %s\n", pwd);
+	old_pwd = getenv("PWD");
 
-	if (cmd->nb_arg > 2)
-		printf(ERR_ARG, cmd->args[0]);
-	else if (cmd->nb_arg == 1)
+	if (cmd->nb_arg == 1) //"cd"
+		new_dir = home;
+	else if (cmd->nb_arg == 2) //"cd arg"
 	{
-		res = chdir(home);
-		if (res == -1)
-			perror("cd");
-		// else if (!res)
-		// {
-		// 	//remplacer la valeur de OLDPWD dans env_list
-		// 	get_env_value(env_list, "OLDPWD");
-		// 	env_list->value = 
-		// }
+		if (ft_strcmp(cmd->args[1], "-") == 0)
+		{
+			new_dir = getenv("OLDPWD");
+			if (new_dir == NULL)
+			{
+				printf("cd : OLDPWD not set\n");
+				return ;
+			}
+			print_cwd();
+		}
+		else if (ft_strcmp(cmd->args[1], "~") == 0 || ft_strcmp(cmd->args[1], "~/") == 0)
+			new_dir = home;
+		else
+			new_dir = cmd->args[1];
 	}
-	else if (cmd->nb_arg == 2)
+	else if (cmd->nb_arg > 2)
+		printf(ERR_ARG, cmd->args[0]); // autre chose ??
+	if (access(new_dir, F_OK) == -1)
 	{
-		res = chdir(cmd->args[1]);
-		if (res == -1)
-			perror("cd");
-		//si a fonctionne, met a jour oldpwd
+		perror("cd");
+		return ;
 	}
-	pwd = getcwd(NULL, 0);
-	printf("pwd after chdir: %s\n", pwd);
-	return(0);
+	setenv("OLDPWD", old_pwd, 1);//ici enregistrer OLDPWD
+	if (chdir(new_dir) == -1)
+	{
+		perror("cd");
+		return ;
+	}
+	setenv("PWD", new_dir, 1);// ici enregistrer PWD avec new_dir
+	print_cwd();
 }
 
 // static char	*find_parent_dir(char *dir)
