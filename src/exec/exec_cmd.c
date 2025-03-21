@@ -105,7 +105,7 @@ static void	create_child_process(char **args, char *binary_path)
 	}
 }
 
-void	execute_commands(t_cmd *cmd, t_env *env_list)
+void	execute_commands(t_cmd *cmd)
 {
 	t_cmd	*current;
 	char	*binary_path;
@@ -115,7 +115,7 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 	while (current)
 	{
 		if (current->args && current->args[0] && is_builtins(current->args[0]))
-			builtins_execution(current, env_list);
+			builtins_execution(current);
 		else
 		{
 			binary_path = find_binary_path(current->args[0]);
