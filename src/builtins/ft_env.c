@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:42:02 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/20 15:06:28 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/21 17:00:40 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void    ft_env(t_cmd *cmd)
-// {
-//     t_expand    *env;
+void    ft_env(t_cmd *cmd)
+{
+	t_env	*current;
 
-//     while (env->env_list)
-//     {
-//         cmd = env->env_list;
-//         printf("%p\n", cmd);
-//         env->env_list = env->env_list->next;
-//     }
-// }
+	current = cmd->env_list;
+    while (current)
+    {
+        printf("%s=%s\n", current->name, current->value);
+		current = current->next;
+    }
+}
