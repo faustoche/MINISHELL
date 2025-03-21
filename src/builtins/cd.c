@@ -13,7 +13,6 @@
 #include "minishell.h"
 
 /* chdir retour -1 si chemin invalide? ou si pas d'acces? */
-/* cd - doit print le chemin apres avoir fait un "cd $OLDPWD" */
 
 	// récupérer la commande cd
 	// chercher la variable HOME
@@ -23,39 +22,58 @@
 	// recupérer le nouveau repertoire (PWD) et l'enregistrer
 	// nettoyer la mémoire (getcwd utilise malloc) et retourner le statut
 
-int ft_cd(t_cmd *cmd)
+static void	print_cwd(void)
 {
-	char	*pwd;
-	//char	*old_pwd;
+	char *cwd;
+
+	cwd = getcwd(NULL, 0);
+	printf("%s\n", cwd);
+	free(cwd);
+}
+
+void ft_cd(t_cmd *cmd)
+{
 	char	*home;
-	int		res;
+	char	*old_pwd;
+	char	*new_dir;
 
-	pwd = getcwd(NULL, 0); // checker repertoire courant A RETIRER
 	home = getenv("HOME");
-	printf("pwd before chdir: %s\n", pwd);
+	old_pwd = getenv("PWD");
 
-	if (cmd->nb_arg > 2)
-		printf(ERR_ARG, cmd->args[0]);
-	else if (cmd->nb_arg == 1) //"cd"
+	if (cmd->nb_arg == 1) //"cd"
+		new_dir = home;
+	else if (cmd->nb_arg == 2) //"cd arg"
 	{
-		res = chdir(home);
-		if (res == -1)
-			perror("cd");
-		// else if (!res)
-		// 	old_pwd = get_env_value(cmd->env_list, "OLDPWD");
-		// 	//mettre a jour OLDPWD dans les variables d'enviro
+		if (ft_strcmp(cmd->args[1], "-") == 0)
+		{
+			new_dir = getenv("OLDPWD");
+			if (new_dir == NULL)
+			{
+				printf("cd : OLDPWD not set\n");
+				return ;
+			}
+			print_cwd();
+		}
+		else if (ft_strcmp(cmd->args[1], "~") == 0 || ft_strcmp(cmd->args[1], "~/") == 0)
+			new_dir = home;
+		else
+			new_dir = cmd->args[1];
 	}
-	else if (cmd->nb_arg == 2) //"cd /un/path"
+	else if (cmd->nb_arg > 2)
+		printf(ERR_ARG, cmd->args[0]); // autre chose ??
+	if (access(new_dir, F_OK) == -1)
 	{
-		res = chdir(cmd->args[1]);
-		if (res == -1)
-			perror("cd");
-		// else if (!res)
-		// 	old_pwd = get_env_value(cmd->env_list, "OLDPWD");
+		perror("cd");
+		return ;
 	}
-	pwd = getcwd(NULL, 0); // checker repertoire courant, A RETIRER
-	printf("pwd after chdir: %s\n", pwd);
-	return(0);
+	setenv("OLDPWD", old_pwd, 1);//ici enregistrer OLDPWD
+	if (chdir(new_dir) == -1)
+	{
+		perror("cd");
+		return ;
+	}
+	setenv("PWD", new_dir, 1);// ici enregistrer PWD avec new_dir
+	print_cwd();
 }
 
 // static char	*find_parent_dir(char *dir)

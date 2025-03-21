@@ -36,15 +36,9 @@ int	builtins_execution(t_cmd *cmd)
 	if (!cmd || !cmd->args || !cmd->args[0])
 		return (0);
 	if (ft_strcmp(cmd->args[0], "echo") == 0)
-	{
 		ft_echo(cmd);
-		return (1);
-	}
 	if (ft_strcmp(cmd->args[0], "cd") == 0)
-	{
 		ft_cd(cmd);
-		return (1);
-	}
 	// if (ft_strcmp(cmd->args[0], "pwd") == 0)
 	// {
 	// 	ft_echo(cmd);
