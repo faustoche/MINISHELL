@@ -6,26 +6,94 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:50:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/21 17:46:26 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/24 20:29:45 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Step 2 : Gérer la commande export */
+t_env	*find_env_var(t_env *env_list, char *name)
+{
+	t_env	*current;
+	
+	current = env_list;
+	while (current)
+	{
+		if (strcmp(current->name, name) == 0)
+			return (current);
+		current = current->next;
+	}
+	return (NULL);
+}
 
-// Parser l'entrée utilisateur 
-// Vérifier si l'utilisateur tape export sans argument : afficher toutes les variables triées
-// Sinon extraire key=value des arguments fournis
+void	add_env_var(t_env **env_list, char *name, char *value)
+{
+	t_env	*new_var;
+	
+	new_var = malloc(sizeof(t_env));
+	if (!new_var)
+		return;
+	new_var->name = ft_strdup(name);
+	new_var->value = ft_strdup(value);
+	new_var->next = *env_list;
+	*env_list = new_var;
+}
 
-// Ajouter ou mettre à jour une variable
-// Si la variable existe déjà : mettre à jour sa valeur
-// Sinon : créer une nouvelle variable et l'ajouter à la liste
 
-// Gérer les cas spécifiques
-// export VAR= définir VAR avec une valeur vide
+void export_variable(t_env **env_list, char *arg)
+{
+	char    *name;
+	char    *value;
+	t_env   *env_var;
+	char    *equal_pos;
 
-/* Step 3 : Afficher une nouvelle ligne (export sans ARGUMENT)*/
+	if (!arg || *arg == '\0' || *arg == '=')
+	{
+		printf("errorr: not a valid identifier\n");
+		return ;
+	}
+	equal_pos = ft_strchr(arg, '=');
+	if (equal_pos)
+	{
+		if (equal_pos == arg)
+		{
+			printf("errror: not a valid identifier\n");
+			return ;
+		}
+		name = ft_strndup(arg, equal_pos - arg);
+		value = ft_strdup(equal_pos + 1);
+	}
+	else
+	{
+		name = ft_strdup(arg);
+		value = ft_strdup("");
+	}
+	if (!name || !*name)
+	{
+		printf("error: not a valid identifier\n");
+		free(name);
+		free(value);
+		return ;
+	}
+	env_var = find_env_var(*env_list, name);
+	printf("export variable début: %p\n", env_list);
+	if (env_var)
+	{
+		free(env_var->value);
+		env_var->value = ft_strdup(value);
+	}
+	else
+		add_env_var(env_list, name, value);
+	free(name);
+	free(value);
+	// impression de la liste directement dans export
+	t_env	*current;
 
-// Afficher une nouvelle ligne
-// Ne pas afficher les variables supprimées (si unset a été utilisé)
+	current = *env_list;
+	while (current)
+	{
+		printf("%s=%s\n", current->name, current->value);
+		current = current->next;
+	}
+	printf("export variable fin: %p\n", env_list);
+}

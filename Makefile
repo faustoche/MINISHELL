@@ -43,10 +43,10 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				builtins/echo.c\
 				builtins/ft_exit.c\
 				builtins/ft_env.c\
+				builtins/ft_export.c\
 				utils/env_utils.c\
 				utils/free.c\
 				utils/utils.c\
-				bonus/priorities.c\
 				bonus/wildcards.c)
 
 SRCS			= ${MINISHELL}

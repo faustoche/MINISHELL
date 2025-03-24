@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:30:49 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/17 20:29:42 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/24 11:46:04 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ pid_t	create_pipe_and_fork(int pipefd[2])
     return (pid);
 }
 
-void execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, int *stdin_save)
+void execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, int *stdin_save, t_env *env_list)
 {
     int fd_out;
 
@@ -50,7 +50,7 @@ void execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, int *stdin_save
                 fd_out = open_file(cmd->out, REDIR_OUT);
             redirect(fd_out, STDOUT_FILENO);  
         }
-        execute_pipeline_cmd(cmd);
+        execute_pipeline_cmd(cmd, env_list);
         exit(EXIT_FAILURE);
     }
     else  // daron
@@ -58,14 +58,14 @@ void execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, int *stdin_save
         if (cmd->next)
         {
             handle_pipe(pipefd, 1, stdin_save);
-            execute_commands(cmd->next);
+            execute_commands(cmd->next, env_list);
             handle_pipe(pipefd, 2, stdin_save);
         }
         waitpid(pid, NULL, 0);
     }
 }
 
-void execute_redirection(t_cmd *cmd)
+void execute_redirection(t_cmd *cmd, t_env *env_list)
 {
     int		pipefd[2];
     pid_t	pid;
@@ -76,7 +76,7 @@ void execute_redirection(t_cmd *cmd)
     pid = create_pipe_and_fork(pipefd);
     if (pid == -1)
         return ;
-    execute_redirect_pipe(cmd, pipefd, pid, &stdin_save);
+    execute_redirect_pipe(cmd, pipefd, pid, &stdin_save, env_list);
 }
 
 void	handle_pipe(int pipefd[2], int mode, int *stdin_save)

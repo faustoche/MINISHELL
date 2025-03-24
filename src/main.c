@@ -6,11 +6,21 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/21 16:53:43 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/24 20:30:39 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+static char	*prompt(void)
+{
+	char	*line;
+
+	line = readline("minislay> \033[1;32m→\033[0m \033[1;34m~\033[0m ");
+	if (line && *line)
+		add_history(line);
+	return (line);
+}
 
 int	main(int ac, char **av, char **envp)
 {
@@ -46,11 +56,11 @@ int	main(int ac, char **av, char **envp)
 		if (commands)
 		{
 			if (has_pipes(commands))
-				execute_pipeline(commands);
+				execute_pipeline(commands, env_list);
 			else if (is_redirection(commands))
-				execute_redirection(commands);
+				execute_redirection(commands, env_list);
 			else
-				execute_commands(commands);
+				execute_commands(commands, env_list);
 			free_commands(commands);
 		}
 		free_token_list(token_list);
@@ -61,34 +71,3 @@ int	main(int ac, char **av, char **envp)
 	return (0);
 }
 
-char	*prompt(void)
-{
-	char	*line;
-
-	line = readline("minislay> \033[1;32m→\033[0m \033[1;34m~\033[0m ");
-	if (line && *line)
-		add_history(line);
-	return (line);
-}
-
-// void	print_welcome_message(void)
-// {
-// 	printf("\033[1;36m       ******************\n");
-// 	printf("\033[1;36m       ******************\n");
-// 	printf("\033[1;36m▗▖  ▗▖▗▄▄▄▖▗▖  ▗▖▗▄▄▄▖ ▗▄▄▖▗▖ ▗▖▗▄▄▄▖▗▖   ▗▖ \n");
-// 	printf("\033[1;36m▐▛▚▞▜▌  █  ▐▛▚▖▐▌  █  ▐▌   ▐▌ ▐▌▐▌   ▐▌   ▐▌\n");
-// 	printf("\033[1;36m▐▌  ▐▌  █  ▐▌ ▝▜▌  █   ▝▀▚▖▐▛▀▜▌▐▛▀▀▘▐▌   ▐▌ \n");
-// 	printf("\033[1;36m▐▌  ▐▌▗▄█▄▖▐▌  ▐▌▗▄█▄▖▗▄▄▞▘▐▌ ▐▌▐▙▄▄▖▐▙▄▄▖▐▙▄▄▖\n");
-// 	printf("\033[1;36m       ******************\n");
-// 	printf("\033[1;36m       ******************\n");
-// 	printf("\033[1;36m              BY       \n");
-// 	printf("\033[1;36m       ******************\n");
-// 	printf("\033[1;36m       ******************\n");
-// 	printf("\033[1;36m            GHIEONG    \n");
-// 	printf("\033[1;36m              AND      \n");
-// 	printf("\033[1;36m            FCROCQ     \n");
-// 	printf("\033[1;36m       ******************\n");
-// 	printf("\033[1;36m       ******************\n\033[0m");
-// 	printf("\n");
-// 	printf("\n");
-// }
