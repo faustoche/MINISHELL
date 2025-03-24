@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:18:42 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/07 11:52:29 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/24 14:29:07 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ char	*get_env_value(t_env *env_list, char *name)
 			return (current->value);
 		current = current->next;
 	}	
-	return (getenv(name));
+	return (NULL);
 }
 
 t_env	*init_env(char **envp)

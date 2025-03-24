@@ -12,32 +12,6 @@
 
 #include "minishell.h"
 
-void	print_commands(t_cmd *cmd)
-{
-	int	i;
-	int	cmd_num;
-
-	cmd_num = 0;
-	while (cmd)
-	{
-		printf("\nCommande %d :\n", cmd_num++);
-		if (cmd->args)
-		{
-			i = 0;
-			while (cmd->args[i])
-			{
-				printf("Arg[%d]: %s\n", i, cmd->args[i]);
-				i++;
-			}
-		}
-		if (cmd->in)
-			printf("Entrée : %s\n", cmd->in);
-		if (cmd->out)
-			printf("Sortie : %s (append: %d)\n", cmd->out, cmd->append);
-		cmd = cmd->next;
-	}
-}
-
 int	is_separator(int c)
 {
 	return (c == '|' || c == '>' || c == '<' || c == ';'

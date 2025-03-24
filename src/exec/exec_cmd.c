@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/03/21 12:46:51 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/24 16:08:31 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ static void	create_child_process(char **args, char *binary_path)
 	}
 }
 
-void	execute_commands(t_cmd *cmd)
+void	execute_commands(t_cmd *cmd, t_env *env_list)
 {
 	t_cmd	*current;
 	char	*binary_path;
@@ -115,9 +115,11 @@ void	execute_commands(t_cmd *cmd)
 	while (current)
 	{
 		if (current->args && current->args[0] && is_builtins(current->args[0]))
-			builtins_execution(current);
-		else
 		{
+			builtins_execution(current, env_list);
+		}
+		else
+		{	
 			binary_path = find_binary_path(current->args[0]);
 			create_child_process(current->args, binary_path);
 			free(binary_path);

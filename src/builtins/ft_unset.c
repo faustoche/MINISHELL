@@ -3,16 +3,36 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:04:05 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/20 15:04:16 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/24 20:29:38 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Step 4 : Gérer la suppression avec unset */
-
-// Parcourir la liste pour trouver la variable à supprimé
-// Retirer la variable de la liste et libérer la mémoire
+// void unset_variable(char *name, t_env *env_list)
+// {
+//     t_env	*current;
+//     t_env	*previous;
+	
+// 	previous = NULL;
+// 	current = env_list;
+//     while (current)
+//     {
+//         if (ft_strcmp(current->name, name) == 0)
+//         {
+//             if (previous)
+//                 previous->next = current->next;
+//             else
+//                 env_list = current->next;
+//             free(current->name);
+//             free(current->value);
+//             free(current);
+//             return;
+//         }
+//         previous = current;
+//         current = current->next;
+//     }
+// }
