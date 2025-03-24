@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/19 08:43:22 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/24 23:00:30 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,11 @@ int	is_separator(int c)
 {
 	return (c == '|' || c == '>' || c == '<' || c == ';'
 		|| c == '&' || c == '(' || c == ')');
+}
+
+int is_quote(char c)
+{
+    return (c == '\'' || c == '"');
 }
 
 int	is_space(int c)

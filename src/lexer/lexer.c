@@ -6,67 +6,25 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:36:11 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/19 21:50:58 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/24 22:44:03 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	init_lexer(t_lexer *lexer, char *input)
-{
-	lexer->input = input;
-	lexer->tokens = NULL;
-	lexer->pos = 0;
-	lexer->command = 1;
-}
+/* Check syntaxe error and handle specific char and separator */
 
-/* Analyse de l'entrée de caractère pour créer une liste de tokens */
-
-t_token	*lexing(char *input)
-{
-	t_lexer	lexer;
-	int		result;
-
-	if (!input || !*input)
-		return (NULL);
-	if (character_error(input) == -1)
-		return (NULL);
-	init_lexer(&lexer, input);
-	while (lexer.input[lexer.pos])
-	{
-		skip_space(&lexer);
-		if (!lexer.input[lexer.pos])
-			break ;
-		result = handle_special_char(&lexer);
-		if (result < 0)
-		{
-			free_token_list(lexer.tokens);
-			return (NULL);
-		}
-	}
-	t_token *current = lexer.tokens;
-    while (current)
-    {
-        if (current->type == TOKEN_PIPE && !current->next)
-        {
-            printf(ERR_SYNTAX);
-            free_token_list(lexer.tokens);
-            return (NULL);
-        }
-        current = current->next;
-    }
-	return (lexer.tokens);
-}
-
-int	handle_special_char(t_lexer *lexer)
+int handle_special_char(t_lexer *lexer)
 {
 	char	c;
-
+	
 	c = lexer->input[lexer->pos];
-	if (c == '\'')
-		lexer->pos = single_quotes(lexer, lexer->pos);
-	else if (c == '"')
-		lexer->pos = double_quotes(lexer, lexer->pos);
+	if (c == '\'' || c == '"')
+	{
+		lexer->pos = handle_mixed_quotes(lexer, lexer->pos);
+		if (lexer->pos == -1)
+			return (-1);
+	}
 	else if (syntax_error(lexer->input) == -1
 		|| input_check(lexer->input) == -1)
 		return (-1);
@@ -112,12 +70,14 @@ void	add_token(t_lexer *lexer, char *word, int length, int type)
 	}
 }
 
-int	handle_word(t_lexer *lexer, int start)
+/* Handle standard words (commands, arguments) */
+
+int handle_word(t_lexer *lexer, int start)
 {
 	int		end;
-	char	*word;
 	int		type;
-
+	char	*word;
+	
 	end = start;
 	while (lexer->input[end] && !is_space(lexer->input[end])
 		&& !is_separator(lexer->input[end])
