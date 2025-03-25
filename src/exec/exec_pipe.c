@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/25 14:24:54 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 16:30:03 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void execute_pipeline_cmd(t_cmd *cmd, t_env *env_list)
     {
         if (is_builtins(cmd->args[0]))
         {
-            builtins_execution(cmd, env_list);
+            builtins_execution(cmd, &env_list);
             exit(EXIT_SUCCESS);
         }
         else
@@ -43,7 +43,6 @@ void execute_pipeline_cmd(t_cmd *cmd, t_env *env_list)
         exit(EXIT_FAILURE);
     }
 }
-
 
 /* 
 Configure la sortie du processus enfant et exécute la commande
@@ -90,7 +89,7 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
         return;
     if (!has_pipes(cmd) && is_builtins(cmd->args[0]))
     {
-        builtins_execution(cmd, env_list);
+        builtins_execution(cmd, &env_list);
         return;
     }
     if (!cmd->next)

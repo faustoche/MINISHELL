@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/03/25 14:25:08 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 16:29:40 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ void execute_commands(t_cmd *cmd, t_env *env_list)
     {
         if (current->args && current->args[0] && is_builtins(current->args[0]))
         {
-            builtins_execution(current, env_list);
+            builtins_execution(current, &env_list);
         }
         else
         {   

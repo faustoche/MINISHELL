@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:30:49 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/25 14:29:01 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 16:30:19 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ void execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, int *stdin_save
     else  // parent process
     {
         if (is_builtins(cmd->args[0]))
-            builtins_execution(cmd, env_list);
+            builtins_execution(cmd, &env_list);
         if (cmd->next)
         {
             handle_pipe(pipefd, 1, stdin_save);
@@ -121,7 +121,7 @@ void execute_redirection(t_cmd *cmd, t_env *env_list)
             dup2(fd_out, STDOUT_FILENO);
             close(fd_out);
         }
-        builtins_execution(cmd, env_list);
+        builtins_execution(cmd, &env_list);
 
         // Restaurer les descripteurs originaux
         dup2(original_stdin, STDIN_FILENO);

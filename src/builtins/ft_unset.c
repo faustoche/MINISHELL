@@ -6,33 +6,37 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:04:05 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/24 20:29:38 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 17:06:15 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void unset_variable(char *name, t_env *env_list)
-// {
-//     t_env	*current;
-//     t_env	*previous;
-	
-// 	previous = NULL;
-// 	current = env_list;
-//     while (current)
-//     {
-//         if (ft_strcmp(current->name, name) == 0)
-//         {
-//             if (previous)
-//                 previous->next = current->next;
-//             else
-//                 env_list = current->next;
-//             free(current->name);
-//             free(current->value);
-//             free(current);
-//             return;
-//         }
-//         previous = current;
-//         current = current->next;
-//     }
-// }
+t_env *ft_unset(t_env *env_list, char *name)
+{
+	t_env	*new_env_list;
+	t_env	*current;
+	t_env	*prev;
+
+	new_env_list = copy_env_list(env_list);
+	current = new_env_list;
+	prev = NULL;
+	while (current)
+	{
+		if (strcmp(current->name, name) == 0)
+		{
+			if (prev)
+				prev->next = current->next;
+			else
+				new_env_list = current->next;
+			free(current->name);
+			free(current->value);
+			free(current);
+			break ;
+		}
+		prev = current;
+		current = current->next;
+	}
+	free_env_list(env_list);
+	return (new_env_list);
+}

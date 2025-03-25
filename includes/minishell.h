@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/25 14:16:01 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 17:05:55 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,15 +126,13 @@ void 	ft_cd(t_cmd *cmd);
 void	ft_echo(t_cmd *cmd);
 void    ft_env(t_env *env_list);
 void	ft_exit(t_cmd *cmd);
-t_env	*find_env_var(t_env *env_list, char *name);
-void	add_env_var(t_env **env_list, char *name, char *value);
-void	export_variable(t_env **env_list, char *arg);
+t_env	*ft_export(t_env *env_list, char *arg);
+t_env	*ft_unset(t_env *env_list, char *name);
 
 /* EXEC */
 
 int 	is_builtins(char *cmd);
-int		builtins_execution(t_cmd *cmd, t_env *env_list);
-int		builtins_execution2(t_cmd *cmd, t_env *env_list);
+int		builtins_execution(t_cmd *cmd, t_env **env_list);
 char	*build_pathname(char *directory, char *arg);
 char	*find_binary_path(char *arg);
 void	execute_commands(t_cmd *cmd, t_env *env_list);
@@ -153,14 +151,15 @@ void	handle_pipe(int pipefd[2], int mode, int *stdin_save);
 
 /* EXPAND */
 
+t_env	*create_env_element(char *env);
+char	*get_env_value(t_env *env_list, char *name);
+t_env	*init_env(char **envp);
+t_env	*copy_env_list(t_env *original_env);
 char	*extract_variable_name(t_expand *exp, size_t *len);
 int		copy_variable_value(t_expand *exp, char *value, char *name);
 int		process_variable(t_expand *exp);
 int		resize_result_buffer(t_expand *exp);
 int		check_buffer_size(t_expand *exp);
-t_env	*create_env_element(char *env);
-char	*get_env_value(t_env *env_list, char *name);
-t_env	*init_env(char **envp);
 char	*expand_variable(t_env *env_list, char *str, int quote_type);
 char	*init_expand_result(const char *str, t_expand *exp);
 int		expand_loop(t_expand *exp);
@@ -175,11 +174,14 @@ int		syntax_error(char *input);
 int		delimiter_error(char *input);
 int		character_error(char *input);
 int		input_check(char *input);
-int 	single_quotes(t_lexer *lexer, int i);
-int 	double_quotes(t_lexer *lexer, int i);
+t_token	*lexing(char *input);
+int		add_merged_token(t_lexer *lexer, char *merged_word, int is_first_token);
+int		process_token_segment(t_lexer *lexer, int start, char **merged_word);
+char	*merge_quote_content(char *merged_word, char *quote_content);
+int		process_non_quote_char(t_lexer *lexer, int end, char **merged_word);
+int 	handle_mixed_quotes(t_lexer *lexer, int start);
 int		double_delimiter(char *input, int i);
 int 	handle_delimiter(t_lexer *lexer, int i);
-t_token	*lexing(char *input);
 int		handle_special_char(t_lexer *lexer);
 void	add_token(t_lexer *lexer, char *word, int length, int type);
 int 	handle_word(t_lexer *lexer, int start);

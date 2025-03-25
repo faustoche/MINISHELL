@@ -6,13 +6,13 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:42:02 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/25 14:05:48 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 16:08:29 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    ft_env(t_env *env_list)
+void	ft_env(t_env *env_list)
 {
 	t_env	*current;
 

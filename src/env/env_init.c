@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   env_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:18:42 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/24 14:29:07 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/25 16:14:02 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,40 @@ t_env	*init_env(char **envp)
 		i++;
 	}
 	return (env_list);
+}
+
+t_env	*copy_env_list(t_env *original_env)
+{
+	t_env	*copy_head;
+	t_env	*copy_current;
+	t_env	*original_current;
+	t_env	*new_element;
+	
+	original_current = original_env;
+	copy_head = NULL;
+	copy_current = NULL;
+	while (original_current)
+	{
+		new_element = malloc(sizeof(t_env));
+		if (!new_element)
+		{
+			free_env_list(copy_head);
+			return (NULL);
+		}
+		new_element->name = ft_strdup(original_current->name);
+		new_element->value = ft_strdup(original_current->value);
+		new_element->next = NULL;
+		if (!copy_head)
+		{
+			copy_head = new_element;
+			copy_current = new_element;
+		}
+		else
+		{
+			copy_current->next = new_element;
+			copy_current = new_element;
+		}
+		original_current = original_current->next;
+	}
+	return (copy_head);
 }

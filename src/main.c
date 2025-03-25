@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/25 14:19:08 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 17:08:46 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,61 +22,56 @@ static char	*prompt(void)
 	return (line);
 }
 
-int	main(int ac, char **av, char **envp)
+int main(int ac, char **av, char **envp)
 {
-	char	*input;
-	t_token	*token_list;
-	t_cmd	*commands;
-	t_env	*env_list;
+    char    *input;
+    t_token *token_list;
+    t_cmd   *commands;
+    t_env   *env_list;
 
-	(void)ac;
-	(void)av;
-	env_list = init_env(envp);
-	if (!env_list)
-	{
-		printf("Error : env variable initialization\n");
-		return (-1);
-	}
-	while (1)
-	{
-		input = prompt();
-		if (!input)
-		{
-			printf("error\n");
-			break ;
-		}
-		token_list = parse_input(input);
-		if (!token_list)
-		{
-			free(input);
-			continue ;
-		}
-		expand_tokens(token_list, env_list);
-		commands = parse_commands(token_list, env_list);
-		if (commands)
-		{
-			if (has_pipes(commands))
+    (void)ac;
+    (void)av;
+    env_list = copy_env_list(init_env(envp));
+    if (!env_list)
+    {
+        printf("Error: env variable initialization\n");
+        return (-1);
+    }
+    while (1)
+    {
+        input = prompt();
+        if (!input)
+        {
+            printf("error\n");
+            break ;
+        }
+        token_list = parse_input(input);
+        if (!token_list)
+        {
+            free(input);
+            continue ;
+        }
+        expand_tokens(token_list, env_list);
+        commands = parse_commands(token_list, env_list);
+        if (commands)
+        {
+            if (commands)
 			{
-				printf("executepipiline\n");	
-				execute_pipeline(commands, env_list);
+				if (is_builtins(commands->args[0]))
+					builtins_execution(commands, &env_list);
+				else if (has_pipes(commands))
+					execute_pipeline(commands, env_list);
+				else if (is_redirection(commands))
+					execute_redirection(commands, env_list);
+				else
+					execute_commands(commands, env_list);
+				free_commands(commands);
 			}
-			else if (is_redirection(commands))
-			{
-				printf("execute redirection\n");	
-				execute_redirection(commands, env_list);
-			}
-			else
-			{
-				printf("execute commande\n");
-				execute_commands(commands, env_list);
-			}
-			free_commands(commands);
-		}
-		free_token_list(token_list);
-		free(input);
-	}
-	free_env_list(env_list);
-	clear_history();
-	return (0);
+        }
+        free_token_list(token_list);
+        free(input);
+    }
+    free_env_list(env_list);
+    clear_history();
+    return (0);
 }
-
