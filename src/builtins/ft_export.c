@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:50:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/25 17:06:21 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 19:20:17 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,3 +79,4 @@ t_env	*ft_export(t_env *env_list, char *arg)
 	free(value);
 	return (new_env_list);
 }
+
