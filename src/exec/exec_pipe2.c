@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 20:54:57 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/25 13:47:54 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 18:27:32 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ int create_pipe(int pipefd[2])
 
 pid_t create_process()
 {
-    printf("FORK create process\n");
     pid_t pid = fork();
     if (pid == -1)
     perror("fork error");

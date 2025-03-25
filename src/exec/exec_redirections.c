@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:30:49 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/25 16:30:19 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 18:29:04 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ pid_t	create_pipe_and_fork(int pipefd[2])
         perror("Error : pipe creation failed\n");
         return (-1);
     }
-    printf("FORK create pipe and fork\n");
     pid = fork();
     if (pid == -1)
     {

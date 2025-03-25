@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/25 16:30:03 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 18:28:34 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ void execute_pipeline_cmd(t_cmd *cmd, t_env *env_list)
         exit(EXIT_FAILURE);
     }
 }
+
 
 /* 
 Configure la sortie du processus enfant et exécute la commande
