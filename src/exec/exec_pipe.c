@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/24 11:46:49 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 14:24:54 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,27 @@
 
 /* Exécute la commande */
 
-void	execute_pipeline_cmd(t_cmd *cmd, t_env *env_list)
+void execute_pipeline_cmd(t_cmd *cmd, t_env *env_list)
 {
-    char	*pathname;
+    char *pathname;
     
-	if (cmd->args && cmd->args[0] && is_builtins(cmd->args[0]))
-    builtins_execution(cmd, env_list);
-    else if (cmd->args && cmd->args[0])
+    if (cmd->args && cmd->args[0])
     {
-        pathname = find_binary_path(cmd->args[0]);
-        if (!pathname || (execve(pathname, cmd->args, NULL) == -1))
+        if (is_builtins(cmd->args[0]))
         {
-            if (pathname)
-            free(pathname); // leak?
-            printf(ERR_CMD, cmd->args[0]);
-            exit(EXIT_FAILURE);
+            builtins_execution(cmd, env_list);
+            exit(EXIT_SUCCESS);
+        }
+        else
+        {
+            pathname = find_binary_path(cmd->args[0]);
+            if (!pathname || (execve(pathname, cmd->args, NULL) == -1))
+            {
+                if (pathname)
+                    free(pathname);
+                printf(ERR_CMD, cmd->args[0]);
+                exit(EXIT_FAILURE);
+            }
         }
     }
     else
@@ -38,6 +44,7 @@ void	execute_pipeline_cmd(t_cmd *cmd, t_env *env_list)
     }
 }
 
+
 /* 
 Configure la sortie du processus enfant et exécute la commande
 Le processus enfant écrit son output dans le pipe
@@ -45,6 +52,7 @@ Le processus enfant écrit son output dans le pipe
 
 void	execute_child(t_cmd *cmd, int pipefd[2], t_env *env_list)
 {
+    (void)env_list;
     close(pipefd[0]);
     dup2(pipefd[1], STDOUT_FILENO);
     close(pipefd[1]);
@@ -75,15 +83,20 @@ void execute_parent_pipeline(t_cmd *cmd, int pipefd[2], pid_t pid, t_env *env_li
 
 void execute_pipeline(t_cmd *cmd, t_env *env_list)
 {
-    int     pipefd[2];
-    pid_t   pid;
+    int pipefd[2];
+    pid_t pid;
     
     if (!cmd)
         return;
+    if (!has_pipes(cmd) && is_builtins(cmd->args[0]))
+    {
+        builtins_execution(cmd, env_list);
+        return;
+    }
     if (!cmd->next)
     {
         execute_commands(cmd, env_list);
-        return ;
+        return;
     }
     if (create_pipe(pipefd) == -1)
         return;

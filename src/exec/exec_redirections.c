@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:30:49 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/24 11:46:04 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 14:29:01 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ pid_t	create_pipe_and_fork(int pipefd[2])
         perror("Error : pipe creation failed\n");
         return (-1);
     }
+    printf("FORK create pipe and fork\n");
     pid = fork();
     if (pid == -1)
     {
@@ -34,8 +35,10 @@ void execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, int *stdin_save
 {
     int fd_out;
 
-    if (pid == 0)  // kid
+    if (pid == 0)  // child process
     {
+        if (is_builtins(cmd->args[0]))
+            exit(EXIT_SUCCESS);
         if (cmd->next)
             handle_pipe(pipefd, 0, NULL);
         if (cmd->in)
@@ -53,8 +56,10 @@ void execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, int *stdin_save
         execute_pipeline_cmd(cmd, env_list);
         exit(EXIT_FAILURE);
     }
-    else  // daron
+    else  // parent process
     {
+        if (is_builtins(cmd->args[0]))
+            builtins_execution(cmd, env_list);
         if (cmd->next)
         {
             handle_pipe(pipefd, 1, stdin_save);
@@ -73,9 +78,63 @@ void execute_redirection(t_cmd *cmd, t_env *env_list)
 
     if (!cmd)
         return;
+    if (is_builtins(cmd->args[0]))
+    {
+        // Gérer les redirections pour les built-ins
+        int fd_in = STDIN_FILENO;
+        int fd_out = STDOUT_FILENO;
+        int original_stdin = dup(STDIN_FILENO);
+        int original_stdout = dup(STDOUT_FILENO);
+
+        // Redirection d'entrée
+        if (cmd->in)
+        {
+            fd_in = open_file(cmd->in, REDIR_IN);
+            if (fd_in == -1)
+                return;
+            dup2(fd_in, STDIN_FILENO);
+            close(fd_in);
+        }
+        else if (cmd->heredoc != -1)
+        {
+            dup2(cmd->heredoc, STDIN_FILENO);
+        }
+
+        // Redirection de sortie
+        if (cmd->out)
+        {
+            if (cmd->append)
+                fd_out = open_file(cmd->out, REDIR_APPEND);
+            else
+                fd_out = open_file(cmd->out, REDIR_OUT);
+            
+            if (fd_out == -1)
+            {
+                // Restaurer les descripteurs originaux
+                dup2(original_stdin, STDIN_FILENO);
+                dup2(original_stdout, STDOUT_FILENO);
+                close(original_stdin);
+                close(original_stdout);
+                return;
+            }
+            
+            dup2(fd_out, STDOUT_FILENO);
+            close(fd_out);
+        }
+        builtins_execution(cmd, env_list);
+
+        // Restaurer les descripteurs originaux
+        dup2(original_stdin, STDIN_FILENO);
+        dup2(original_stdout, STDOUT_FILENO);
+        close(original_stdin);
+        close(original_stdout);
+        return;
+    }
+
+    // Pour les commandes non built-in, continuer avec le fork
     pid = create_pipe_and_fork(pipefd);
     if (pid == -1)
-        return ;
+        return;
     execute_redirect_pipe(cmd, pipefd, pid, &stdin_save, env_list);
 }
 

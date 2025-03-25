@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 14:58:50 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/24 20:25:40 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 14:21:06 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int is_builtins(char *cmd)
 int	builtins_execution(t_cmd *cmd, t_env *env_list)
 {
 	if (!cmd || !cmd->args || !cmd->args[0])
-		return (0);
+		return (-1);
 	if (ft_strcmp(cmd->args[0], "echo") == 0)
 		ft_echo(cmd);
 	if (ft_strcmp(cmd->args[0], "cd") == 0)
@@ -46,23 +46,21 @@ int	builtins_execution(t_cmd *cmd, t_env *env_list)
 int	builtins_execution2(t_cmd *cmd, t_env *env_list)
 {
 	if (!cmd || !cmd->args || !cmd->args[0])
-		return (0);
+		return (-1);
 	if (ft_strcmp(cmd->args[0], "export") == 0)
 	{
-		printf("builtins exec avant : %p\n", cmd->env_list);
 		export_variable(&env_list, cmd->args[1]);
-		printf("builtins exec apres : %p\n", cmd->env_list);
-		return (1);
+		return (-1);
 	}
 	if (ft_strcmp(cmd->args[0], "env") == 0)
 	{
-		ft_env(cmd);
-		return (1);
+		ft_env(env_list);
+		return (-1);
 	}
 	if (ft_strcmp(cmd->args[0], "exit") == 0)
 	{
 		ft_exit(cmd);
-		return (1);
+		return (-1);
 	}
 	return (0);
 }

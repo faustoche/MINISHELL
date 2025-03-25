@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/24 20:48:36 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 14:16:01 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ char	**expand_wildcards(char *sign);
 
 void 	ft_cd(t_cmd *cmd);
 void	ft_echo(t_cmd *cmd);
-void    ft_env(t_cmd *cmd);
+void    ft_env(t_env *env_list);
 void	ft_exit(t_cmd *cmd);
 t_env	*find_env_var(t_env *env_list, char *name);
 void	add_env_var(t_env **env_list, char *name, char *value);
@@ -183,11 +183,6 @@ t_token	*lexing(char *input);
 int		handle_special_char(t_lexer *lexer);
 void	add_token(t_lexer *lexer, char *word, int length, int type);
 int 	handle_word(t_lexer *lexer, int start);
-int		add_merged_token(t_lexer *lexer, char *merged_word, int is_first_token);
-int		process_token_segment(t_lexer *lexer, int start, char **merged_word);
-char	*merge_quote_content(char *merged_word, char *quote_content);
-int		process_non_quote_char(t_lexer *lexer, int end, char **merged_word);
-int		handle_mixed_quotes(t_lexer *lexer, int start);
 
 /* PARSING */
 

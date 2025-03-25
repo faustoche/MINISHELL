@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:50:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/24 20:29:45 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 14:09:11 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,6 @@ void export_variable(t_env **env_list, char *arg)
 		return ;
 	}
 	env_var = find_env_var(*env_list, name);
-	printf("export variable début: %p\n", env_list);
 	if (env_var)
 	{
 		free(env_var->value);
@@ -86,14 +85,4 @@ void export_variable(t_env **env_list, char *arg)
 		add_env_var(env_list, name, value);
 	free(name);
 	free(value);
-	// impression de la liste directement dans export
-	t_env	*current;
-
-	current = *env_list;
-	while (current)
-	{
-		printf("%s=%s\n", current->name, current->value);
-		current = current->next;
-	}
-	printf("export variable fin: %p\n", env_list);
 }

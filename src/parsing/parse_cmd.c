@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/21 12:58:49 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 14:16:15 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@ t_cmd	*init_command(void)
 	if (!cmd)
 		return (NULL);
 	cmd->args = NULL;
-	cmd->in = NULL;
-	cmd->out = NULL;
+	cmd->in = 0;
+	cmd->out = 0;
 	cmd->append = 0;
 	cmd->next = NULL;
 	cmd->nb_arg = 0;
