@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:30:49 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/25 18:29:04 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 18:45:22 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,6 @@ void execute_redirection(t_cmd *cmd, t_env *env_list)
         return;
     if (is_builtins(cmd->args[0]))
     {
-        // Gérer les redirections pour les built-ins
         int fd_in = STDIN_FILENO;
         int fd_out = STDOUT_FILENO;
         int original_stdin = dup(STDIN_FILENO);

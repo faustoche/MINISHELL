@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/03/25 18:28:16 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 18:48:45 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,6 @@ static void	create_child_process(char **args, char *binary_path)
 	pid_t	result;
 	int		status;
 
-	printf("FORK create child process\n");
 	pid = fork();
 	if (pid == -1)
 	{
@@ -115,9 +114,7 @@ void execute_commands(t_cmd *cmd, t_env *env_list)
     while (current)
     {
         if (current->args && current->args[0] && is_builtins(current->args[0]))
-        {
             builtins_execution(current, &env_list);
-        }
         else
         {   
             binary_path = find_binary_path(current->args[0]);

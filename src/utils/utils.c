@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/25 14:14:16 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 18:40:55 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ void	skip_space(t_lexer *lexer)
 		lexer->pos++;
 }
 
-int	is_redirection(t_cmd *cmd)
+int is_redirection(t_cmd *cmd)
 {
-	return (cmd->heredoc);
+    return ((cmd->in || cmd->out || cmd->heredoc != -1) ? 1 : 0);
 }
 
 int is_numeric(char *str)

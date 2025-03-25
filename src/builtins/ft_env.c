@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:42:02 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/25 16:08:29 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 18:47:27 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,3 +23,4 @@ void	ft_env(t_env *env_list)
 		current = current->next;
 	}
 }
+ls -l | grep "\.c"

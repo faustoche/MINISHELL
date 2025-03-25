@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/25 18:28:34 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/25 18:44:47 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,11 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
     pid_t pid;
     
     if (!cmd)
-        return;
-    if (!has_pipes(cmd) && is_builtins(cmd->args[0]))
+        return ;
+    if (is_builtins(cmd->args[0]))
     {
         builtins_execution(cmd, &env_list);
-        return;
+        return ;
     }
     if (!cmd->next)
     {
