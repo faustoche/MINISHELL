@@ -31,12 +31,14 @@ static void	print_cwd(void)
 	free(cwd);
 }
 
-void ft_cd(t_cmd *cmd)
+t_env	*ft_cd(t_cmd *cmd, t_env *env_list)
 {
 	char	*home;
 	char	*old_pwd;
 	char	*new_dir;
+	t_env	*copied_env_list;
 
+	copied_env_list = copy_env_list(env_list);
 	home = getenv("HOME");
 	old_pwd = getenv("PWD");
 
@@ -73,49 +75,6 @@ void ft_cd(t_cmd *cmd)
 		return ;
 	}
 	setenv("PWD", new_dir, 1);// ici enregistrer PWD avec new_dir
-	print_cwd();
+	print_cwd(); //PRINT!!!!!!!1
+	return (copied_env_list);
 }
-
-// static char	*find_parent_dir(char *dir)
-// {
-// 	char	*res;
-// 	int		i;
-// 	size_t	end;
-
-// 	res = NULL;
-// 	i = 0;
-// 	while (dir[i] != '\0')
-// 		i++;
-// 	while (dir[i] != '/')
-// 		i--;
-// 	end = i;
-// 	res = ft_substr(dir, 0, end);
-// 	return (res);
-// }
-
-// int ft_cd(t_cmd *cmd)
-// {
-// 	char	*pwd;
-// 	char	*home;
-// 	char	*new;
-
-// 	home = getenv("HOME");
-// 	pwd = getcwd(NULL, 0);
-// 	printf("pwd before chdir: %s\n", pwd);
-// 	if (cmd->nb_arg > 2)
-// 		printf(ERR_ARG, cmd->args[0]);
-// 	else if (cmd->nb_arg == 1)
-// 		chdir(home); // checker si erreur
-// 	else if (cmd->nb_arg == 2)
-// 	{
-// 		if (ft_strcmp(cmd->args[1], "..") == 0)
-// 		{
-// 			new = find_parent_dir(pwd);
-// 			chdir(new);
-// 			free(new);
-// 		}
-// 	}
-// 	pwd = getcwd(NULL, 0);
-// 	printf("pwd apres chdir: %s\n", pwd);
-// 	return(0);
-// }
