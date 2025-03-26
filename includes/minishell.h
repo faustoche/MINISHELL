@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/26 16:22:57 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/26 18:08:10 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-typedef	struct s_expand
+typedef	struct	s_expand
 {
 	char	*result;
 	size_t	capacity;
@@ -71,14 +71,14 @@ typedef	struct s_expand
 	char	*str;
 }	t_expand;
 
-typedef struct s_token
+typedef struct	s_token
 {
 	char			*value;
 	int				type;
 	struct s_token	*next;
 }	t_token;
 
-typedef struct s_cmd
+typedef struct	s_cmd
 {
 	char			**args;
 	char			*in;
@@ -92,7 +92,7 @@ typedef struct s_cmd
 	int				exit_status;
 }	t_cmd;
 
-typedef	struct s_lexer
+typedef	struct	s_lexer
 {
 	int				pos;
 	char			*input;
@@ -189,8 +189,8 @@ t_cmd	*init_command(void);
 t_cmd	*parse_commands(t_token *token_lis, t_env *env_list);
 int		process_pipe_token(t_token **token, t_cmd **current, t_cmd **head);
 int		process_redirection_token(t_token **token, t_cmd **current, t_cmd **head);
-int		process_other_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env_list);
-int		process_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env_list);
+int		process_other_token(t_token **token, t_cmd **curr, t_cmd **head, t_env *env);
+int		process_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env);
 int		redirection_token(t_token *token);
 int		redirection_process(t_token **token, t_cmd **current, t_cmd **head);
 void	free_token_list(t_token *head);
@@ -201,7 +201,7 @@ int		handle_redirection(t_token *token, t_cmd *current, t_cmd *head);
 int		redirection(t_cmd *cmd, char *file, int out, int append);
 int		handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head);
 int		get_token_type(char *token, int *command);
-int		handle_standard_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env_list);
+int		handle_std_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env);
 
 /* UTILS */
 

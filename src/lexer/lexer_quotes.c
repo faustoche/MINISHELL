@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_quotes.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 16:50:10 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/24 22:48:43 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/26 17:53:29 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int add_merged_token(t_lexer *lexer, char *merged_word, int is_first_token)
+int	add_merged_token(t_lexer *lexer, char *merged_word, int is_first_token)
 {
-	int token_type;
-	
+	int	token_type;
+
 	if (is_first_token)
 		token_type = get_token_type(merged_word, &lexer->command);
 	else
@@ -27,12 +27,12 @@ int add_merged_token(t_lexer *lexer, char *merged_word, int is_first_token)
 
 /* Extract quoted content or handle non quoted char */
 
-int process_token_segment(t_lexer *lexer, int start, char **merged_word)
+int	process_token_segment(t_lexer *lexer, int start, char **merged_word)
 {
-	int end;
-	char quote_type;
-	char *quote_content;
-	
+	int		end;
+	char	quote_type;
+	char	*quote_content;
+
 	end = start;
 	if (lexer->input[end] == '\'' || lexer->input[end] == '"')
 	{
@@ -43,7 +43,7 @@ int process_token_segment(t_lexer *lexer, int start, char **merged_word)
 		if (lexer->input[end] == '\0')
 		{
 			printf(ERR_SYNTAX);
-			return -1;
+			return (-1);
 		}
 		quote_content = ft_strndup(lexer->input + start + 1, end - start - 1);
 		*merged_word = merge_quote_content(*merged_word, quote_content);
@@ -57,8 +57,8 @@ int process_token_segment(t_lexer *lexer, int start, char **merged_word)
 
 char	*merge_quote_content(char *merged_word, char *quote_content)
 {
-	char *temp;
-	char *new_merged;
+	char	*temp;
+	char	*new_merged;
 
 	temp = merged_word;
 	if (merged_word)
@@ -89,11 +89,11 @@ int	process_non_quote_char(t_lexer *lexer, int end, char **merged_word)
 
 /* Handle mixed quotes and cat them in quotes */
 
-int handle_mixed_quotes(t_lexer *lexer, int start)
+int	handle_mixed_quotes(t_lexer *lexer, int start)
 {
-	int end;
-	char *merged_word;
-	
+	int		end;
+	char	*merged_word;
+
 	end = start;
 	merged_word = NULL;
 	while (lexer->input[end] && lexer->input[end] != ' ')
@@ -102,7 +102,7 @@ int handle_mixed_quotes(t_lexer *lexer, int start)
 		if (end == -1)
 		{
 			free(merged_word);
-			return -1;
+			return (-1);
 		}
 	}
 	if (merged_word)

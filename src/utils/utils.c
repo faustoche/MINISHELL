@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/26 11:31:05 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/26 17:46:07 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,25 +31,24 @@ void	skip_space(t_lexer *lexer)
 
 int	is_redirection(t_cmd *cmd)
 {
-	return (cmd-> in || cmd->out || cmd->heredoc);
+	return (cmd->in || cmd->out || cmd->heredoc);
 }
 
-int is_numeric(char *str)
+int	is_numeric(char *str)
 {
-    int i;
-    
-    if (!str)
-        return (0);
-    if (str[0] == '-' || str[0] == '+')
-        i = 1;
-    else
-        i = 0;
-    
-    while (str[i])
-    {
-        if (!ft_isdigit(str[i]))
-            return (0);
-        i++;
-    }
-    return (1);
+	int	i;
+
+	if (!str)
+		return (0);
+	if (str[0] == '-' || str[0] == '+')
+		i = 1;
+	else
+		i = 0;
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
 }

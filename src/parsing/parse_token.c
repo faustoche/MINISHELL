@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/26 14:24:16 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/26 17:47:38 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	get_token_type(char *token, int *command)
 	return (TOKEN_ARGUMENT);
 }
 
-int	handle_standard_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env_list)
+int	handle_std_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env)
 {
 	t_cmd	*new_cmd;
 
@@ -52,7 +52,7 @@ int	handle_standard_token(t_token **token, t_cmd **current, t_cmd **head, t_env 
 			free_commands(*head);
 			return (-1);
 		}
-		new_cmd->env_list = env_list;
+		new_cmd->env_list = env;
 		if (!(*head))
 			*head = new_cmd;
 		else

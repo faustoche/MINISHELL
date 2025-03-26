@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:36:11 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/24 22:44:03 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/26 18:01:02 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 /* Check syntaxe error and handle specific char and separator */
 
-int handle_special_char(t_lexer *lexer)
+int	handle_special_char(t_lexer *lexer)
 {
 	char	c;
-	
+
 	c = lexer->input[lexer->pos];
 	if (c == '\'' || c == '"')
 	{
@@ -72,12 +72,12 @@ void	add_token(t_lexer *lexer, char *word, int length, int type)
 
 /* Handle standard words (commands, arguments) */
 
-int handle_word(t_lexer *lexer, int start)
+int	handle_word(t_lexer *lexer, int start)
 {
 	int		end;
 	int		type;
 	char	*word;
-	
+
 	end = start;
 	while (lexer->input[end] && !is_space(lexer->input[end])
 		&& !is_separator(lexer->input[end])

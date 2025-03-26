@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:50:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/26 16:36:01 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/26 18:12:42 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ t_env	*ft_export(t_env *env_list, char *arg)
 	current = new_env_list;
 	while (current)
 	{
-		if (strcmp(current->name, name) == 0)
+		if (ft_strcmp(current->name, name) == 0)
 		{
 			free(current->value);
 			current->value = ft_strdup(value);
