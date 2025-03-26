@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_cmd.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/25 14:16:15 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/26 17:51:05 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,9 @@ t_cmd	*parse_commands(t_token *token_list, t_env *env_list)
 	return (head);
 }
 
-/* Séparation de la commande process token qui était trop longue pour gérer les pipes */
-
 int	process_pipe_token(t_token **token, t_cmd **current, t_cmd **head)
 {
-	t_cmd *new_cmd;
+	t_cmd	*new_cmd;
 
 	if (!*current)
 	{
@@ -90,13 +88,13 @@ int	process_redirection_token(t_token **token, t_cmd **current, t_cmd **head)
 	return (0);
 }
 
-int	process_other_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env_list)
+int	process_other_token(t_token **token, t_cmd **curr, t_cmd **head, t_env *env)
 {
 	if ((*token)->type == TOKEN_SEPARATOR)
-		*current = NULL;
+		*curr = NULL;
 	else
 	{
-		if (handle_standard_token(token, current, head, env_list))
+		if (handle_std_token(token, curr, head, env))
 			return (-1);
 	}
 	if (*token)
@@ -106,14 +104,14 @@ int	process_other_token(t_token **token, t_cmd **current, t_cmd **head, t_env *e
 
 /* Selon le token concerné, j'appelle les fonctions correspondantes */
 
-int	process_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env_list)
+int	process_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env)
 {
 	if ((*token)->type == TOKEN_PIPE)
 		return (process_pipe_token(token, current, head));
 	else if (redirection_token(*token))
 		return (process_redirection_token(token, current, head));
 	else
-		return (process_other_token(token, current, head, env_list));
+		return (process_other_token(token, current, head, env));
 }
 
 int	redirection_token(t_token *token)

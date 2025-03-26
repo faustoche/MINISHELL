@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/26 11:19:14 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/26 18:10:18 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,40 +22,40 @@ static char	*prompt(void)
 	return (line);
 }
 
-int main(int ac, char **av, char **envp)
+int	main(int ac, char **av, char **envp)
 {
-    char    *input;
-    t_token *token_list;
-    t_cmd   *commands;
-    t_env   *env_list;
+	char	*input;
+	t_token	*token_list;
+	t_cmd	*commands;
+	t_env	*env_list;
 
-    (void)ac;
-    (void)av;
-    env_list = copy_env_list(init_env(envp));
-    if (!env_list)
-    {
-        printf("Error: env variable initialization\n");
-        return (-1);
-    }
-    while (1)
-    {
-        input = prompt();
-        if (!input)
-        {
-            printf("error\n");
-            break ;
-        }
-        token_list = parse_input(input);
-        if (!token_list)
-        {
-            free(input);
-            continue ;
-        }
-        expand_tokens(token_list, env_list);
-        commands = parse_commands(token_list, env_list);
-        if (commands)
-        {
-            if (commands)
+	(void)ac;
+	(void)av;
+	env_list = copy_env_list(init_env(envp));
+	if (!env_list)
+	{
+		printf("Error: env variable initialization\n");
+		return (-1);
+	}
+	while (1)
+	{
+		input = prompt();
+		if (!input)
+		{
+			printf("error\n");
+			break ;
+		}
+		token_list = parse_input(input);
+		if (!token_list)
+		{
+			free(input);
+			continue ;
+		}
+		expand_tokens(token_list, env_list);
+		commands = parse_commands(token_list, env_list);
+		if (commands)
+		{
+			if (commands)
 			{
 				if (is_builtins(commands->args[0]) && !has_pipes(commands))
 					builtins_execution(commands, &env_list);
@@ -67,11 +67,11 @@ int main(int ac, char **av, char **envp)
 					execute_commands(commands, env_list);
 				free_commands(commands);
 			}
-        }
-        free_token_list(token_list);
-        free(input);
-    }
-    free_env_list(env_list);
-    clear_history();
-    return (0);
+		}
+		free_token_list(token_list);
+		free(input);
+	}
+	free_env_list(env_list);
+	clear_history();
+	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_builtins.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 14:58:50 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/25 17:06:37 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/26 18:06:39 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,4 +49,5 @@ void builtins_execution(t_cmd *cmd, t_env **env_list)
         ft_env(*env_list);
     // if (ft_strcmp(cmd->args[0], "exit") == 0)
     //     exit(0);
+	return (0);
 }
