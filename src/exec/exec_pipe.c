@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/25 18:28:34 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/26 16:40:17 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,12 +91,12 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
     if (!has_pipes(cmd) && is_builtins(cmd->args[0]))
     {
         builtins_execution(cmd, &env_list);
-        return;
+        return ;
     }
     if (!cmd->next)
     {
         execute_commands(cmd, env_list);
-        return;
+        return ;
     }
     if (create_pipe(pipefd) == -1)
         return;
@@ -104,7 +104,7 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
     if (pid == -1)
     {
         handle_pipe_error(pipefd);
-        return;
+        return ;
     }
     if (pid == 0)
         execute_child(cmd, pipefd, env_list);

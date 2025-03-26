@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/21 12:55:46 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/26 14:24:16 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,6 @@ int	get_token_type(char *token, int *command)
 		return (TOKEN_OPEN_PARENT);
 	if (ft_strcmp(token, ")") == 0)
 		return (TOKEN_CLOSE_PARENT);
-	if (ft_strcmp(token, "&&") == 0)
-		return (TOKEN_AND);
-	if (ft_strcmp(token, "||") == 0)
-		return (TOKEN_OR);
 	if (*command)
 	{
 		*command = 0;
