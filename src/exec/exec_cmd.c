@@ -114,9 +114,7 @@ void execute_commands(t_cmd *cmd, t_env *env_list)
     while (current)
     {
         if (current->args && current->args[0] && is_builtins(current->args[0]))
-        {
             builtins_execution(current, &env_list);
-        }
         else
         {   
             binary_path = find_binary_path(current->args[0]);

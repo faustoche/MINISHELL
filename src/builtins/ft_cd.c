@@ -21,6 +21,26 @@
 	// mettre à jour OLDPWD si cd a reussi
 	// recupérer le nouveau repertoire (PWD) et l'enregistrer
 	// nettoyer la mémoire (getcwd utilise malloc) et retourner le statut
+static t_env	*change_var_value(t_env *env_list, char *name, char *value)
+{
+	t_env	*current;
+
+	current = env_list;
+	while (current)
+	{
+		if (ft_strcmp(current->name, name) == 0)
+		{
+			printf("current->value BEFORE = %s\n", current->value);
+			free(current->value);
+			current->value = ft_strdup(value);
+			printf("current->value AFTER = %s\n", current->value);
+			break ;
+		}
+		current = current->next;
+	}
+	return (env_list);
+}
+
 
 static void	print_cwd(void)
 {
@@ -34,6 +54,7 @@ static void	print_cwd(void)
 t_env	*ft_cd(t_cmd *cmd, t_env *env_list)
 {
 	char	*home;
+	char	*pwd;
 	char	*old_pwd;
 	char	*new_dir;
 	t_env	*copied_env_list;
@@ -41,6 +62,9 @@ t_env	*ft_cd(t_cmd *cmd, t_env *env_list)
 	copied_env_list = copy_env_list(env_list);
 	home = getenv("HOME");
 	old_pwd = getenv("PWD");
+	pwd = getenv("PWD");
+	// printf("old_pwd = %s\n", old_pwd);
+	// printf("pwd = %s\n", pwd);
 
 	if (cmd->nb_arg == 1) //"cd"
 		new_dir = home;
@@ -52,7 +76,7 @@ t_env	*ft_cd(t_cmd *cmd, t_env *env_list)
 			if (new_dir == NULL)
 			{
 				printf("cd : OLDPWD not set\n");
-				return ;
+				return (NULL);
 			}
 			print_cwd();
 		}
@@ -66,15 +90,18 @@ t_env	*ft_cd(t_cmd *cmd, t_env *env_list)
 	if (access(new_dir, F_OK) == -1)
 	{
 		perror("cd");
-		return ;
+		return (NULL);
 	}
-	setenv("OLDPWD", old_pwd, 1);//ici enregistrer OLDPWD
 	if (chdir(new_dir) == -1)
 	{
 		perror("cd");
-		return ;
+		return (NULL);
 	}
-	setenv("PWD", new_dir, 1);// ici enregistrer PWD avec new_dir
+	copied_env_list = change_var_value(copied_env_list, "OLDPWD", old_pwd); //ici enregistrer OLDPWD
+	//printf("new_dir = %s\n", new_dir);
+	pwd = getenv("PWD");
+	//printf("pwd = %s\n", pwd);
+	copied_env_list = change_var_value(copied_env_list, "PWD", pwd);// ici enregistrer PWD avec new_dir
 	print_cwd(); //PRINT!!!!!!!1
 	return (copied_env_list);
 }

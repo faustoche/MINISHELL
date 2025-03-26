@@ -31,38 +31,22 @@ int is_builtins(char *cmd)
 	return (0);
 }
 
-int builtins_execution(t_cmd *cmd, t_env **env_list)
+void builtins_execution(t_cmd *cmd, t_env **env_list)
 {
     if (!cmd || !cmd->args || !cmd->args[0])
-        return (1);
+        return ;
     if (ft_strcmp(cmd->args[0], "echo") == 0)
-    {
         ft_echo(cmd);
-        return (0);
-    }
-    // if (ft_strcmp(cmd->args[0], "cd") == 0)
-    // {
-    //     ft_cd(cmd);
-    //     return (0);
-    // }
+    if (ft_strcmp(cmd->args[0], "cd") == 0)
+        *env_list = ft_cd(cmd, *env_list);
     // if (ft_strcmp(cmd->args[0], "pwd") == 0)
     //     return ft_pwd();
     if (ft_strcmp(cmd->args[0], "export") == 0 && cmd->args[1])
-    {
         *env_list = ft_export(*env_list, cmd->args[1]);
-        return (0);
-    }
     if (ft_strcmp(cmd->args[0], "unset") == 0 && cmd->args[1])
-    {
         *env_list = ft_unset(*env_list, cmd->args[1]);
-        return (0);
-    }
     if (ft_strcmp(cmd->args[0], "env") == 0)
-    {
         ft_env(*env_list);
-        return (0);
-    }
     // if (ft_strcmp(cmd->args[0], "exit") == 0)
     //     exit(0);
-    return (0);
 }
