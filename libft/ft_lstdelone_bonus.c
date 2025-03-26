@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstdelone_bonus.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 10:55:47 by faustoche         #+#    #+#             */
-/*   Updated: 2024/11/27 18:46:01 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/26 14:28:40 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,11 @@ mémoire de ’next’ ne doit pas être free */
 
 #include "libft.h"
 
-void	ft_lstdelone(t_list *lst, void (*del)(void*))
-{
-	del(lst->content);
-	free(lst);
-}
+// void	ft_lstdelone(t_list *lst, void (*del)(void*))
+// {
+// 	del(lst->content);
+// 	free(lst);
+// }
 /*
 void del(void *content)
 {

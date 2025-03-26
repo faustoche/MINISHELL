@@ -3,14 +3,42 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:50:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/25 19:20:17 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/26 16:36:01 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+// export chien=  : si pas de value alors exit
+
+void	ft_lstaddfront(t_env **lst, t_env *new)
+{
+	if (new && lst)
+	{
+		new->next = *lst;
+		*lst = new;
+	}
+}
+
+static void	ft_lstadd_back(t_env **lst, t_env *new)
+{
+	t_env	*temp;
+
+	if (!lst || !new)
+		return ;
+	if (!(*lst))
+	{
+		*lst = new;
+		return ;
+	}
+	temp = *lst;
+	while (temp->next)
+		temp = temp->next;
+	temp->next = new;
+}
 
 t_env	*ft_export(t_env *env_list, char *arg)
 {
@@ -25,6 +53,7 @@ t_env	*ft_export(t_env *env_list, char *arg)
 	if (!arg || *arg == '\0' || *arg == '=')
 	{
 		printf(ERR_SYNTAX);
+		free_env_list(env_list);
 		free_env_list(new_env_list);
 		return (env_list);
 	}
@@ -35,7 +64,7 @@ t_env	*ft_export(t_env *env_list, char *arg)
 		{
 			printf(ERR_SYNTAX);
 			free_env_list(new_env_list);
-			return env_list;
+			return (env_list);
 		}
 		name = ft_strndup(arg, equal_pos - arg);
 		value = ft_strdup(equal_pos + 1);
@@ -43,11 +72,10 @@ t_env	*ft_export(t_env *env_list, char *arg)
 	else
 	{
 		name = ft_strdup(arg);
-		value = ft_strdup("");
+		value = NULL;
 	}
-	if (!name || !*name)
+	if (!name || !*name || !value || !*value)
 	{
-		printf(ERR_SYNTAX);
 		free(name);
 		free(value);
 		free_env_list(new_env_list);
@@ -71,8 +99,7 @@ t_env	*ft_export(t_env *env_list, char *arg)
 			return (NULL);
 		new_var->name = ft_strdup(name);
 		new_var->value = ft_strdup(value);
-		new_var->next = new_env_list;
-		new_env_list = new_var;
+		ft_lstadd_back(&new_env_list, new_var);
 	}
 	free_env_list(env_list);
 	free(name);

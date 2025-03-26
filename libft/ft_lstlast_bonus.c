@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstlast_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 10:55:47 by faustoche         #+#    #+#             */
-/*   Updated: 2024/11/27 18:46:07 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/26 14:28:47 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,16 @@
 
 #include "libft.h"
 
-t_list	*ft_lstlast(t_list *lst)
-{
-	if (!lst)
-		return (NULL);
-	while (lst->next)
-	{
-		lst = lst->next;
-	}
-	return (lst);
-}
+// t_list	*ft_lstlast(t_list *lst)
+// {
+// 	if (!lst)
+// 		return (NULL);
+// 	while (lst->next)
+// 	{
+// 		lst = lst->next;
+// 	}
+// 	return (lst);
+// }
 /*
 
 t_list	*ft_lstnew(void *content)

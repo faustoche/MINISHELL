@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstmap_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 10:55:47 by faustoche         #+#    #+#             */
-/*   Updated: 2024/11/27 18:46:10 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/26 14:28:22 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,30 +18,30 @@ contenu d’un élément si nécessaire.*/
 
 #include "libft.h"
 
-t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
-{
-	t_list	*start;
-	t_list	*new_list;
-	void	*new_element;
+// t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
+// {
+// 	t_list	*start;
+// 	t_list	*new_list;
+// 	void	*new_element;
 
-	if (!lst || !f || !del)
-		return (NULL);
-	start = NULL;
-	while (lst)
-	{
-		new_element = f(lst->content);
-		new_list = ft_lstnew(new_element);
-		if (!new_list)
-		{
-			del(new_element);
-			ft_lstclear(&start, del);
-			return (NULL);
-		}
-		ft_lstadd_back(&start, new_list);
-		lst = lst->next;
-	}
-	return (start);
-}
+// 	if (!lst || !f || !del)
+// 		return (NULL);
+// 	start = NULL;
+// 	while (lst)
+// 	{
+// 		new_element = f(lst->content);
+// 		new_list = ft_lstnew(new_element);
+// 		if (!new_list)
+// 		{
+// 			del(new_element);
+// 			ft_lstclear(&start, del);
+// 			return (NULL);
+// 		}
+// 		ft_lstadd_back(&start, new_list);
+// 		lst = lst->next;
+// 	}
+// 	return (start);
+// }
 /*
 
 t_list	*ft_lstnew(void *content)
