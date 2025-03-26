@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/25 17:05:55 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/26 16:22:57 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,14 +24,9 @@
 # define TOKEN_SEPARATOR 		7
 # define HEREDOC 				8
 # define SINGLE_QUOTE			9
-# define DOUBLE_QUOTE			10
-# define TOKEN_EXPORT_KEY 		11
-# define TOKEN_EXPORT_VALUE 	12
-# define TOKEN_OPEN_PARENT 		13
-# define TOKEN_CLOSE_PARENT 	14
-# define TOKEN_AND 				15
-# define TOKEN_OR				16
-# define TOKEN_ENV_VAR			17
+# define TOKEN_OPEN_PARENT 		10
+# define TOKEN_CLOSE_PARENT 	11
+# define TOKEN_AND
 
 /*--------------- DEFINES ERRORS --------------*/
 
@@ -40,7 +35,6 @@
 # define ERR_CMD "bash: %s: command not found\n"
 # define ERR_DIR "bash: %s: is a directory\n"
 # define ERR_ARG "bash: %s: too many arguments\n"
-# define ERR_INVALID_TOK
 
 /*-------------- LIBRARIES --------------*/
 
@@ -89,7 +83,6 @@ typedef struct s_cmd
 	char			**args;
 	char			*in;
 	char			*out;
-	int				pipe;
 	int				append;
 	int				heredoc;
 	size_t			max_arg;
@@ -108,6 +101,7 @@ typedef	struct s_lexer
 }	t_lexer;
 
 /*-------------- FUNCTIONS --------------*/
+
 
 /* BONUSES */
 

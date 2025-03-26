@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_lstclear_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 10:55:47 by faustoche         #+#    #+#             */
-/*   Updated: 2024/11/27 18:45:57 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/26 14:28:36 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,19 @@ Enfin, le pointeur initial doit être mis à NULL. */
 
 #include "libft.h"
 
-void	ft_lstclear(t_list **lst, void (*del)(void*))
-{
-	t_list	*tmp;
+// void	ft_lstclear(t_list **lst, void (*del)(void*))
+// {
+// 	t_list	*tmp;
 
-	while (*lst)
-	{
-		tmp = (*lst)->next;
-		ft_lstdelone(*lst, del);
-		*lst = tmp;
-	}
-	free(*lst);
-	*lst = NULL;
-}
+// 	while (*lst)
+// 	{
+// 		tmp = (*lst)->next;
+// 		ft_lstdelone(*lst, del);
+// 		*lst = tmp;
+// 	}
+// 	free(*lst);
+// 	*lst = NULL;
+// }
 /*
 void	ft_lstdelone(t_list *lst, void (*del)(void*))
 {
