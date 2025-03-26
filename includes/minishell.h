@@ -116,7 +116,7 @@ char	**expand_wildcards(char *sign);
 
 /* BUILTINS */
 
-void 	ft_cd(t_cmd *cmd);
+t_env	*ft_cd(t_cmd *cmd, t_env *env_list);
 void	ft_echo(t_cmd *cmd);
 void    ft_env(t_env *env_list);
 void	ft_exit(t_cmd *cmd);
@@ -126,7 +126,7 @@ t_env	*ft_unset(t_env *env_list, char *name);
 /* EXEC */
 
 int 	is_builtins(char *cmd);
-int		builtins_execution(t_cmd *cmd, t_env **env_list);
+void	builtins_execution(t_cmd *cmd, t_env **env_list);
 char	*build_pathname(char *directory, char *arg);
 char	*find_binary_path(char *arg);
 void	execute_commands(t_cmd *cmd, t_env *env_list);

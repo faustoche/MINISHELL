@@ -40,7 +40,7 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				env/env_init.c\
 				env/expand.c\
 				env/env_utils.c\
-				builtins/cd.c\
+				builtins/ft_cd.c\
 				builtins/ft_echo.c\
 				builtins/ft_exit.c\
 				builtins/ft_env.c\
