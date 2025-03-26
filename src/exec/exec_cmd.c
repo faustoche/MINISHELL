@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/03/26 16:41:12 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/26 18:06:25 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,22 +107,22 @@ static void	create_child_process(char **args, char *binary_path)
 
 void execute_commands(t_cmd *cmd, t_env *env_list)
 {
-    t_cmd *current;
-    char *binary_path;
+	t_cmd *current;
+	char *binary_path;
 
-    current = cmd;
-    while (current)
-    {
-        if (current->args && current->args[0] && is_builtins(current->args[0]))
-        {
-            builtins_execution(current, &env_list);
-        }
-        else
-        {   
-            binary_path = find_binary_path(current->args[0]);
-            create_child_process(current->args, binary_path);
-            free(binary_path);
-        }
-        current = current->next;
-    }
+	current = cmd;
+	while (current)
+	{
+		if (current->args && current->args[0] && is_builtins(current->args[0]))
+		{
+			builtins_execution(current, &env_list);
+		}
+		else
+		{   
+			binary_path = find_binary_path(current->args[0]);
+			create_child_process(current->args, binary_path);
+			free(binary_path);
+		}
+		current = current->next;
+	}
 }

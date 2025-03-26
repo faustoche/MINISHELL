@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   wildcards.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/09 13:35:02 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/24 20:32:42 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/26 18:11:50 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int match_wildcard(char *sign, char *name)
+int	match_wildcard(char *sign, char *name)
 {
 	if (*sign == '\0' && *name == '\0')
 		return (-1);
@@ -52,26 +52,6 @@ char	**init_matches(void)
 	return (matches);
 }
 
-void	clean_matches(char **matches, int count, DIR *dir)
-{
-	while (count >= 0)
-	{
-		free(matches[count]);
-		count--;
-	}
-	free(matches);
-	if (dir)
-		closedir(dir);
-}
-
-int	add_match(char **matches, int count, char *name)
-{
-	matches[count] = ft_strdup(name);
-	if (!matches[count])
-		return (0);
-	return (-1);
-}
-
 char	**handle_no_matches(char *sign)
 {
 	char	**matches;
@@ -89,41 +69,27 @@ char	**handle_no_matches(char *sign)
 	return (matches);
 }
 
-int collect_matches(char **matches, DIR *dir, char *sign)
+int	collect_matches(char **matches, DIR *dir, char *sign)
 {
-	struct dirent *entry;
-    int count;
-	
-    count = 0;
-    while ((entry = readdir(dir)))
-    {
-		if (match_wildcard(sign, entry->d_name))
-        {
-			if (!add_match(matches, count, entry->d_name))
-            {
-				clean_matches(matches, count, dir);
-                return (-1);
-            }
-            count++;
-        }
-    }
-    matches[count] = NULL;
-    return (count);
-}
+	struct dirent	*entry;
+	int				count;
 
-void	free_wildcards(char **matches)
-{
-	int	i;
-	
-	i = 0;
-	if (!matches)
-	return ;
-	while (matches[i])
+	count = 0;
+	entry = readdir(dir);
+	while (entry)
 	{
-		free(matches[i]);
-		i++;
+		if (match_wildcard(sign, entry->d_name))
+		{
+			if (!add_match(matches, count, entry->d_name))
+			{
+				clean_matches(matches, count, dir);
+				return (-1);
+			}
+			count++;
+		}
 	}
-	free(matches);
+	matches[count] = NULL;
+	return (count);
 }
 
 char	**expand_wildcards(char *sign)
