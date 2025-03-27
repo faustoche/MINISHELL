@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/03/27 12:34:52 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/27 10:46:35 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ static void	create_child_process(char **args, char *binary_path)
 			return ;
 		}
 		else if (!WIFEXITED(status))
-			printf("Error: Processus fils termine anormalement.");
+			printf("Processus fils termine anormalement.");
 	}
 }
 
