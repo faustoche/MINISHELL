@@ -1,19 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
+/*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 08:47:18 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/18 11:53:37 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/27 11:10:26 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* chdir retour -1 si chemin invalide? ou si pas d'acces? */
-
 	// récupérer la commande cd
 	// chercher la variable HOME
 	// sauvegarder l'ancien répertoire (OLDPWD)

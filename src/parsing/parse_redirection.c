@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/26 17:48:48 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/27 10:08:07 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,15 +92,11 @@ int	handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head)
 
 	if (!cmd || !delimiter)
 	{
-		printf("Error : invalid heredoc\n");
 		free_commands(head);
-		return (-1);
+		return (print_error_message("Error : invalid heredoc\n"));
 	}
 	if (pipe(pipe_fd) == -1)
-	{
-		printf("Error : pipe creation failed\n");
-		return (-1);
-	}
+		return (print_error_message("error pipe creation failed\n"));
 	while (1)
 	{
 		line = readline("heredoc> ");

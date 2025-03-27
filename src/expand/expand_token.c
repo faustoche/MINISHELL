@@ -1,72 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand.c                                           :+:      :+:    :+:   */
+/*   expand_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/05 10:25:23 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/20 10:42:56 by fcrocq           ###   ########.fr       */
+/*   Created: 2025/03/27 11:58:53 by fcrocq            #+#    #+#             */
+/*   Updated: 2025/03/27 12:03:15 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// Si rien a expand, retirer le dollar
-// echo $HO : n'affiche rien
-
-
-/* Main function to expand variables */
-
-char	*expand_variable(t_env *env_list, char *str, int quote_type)
-{
-	t_expand	exp;
-
-	if (quote_type == SINGLE_QUOTE)
-		return (ft_strdup(str));
-	exp.env_list = env_list;
-	if (!init_expand_result(str, &exp))
-		return (NULL);
-	if (!expand_loop(&exp))
-		return (NULL);
-	return (exp.result);
-}
-
-char	*init_expand_result(const char *str, t_expand *exp)
-{
-	exp->capacity = ft_strlen(str) + 1;
-	exp->result = malloc(exp->capacity);
-	exp->i = 0;
-	exp->j = 0;
-	exp->str = (char *)str;
-	if (!exp->result)
-		return (NULL);
-	return (exp->result);
-}
-
-/* Main expansion loop */
-
-int	expand_loop(t_expand *exp)
-{
-	while (exp->str[exp->i])
-	{
-		if (!check_buffer_size(exp))
-			return (0);
-		if (exp->str[exp->i] == '$' && exp->str[exp->i + 1] && isalpha(exp->str[exp->i + 1]))
-		{
-			if (!process_variable(exp))
-				return (0);
-		}
-		else
-			exp->result[(exp->j)++] = exp->str[(exp->i)++];
-	}
-	exp->result[exp->j] = '\0';
-	return (1);
-}
-
 /* Expand les variables dans un token */
 
-void expand_variable_in_token(t_token *token, t_env *env_list)
+void	expand_variable_in_token(t_token *token, t_env *env_list)
 {
 	char	*expanded;
 
@@ -84,9 +32,9 @@ void expand_variable_in_token(t_token *token, t_env *env_list)
 
 /* Ajoute les tokens supplémentaires trouvés par l'expansion de wildcards */
 
-void add_wildcard_tokens(t_lexer *lexer, char **matches, int start_index)
+void	add_wildcard_tokens(t_lexer *lexer, char **matches, int start_index)
 {
-	int i;
+	int	i;
 
 	i = start_index;
 	while (matches[i])
@@ -98,11 +46,12 @@ void add_wildcard_tokens(t_lexer *lexer, char **matches, int start_index)
 
 /* Expanse les wildcards dans un token */
 
-void expand_wildcard_in_token(t_token *token, t_lexer *lexer)
+void	expand_wildcard_in_token(t_token *token, t_lexer *lexer)
 {
-	char **matches;
+	char	**matches;
 
-	if (token->value && (ft_strchr(token->value, '*') || ft_strchr(token->value, '?')))
+	if (token->value && (ft_strchr(token->value, '*')
+			|| ft_strchr(token->value, '?')))
 	{
 		matches = expand_wildcards(token->value);
 		if (matches && matches[0])
@@ -117,10 +66,10 @@ void expand_wildcard_in_token(t_token *token, t_lexer *lexer)
 
 /* Fonction principale pour l'expansion des tokens */
 
-void expand_tokens(t_token *token_list, t_env *env_list)
+void	expand_tokens(t_token *token_list, t_env *env_list)
 {
-	t_token *token;
-	t_lexer temp_lexer;
+	t_token	*token;
+	t_lexer	temp_lexer;
 
 	token = token_list;
 	temp_lexer.tokens = token_list;
