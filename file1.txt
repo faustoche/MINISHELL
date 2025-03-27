@@ -47,7 +47,6 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				builtins/ft_exit.c\
 				builtins/ft_env.c\
 				builtins/ft_export.c\
-				builtins/ft_pwd.c\
 				builtins/ft_unset.c\
 				utils/env_utils.c\
 				utils/free.c\
@@ -66,7 +65,7 @@ LIBFT 			= -L$(LIBFT_DIR) -lft
 # ************************************************************************ #
 
 CC          = cc
-CFLAGS      = -Wall -Werror -Wextra -g -g3 -I$(INCLUDES_MINI) -I$(INCLUDES_LIB)
+CFLAGS      = -Wall -Werror -Wextra -g3 -I$(INCLUDES_MINI) -I$(INCLUDES_LIB)
 LDFLAGS		= -lreadline # option pour l'éditeur de liens
 RM = rm -rf
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:52:28 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/27 11:09:43 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/27 21:22:24 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,23 @@
 void	ft_echo(t_cmd *cmd)
 {
 	size_t	i;
+	size_t	j;
 	int		newline;
 
 	newline = 1;
 	i = 1;
-	if (cmd->nb_arg > 1 && ft_strcmp(cmd->args[1], "-n") == 0)
+
+	while (i < cmd->nb_arg && cmd->args[i][0] == '-'
+		&& cmd->args[i][0] == '-' && cmd->args[i][1] == 'n')
 	{
+		j = 1;
+		while (cmd->args[i][j] == 'n')
+			j++;
+		if (cmd->args[i][j] != '\0')
+			break ;
 		newline = 0;
-		i = 2;
+		i++;
 	}
-	else
-		i = 1;
 	while (i < cmd->nb_arg)
 	{
 		printf("%s", cmd->args[i]);

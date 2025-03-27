@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/27 11:51:33 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/27 21:17:29 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,7 @@ void	free_elements(t_env *element);
 void	free_commands(t_cmd *cmd);
 void	free_tokens(char **tokens);
 int		print_error_message(char *str);
-void	quit_minislay(char *line, t_cmd *cmd, t_token *token);
+void	quit_minislay(char *line, t_cmd *cmd, t_token *token, t_env *env);
 void	clean_exit(t_token *tokens, char *input, t_cmd *commands);
 char	*ft_realloc(char *str, size_t size);
 int		is_redirection(t_cmd *cmd);

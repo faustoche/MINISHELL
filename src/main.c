@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/27 12:14:16 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/27 21:16:38 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,7 @@ int	main(int ac, char **av, char **envp)
 		free_token_list(token_list);
 		free(input);
 	}
-	free_env_list(env_list);
 	free(pwd);
-	clear_history();
+	quit_minislay(input, commands, token_list, env_list);
 	return (0);
 }
