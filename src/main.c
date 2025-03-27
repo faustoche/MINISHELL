@@ -24,6 +24,7 @@ static char	*prompt(void)
 
 int	main(int ac, char **av, char **envp)
 {
+	char	*pwd;
 	char	*input;
 	t_token	*token_list;
 	t_cmd	*commands;
@@ -31,9 +32,11 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
+	pwd = getcwd(NULL, 0);
 	env_list = copy_env_list(init_env(envp));
 	if (!env_list)
 		return (print_error_message("Error: env variable init\n"));
+	env_list = change_var_value(env_list, "OLDPWD", pwd);
 	while (1)
 	{
 		input = prompt();
@@ -69,6 +72,7 @@ int	main(int ac, char **av, char **envp)
 		free(input);
 	}
 	free_env_list(env_list);
+	free(pwd);
 	clear_history();
 	return (0);
 }
