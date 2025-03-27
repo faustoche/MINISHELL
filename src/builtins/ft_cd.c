@@ -17,7 +17,7 @@
 	// chercher la variable HOME
 	// sauvegarder l'ancien répertoire (OLDPWD)
 	// exécuter cd et gérer les erreurs
-	// mettre à jour OLDPWD si cd a reussi
+	// mettre à jour OLDPWD si cd a reussi (dans les variables d'enviro)
 	// recupérer le nouveau repertoire (PWD) et l'enregistrer
 	// nettoyer la mémoire (getcwd utilise malloc) et retourner le statut
 static t_env	*change_var_value(t_env *env_list, char *name, char *value)
@@ -57,6 +57,7 @@ t_env	*ft_cd(t_cmd *cmd, t_env *env_list)
 	char	*old_pwd;
 	char	*new_dir;
 	t_env	*copied_env_list;
+	int		res;
 
 	copied_env_list = copy_env_list(env_list);
 	home = getenv("HOME");
@@ -91,16 +92,20 @@ t_env	*ft_cd(t_cmd *cmd, t_env *env_list)
 		perror("cd");
 		return (NULL);
 	}
-	if (chdir(new_dir) == -1)
+	res = chdir(new_dir);
+	if (res == -1)
 	{
 		perror("cd");
 		return (NULL);
 	}
+	else if (res == 0)
+		perror("chdir");
+	printf("new_dir = %s\n", new_dir);
 	copied_env_list = change_var_value(copied_env_list, "OLDPWD", old_pwd); //ici enregistrer OLDPWD
-	//printf("new_dir = %s\n", new_dir);
+	printf("new_dir = %s\n", new_dir);
 	pwd = getenv("PWD");
-	//printf("pwd = %s\n", pwd);
-	copied_env_list = change_var_value(copied_env_list, "PWD", pwd);// ici enregistrer PWD avec new_dir
-	print_cwd(); //PRINT!!!!!!!1
+	printf("pwd = %s\n", pwd);
+	//copied_env_list = change_var_value(copied_env_list, "PWD", pwd);// ici enregistrer PWD avec new_dir
+	print_cwd(); //PRINT!!!!!!!
 	return (copied_env_list);
 }
