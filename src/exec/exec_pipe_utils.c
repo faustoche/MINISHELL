@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 20:54:57 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/27 10:55:57 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/27 12:21:20 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ int	create_pipe(int pipefd[2])
 	if (pipe(pipefd) == -1)
 	{
 		perror("pipe error");
+		close(pipefd[2]);
 		return (-1);
 	}
 	return (0);
