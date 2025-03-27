@@ -115,11 +115,13 @@ char	**expand_wildcards(char *sign);
 
 /* BUILTINS */
 
+t_env	*change_var_value(t_env *env_list, char *name, char *value);
 t_env	*ft_cd(t_cmd *cmd, t_env *env_list);
 void	ft_echo(t_cmd *cmd);
 void	ft_env(t_env *env_list);
 void	ft_exit(t_cmd *cmd);
 t_env	*ft_export(t_env *env_list, char *arg);
+void	ft_pwd();
 t_env	*ft_unset(t_env *env_list, char *name);
 
 /* EXEC */
