@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 08:47:18 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/27 11:10:26 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/27 21:13:59 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ t_env	*change_var_value(t_env *env_list, char *name, char *value)
 t_env	*ft_cd(t_cmd *cmd, t_env *env_list)
 {
 	char	*home;
-	char	*pwd;
+	//char	*pwd;
 	char	*old_pwd;
 	char	*new_dir;
 	t_env	*new_env_list;
@@ -67,7 +67,7 @@ t_env	*ft_cd(t_cmd *cmd, t_env *env_list)
 	new_dir = NULL;
 	new_env_list = copy_env_list(env_list);
 	home = find_var_value(new_env_list, "HOME");
-	pwd = find_var_value(new_env_list, "PWD");
+	//pwd = find_var_value(new_env_list, "PWD");
 	old_pwd = find_var_value(new_env_list, "PWD");
 	if (cmd->nb_arg == 1)
 		new_dir = home;
