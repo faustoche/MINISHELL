@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 20:54:57 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/26 18:04:08 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/27 10:55:57 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	handle_pipe_error(int pipefd[2])
 {
 	close(pipefd[0]);
 	close(pipefd[1]);
+	return ;
 }
 
 /* Crée un pipe entre deux processus */

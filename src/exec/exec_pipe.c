@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/26 18:06:12 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/27 11:53:33 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,7 @@ void	execute_pipeline_cmd(t_cmd *cmd, t_env *env_list)
 		}
 	}
 	else
-	{
-		printf("Error: empty command in pipeline\n");
-		exit(EXIT_FAILURE);
-	}
+		print_error_message("Error: empty command in pipeline\n");
 }
 
 /* 
@@ -64,15 +61,15 @@ Configure l'entrée standard du parent et exécute la commande
 Permet d'exécuter en chaîne les commandes
 */
 
-void	execute_parent_pipeline(t_cmd *cmd, int pipefd[2], pid_t pid, t_env *env_list)
+void	execute_parent_pipeline(t_cmd *cmd, int fd[2], pid_t pid, t_env *env)
 {
 	int	stdin_save;
 
-	close(pipefd[1]);
+	close(fd[1]);
 	stdin_save = dup(STDIN_FILENO);
-	dup2(pipefd[0], STDIN_FILENO);
-	close(pipefd[0]);
-	execute_pipeline(cmd->next, env_list);
+	dup2(fd[0], STDIN_FILENO);
+	close(fd[0]);
+	execute_pipeline(cmd->next, env);
 	dup2(stdin_save, STDIN_FILENO);
 	close(stdin_save);
 	waitpid(pid, NULL, 0);
@@ -88,10 +85,7 @@ void	execute_pipeline(t_cmd *cmd, t_env *env_list)
 	if (!cmd)
 		return ;
 	if (!has_pipes(cmd) && is_builtins(cmd->args[0]))
-	{
 		builtins_execution(cmd, &env_list);
-		return ;
-	}
 	if (!cmd->next)
 	{
 		execute_commands(cmd, env_list);

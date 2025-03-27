@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 11:52:10 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/07 12:37:01 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/27 11:07:43 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,18 +20,18 @@ char	*extract_variable_name(t_expand *exp, size_t *len)
 
 	start = exp->i;
 	while (exp->str[exp->i] && (isalnum(exp->str[exp->i])
-	|| exp->str[exp->i] == '_'))
+			|| exp->str[exp->i] == '_'))
 		(exp->i)++;
 	*len = exp->i - start;
 	return (ft_strndup(exp->str + start, *len));
 }
-	
+
 /* Copies the variable value into the result buffer */
-	
+
 int	copy_variable_value(t_expand *exp, char *value, char *name)
 {
 	size_t	value_len;
-	
+
 	if (!value)
 	{
 		free(name);
@@ -77,7 +77,7 @@ int	process_variable(t_expand *exp)
 int	resize_result_buffer(t_expand *exp)
 {
 	char	*temp;
-	
+
 	exp->capacity *= 2;
 	temp = ft_realloc(exp->result, exp->capacity);
 	if (!temp)
@@ -98,6 +98,6 @@ int	check_buffer_size(t_expand *exp)
 	{
 		if (!resize_result_buffer(exp))
 			return (0);
-		}
-		return (1);
+	}
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:28:18 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/06 14:31:27 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/27 10:08:44 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,4 +34,10 @@ void	free_elements(t_env *element)
 		free(element->value);
 		free(element);
 	}
+}
+
+int	print_error_message(char *str)
+{
+	printf("%s\n", str);
+	return (-1);
 }

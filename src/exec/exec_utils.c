@@ -1,0 +1,92 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   exec_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/27 11:38:54 by fcrocq            #+#    #+#             */
+/*   Updated: 2025/03/27 11:51:05 by fcrocq           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+pid_t	create_pipe_and_fork(int pipefd[2])
+{
+	pid_t	pid;
+
+	if (pipe(pipefd) == -1)
+	{
+		perror("Error : pipe creation failed\n");
+		return (-1);
+	}
+	pid = fork();
+	if (pid == -1)
+	{
+		perror("fork failed");
+		return (-1);
+	}
+	return (pid);
+}
+
+void	execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, int *stdin_save, t_env *env_list)
+{
+	int	fd_out;
+
+	if (pid == 0)
+	{
+		if (is_builtins(cmd->args[0]))
+			exit(EXIT_SUCCESS);
+		if (cmd->next)
+			handle_pipe(pipefd, 0, NULL);
+		if (cmd->in)
+			redirect(open_file(cmd->in, REDIR_IN), STDIN_FILENO);
+		else if (cmd->heredoc != -1)
+			redirect(cmd->heredoc, STDIN_FILENO);
+		if (cmd->out)
+		{
+			if (cmd->append)
+				fd_out = open_file(cmd->out, REDIR_APPEND);
+			else
+				fd_out = open_file(cmd->out, REDIR_OUT);
+			redirect(fd_out, STDOUT_FILENO);
+		}
+		execute_pipeline_cmd(cmd, env_list);
+		exit(EXIT_FAILURE);
+	}
+	else
+	{
+		if (is_builtins(cmd->args[0]))
+			builtins_execution(cmd, &env_list);
+		if (cmd->next)
+		{
+			handle_pipe(pipefd, 1, stdin_save);
+			execute_commands(cmd->next, env_list);
+			handle_pipe(pipefd, 2, stdin_save);
+		}
+		waitpid(pid, NULL, 0);
+	}
+}
+
+void	handle_pipe(int pipefd[2], int mode, int *stdin_save)
+{
+	if (mode == 0)
+	{
+		close(pipefd[0]);
+		dup2(pipefd[1], STDOUT_FILENO);
+		close(pipefd[1]);
+	}
+	else if (mode == 1)
+	{
+		close(pipefd[1]);
+		*stdin_save = dup(STDIN_FILENO);
+		dup2(pipefd[0], STDIN_FILENO);
+		close(pipefd[0]);
+	}
+	else if (mode == 2)
+	{
+		dup2(*stdin_save, STDIN_FILENO);
+		close(*stdin_save);
+	}
+}

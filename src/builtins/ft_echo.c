@@ -1,16 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   echo.c                                             :+:      :+:    :+:   */
+/*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:52:28 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/20 09:39:09 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/27 11:09:43 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/* Ajouter un clean propre a la fin */
 
 void	ft_echo(t_cmd *cmd)
 {
@@ -35,5 +37,4 @@ void	ft_echo(t_cmd *cmd)
 	}
 	if (newline)
 		printf("\n");
-	// ici ajouter un clean
 }

@@ -6,144 +6,94 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:30:49 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/26 18:02:16 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/27 11:53:09 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-pid_t	create_pipe_and_fork(int pipefd[2])
+static int	handle_input_redirection(t_cmd *cmd)
 {
-	pid_t	pid;
+	int	fd_in;
+	int	original_stdin;
 
-	if (pipe(pipefd) == -1)
+	fd_in = STDIN_FILENO;
+	original_stdin = dup(STDIN_FILENO);
+	if (cmd->in)
 	{
-		perror("Error : pipe creation failed\n");
-		return (-1);
+		fd_in = open_file(cmd->in, REDIR_IN);
+		if (fd_in == -1)
+			return (-1);
+		dup2(fd_in, STDIN_FILENO);
+		close (fd_in);
 	}
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("fork failed");
-		return (-1);
-	}
-	return (pid);
+	else if (cmd->heredoc != -1)
+		dup2(cmd->heredoc, STDIN_FILENO);
+	return (original_stdin);
 }
 
-void	execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, int *stdin_save, t_env *env_list)
+static int	handle_output_redirection(t_cmd *cmd)
 {
 	int	fd_out;
+	int	original_stdout;
 
-	if (pid == 0)
+	fd_out = STDOUT_FILENO;
+	original_stdout = dup(STDOUT_FILENO);
+	if (cmd->out)
 	{
-		if (is_builtins(cmd->args[0]))
-			exit(EXIT_SUCCESS);
-		if (cmd->next)
-			handle_pipe(pipefd, 0, NULL);
-		if (cmd->in)
-			redirect(open_file(cmd->in, REDIR_IN), STDIN_FILENO);
-		else if (cmd->heredoc != -1)
-			redirect(cmd->heredoc, STDIN_FILENO);
-		if (cmd->out)
-		{
-			if (cmd->append)
-				fd_out = open_file(cmd->out, REDIR_APPEND);
-			else
-				fd_out = open_file(cmd->out, REDIR_OUT);
-			redirect(fd_out, STDOUT_FILENO);  
-		}
-		execute_pipeline_cmd(cmd, env_list);
-		exit(EXIT_FAILURE);
+		if (cmd->append)
+			fd_out = open_file(cmd->out, REDIR_APPEND);
+		else
+			fd_out = open(cmd->out, REDIR_OUT);
+		if (fd_out == -1)
+			return (-1);
+		dup2(fd_out, STDOUT_FILENO);
+		close (fd_out);
 	}
-	else
+	return (original_stdout);
+}
+
+static void	handle_builtin_redirection(t_cmd *cmd, t_env **env_list)
+{
+	int	original_stdin;
+	int	original_stdout;
+
+	original_stdin = handle_input_redirection(cmd);
+	if (original_stdin == -1)
+		return ;
+	original_stdout = handle_output_redirection(cmd);
+	if (original_stdout == -1)
 	{
-		if (is_builtins(cmd->args[0]))
-			builtins_execution(cmd, &env_list);
-		if (cmd->next)
-		{
-			handle_pipe(pipefd, 1, stdin_save);
-			execute_commands(cmd->next, env_list);
-			handle_pipe(pipefd, 2, stdin_save);
-		}
-		waitpid(pid, NULL, 0);
+		dup2(original_stdin, STDIN_FILENO);
+		close(original_stdin);
+		return ;
 	}
+	builtins_execution(cmd, env_list);
+	dup2(original_stdin, STDIN_FILENO);
+	dup2(original_stdout, STDOUT_FILENO);
+	close(original_stdin);
+	close(original_stdout);
+}
+
+static void	handle_pipe_redirection(t_cmd *cmd, t_env *env_list)
+{
+	int		pipefd[2];
+	int		stdin_save;
+	pid_t	pid;
+
+	stdin_save = -1;
+	pid = create_pipe_and_fork(pipefd);
+	if (pid == -1)
+		return ;
+	execute_redirect_pipe(cmd, pipefd, pid, &stdin_save, env_list);
 }
 
 void	execute_redirection(t_cmd *cmd, t_env *env_list)
 {
-	int		pipefd[2];
-	pid_t	pid;
-	int		stdin_save = -1;
-
 	if (!cmd)
-		return;
+		return ;
 	if (is_builtins(cmd->args[0]))
-	{
-		int fd_in = STDIN_FILENO;
-		int fd_out = STDOUT_FILENO;
-		int original_stdin = dup(STDIN_FILENO);
-		int original_stdout = dup(STDOUT_FILENO);
-		if (cmd->in)
-		{
-			fd_in = open_file(cmd->in, REDIR_IN);
-			if (fd_in == -1)
-				return;
-			dup2(fd_in, STDIN_FILENO);
-			close(fd_in);
-		}
-		else if (cmd->heredoc != -1)
-		{
-			dup2(cmd->heredoc, STDIN_FILENO);
-		}
-		if (cmd->out)
-		{
-			if (cmd->append)
-				fd_out = open_file(cmd->out, REDIR_APPEND);
-			else
-				fd_out = open_file(cmd->out, REDIR_OUT);
-			
-			if (fd_out == -1)
-			{
-				dup2(original_stdin, STDIN_FILENO);
-				dup2(original_stdout, STDOUT_FILENO);
-				close(original_stdin);
-				close(original_stdout);
-				return;
-			}
-			dup2(fd_out, STDOUT_FILENO);
-			close(fd_out);
-		}
-		builtins_execution(cmd, &env_list);
-		dup2(original_stdin, STDIN_FILENO);
-		dup2(original_stdout, STDOUT_FILENO);
-		close(original_stdin);
-		close(original_stdout);
-		return;
-	}
-	pid = create_pipe_and_fork(pipefd);
-	if (pid == -1)
-		return;
-	execute_redirect_pipe(cmd, pipefd, pid, &stdin_save, env_list);
-}
-
-void	handle_pipe(int pipefd[2], int mode, int *stdin_save)
-{
-	if (mode == 0)
-	{
-		close(pipefd[0]);
-		dup2(pipefd[1], STDOUT_FILENO);
-		close(pipefd[1]);
-	}
-	else if (mode == 1)
-	{
-		close(pipefd[1]);
-		*stdin_save = dup(STDIN_FILENO);
-		dup2(pipefd[0], STDIN_FILENO);
-		close(pipefd[0]);
-	}
-	else if (mode == 2)
-	{
-		dup2(*stdin_save, STDIN_FILENO);
-		close(*stdin_save);
-	}
+		handle_builtin_redirection(cmd, &env_list);
+	else
+		handle_pipe_redirection(cmd, env_list);
 }

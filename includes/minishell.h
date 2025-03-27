@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/26 18:08:10 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/27 11:51:33 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-typedef	struct	s_expand
+typedef struct s_expand
 {
 	char	*result;
 	size_t	capacity;
@@ -71,14 +71,14 @@ typedef	struct	s_expand
 	char	*str;
 }	t_expand;
 
-typedef struct	s_token
+typedef struct s_token
 {
 	char			*value;
 	int				type;
 	struct s_token	*next;
 }	t_token;
 
-typedef struct	s_cmd
+typedef struct s_cmd
 {
 	char			**args;
 	char			*in;
@@ -92,7 +92,7 @@ typedef struct	s_cmd
 	int				exit_status;
 }	t_cmd;
 
-typedef	struct	s_lexer
+typedef struct s_lexer
 {
 	int				pos;
 	char			*input;
@@ -102,7 +102,6 @@ typedef	struct	s_lexer
 
 /*-------------- FUNCTIONS --------------*/
 
-
 /* BONUSES */
 
 int		match_wildcard(char *sign, char *name);
@@ -110,7 +109,7 @@ char	**init_matches(void);
 void	clean_matches(char **matches, int count, DIR *dir);
 int		add_match(char **matches, int count, char *name);
 char	**handle_no_matches(char *sign);
-int 	collect_matches(char **matches, DIR *dir, char *sign);
+int		collect_matches(char **matches, DIR *dir, char *sign);
 void	free_wildcards(char **matches);
 char	**expand_wildcards(char *sign);
 
@@ -118,29 +117,29 @@ char	**expand_wildcards(char *sign);
 
 t_env	*ft_cd(t_cmd *cmd, t_env *env_list);
 void	ft_echo(t_cmd *cmd);
-void    ft_env(t_env *env_list);
+void	ft_env(t_env *env_list);
 void	ft_exit(t_cmd *cmd);
 t_env	*ft_export(t_env *env_list, char *arg);
 t_env	*ft_unset(t_env *env_list, char *name);
 
 /* EXEC */
 
-int 	is_builtins(char *cmd);
+int		is_builtins(char *cmd);
 void	builtins_execution(t_cmd *cmd, t_env **env_list);
 char	*build_pathname(char *directory, char *arg);
 char	*find_binary_path(char *arg);
 void	execute_commands(t_cmd *cmd, t_env *env_list);
 void	execute_pipeline_cmd(t_cmd *cmd, t_env *env_list);
 void	execute_child(t_cmd *cmd, int pipefd[2], t_env *env_list);
-void 	execute_parent_pipeline(t_cmd *cmd, int pipefd[2], pid_t pid, t_env *env_list);
-void 	execute_pipeline(t_cmd *cmd, t_env *env_list);
+void	execute_parent_pipeline(t_cmd *cmd, int fd[2], pid_t pid, t_env *env);
+void	execute_pipeline(t_cmd *cmd, t_env *env_list);
 void	handle_pipe_error(int pipefd[2]);
-int 	create_pipe(int pipefd[2]);
-pid_t 	create_process();
-int 	has_pipes(t_cmd *cmd);
+int		create_pipe(int pipefd[2]);
+pid_t	create_process(void);
+int		has_pipes(t_cmd *cmd);
 pid_t	create_pipe_and_fork(int pipefd[2]);
-void 	execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, int *stdin_save, t_env *env_list);
-void 	execute_redirection(t_cmd *cmd, t_env *env_list);
+void	execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, int *stdin_save, t_env *env_list);
+void	execute_redirection(t_cmd *cmd, t_env *env_list);
 void	handle_pipe(int pipefd[2], int mode, int *stdin_save);
 
 /* EXPAND */
@@ -173,12 +172,12 @@ int		add_merged_token(t_lexer *lexer, char *merged_word, int is_first_token);
 int		process_token_segment(t_lexer *lexer, int start, char **merged_word);
 char	*merge_quote_content(char *merged_word, char *quote_content);
 int		process_non_quote_char(t_lexer *lexer, int end, char **merged_word);
-int 	handle_mixed_quotes(t_lexer *lexer, int start);
+int		handle_mixed_quotes(t_lexer *lexer, int start);
 int		double_delimiter(char *input, int i);
-int 	handle_delimiter(t_lexer *lexer, int i);
+int		handle_delimiter(t_lexer *lexer, int i);
 int		handle_special_char(t_lexer *lexer);
 void	add_token(t_lexer *lexer, char *word, int length, int type);
-int 	handle_word(t_lexer *lexer, int start);
+int		handle_word(t_lexer *lexer, int start);
 
 /* PARSING */
 
@@ -201,21 +200,22 @@ int		handle_redirection(t_token *token, t_cmd *current, t_cmd *head);
 int		redirection(t_cmd *cmd, char *file, int out, int append);
 int		handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head);
 int		get_token_type(char *token, int *command);
-int		handle_std_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env);
+int		handle_std_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env);
 
 /* UTILS */
 
-void 	free_env_list(t_env *env_list);
+void	free_env_list(t_env *env_list);
 void	free_elements(t_env *element);
 void	free_commands(t_cmd *cmd);
 void	free_tokens(char **tokens);
+int		print_error_message(char *str);
 void	quit_minislay(char *line, t_cmd *cmd, t_token *token);
-void 	clean_exit(t_token *tokens, char *input, t_cmd *commands);
+void	clean_exit(t_token *tokens, char *input, t_cmd *commands);
 char	*ft_realloc(char *str, size_t size);
 int		is_redirection(t_cmd *cmd);
 int		is_separator(int c);
 int		is_space(int c);
 void	skip_space(t_lexer *lexer);
-int 	is_numeric(char *str);
+int		is_numeric(char *str);
 
 #endif

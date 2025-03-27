@@ -6,22 +6,11 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:50:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/26 18:12:42 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/27 11:10:08 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// export chien=  : si pas de value alors exit
-
-void	ft_lstaddfront(t_env **lst, t_env *new)
-{
-	if (new && lst)
-	{
-		new->next = *lst;
-		*lst = new;
-	}
-}
 
 static void	ft_lstadd_back(t_env **lst, t_env *new)
 {
@@ -106,4 +95,3 @@ t_env	*ft_export(t_env *env_list, char *arg)
 	free(value);
 	return (new_env_list);
 }
-
