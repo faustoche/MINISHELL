@@ -12,6 +12,40 @@
 
 #include "minishell.h"
 
+char	*find_var_value(t_env *env_list, char *name)
+{
+	t_env	*current;
+
+	current = env_list;
+	while (current)
+	{
+		if (ft_strcmp(current->name, name) == 0)
+			return (current->value);
+		current = current->next;
+	}
+	return (NULL);
+}
+
+t_env	*change_var_value(t_env *env_list, char *name, char *value)
+{
+	t_env	*current;
+	t_env	*head;
+
+	head = env_list;
+	current = env_list;
+	while (current)
+	{
+		if (ft_strcmp(current->name, name) == 0)
+		{
+			free(current->value);
+			current->value = ft_strdup(value);
+			break ;
+		}
+		current = current->next;
+	}
+	return (head);
+}
+
 void	free_env_list(t_env *env_list)
 {
 	t_env	*tmp;
