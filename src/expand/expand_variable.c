@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 12:01:35 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/27 12:02:03 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/28 09:47:00 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ char	*expand_variable(t_env *env_list, char *str, int quote_type)
 char	*init_expand_result(const char *str, t_expand *exp)
 {
 	exp->capacity = ft_strlen(str) + 1;
-	exp->result = malloc(exp->capacity);
 	exp->i = 0;
 	exp->j = 0;
 	exp->str = (char *)str;
+	exp->result = malloc(exp->capacity);
 	if (!exp->result)
 		return (NULL);
 	return (exp->result);

@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 11:38:54 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/27 12:42:01 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/28 11:13:02 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,22 +71,29 @@ void	execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, int *stdin_save
 
 void	handle_pipe(int pipefd[2], int mode, int *stdin_save)
 {
+	check_open_fds();
 	if (mode == 0)
 	{
 		close(pipefd[0]);
-		dup2(pipefd[1], STDOUT_FILENO);
+		if (dup2(pipefd[1], STDOUT_FILENO) == -1)
+			perror("dup2 failed (stdout)\n");
 		close(pipefd[1]);
 	}
 	else if (mode == 1)
 	{
 		close(pipefd[1]);
 		*stdin_save = dup(STDIN_FILENO);
-		dup2(pipefd[0], STDIN_FILENO);
+		if (*stdin_save == -1)
+			perror("dup failed (saving stdin)\n");
+		if (dup2(pipefd[0], STDIN_FILENO) == -1)
+			perror("dup2 failed (stdin)\n");
 		close(pipefd[0]);
 	}
 	else if (mode == 2)
 	{
-		dup2(*stdin_save, STDIN_FILENO);
+		if (*stdin_save != -1 && dup2(*stdin_save, STDIN_FILENO) == -1)
+			perror("dup2 failed (stdin)\n");
 		close(*stdin_save);
 	}
+	check_open_fds();
 }

@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/27 10:08:07 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/28 11:05:52 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@ int	open_file(char *filename, int token)
 	int	fd;
 
 	fd = 0;
+	if (!filename)
+	{
+		printf("Error: NULL filename\n");
+		return (-1);
+	}
 	if (token == 4)
 		fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	else if (token == 6)
@@ -28,7 +33,7 @@ int	open_file(char *filename, int token)
 	if (fd < 0)
 	{
 		printf("No such or directory : %s\n", filename);
-		exit (EXIT_FAILURE);
+		return (-1);
 	}
 	return (fd);
 }
@@ -85,6 +90,8 @@ int	redirection(t_cmd *cmd, char *file, int out, int append)
 	return (0);
 }
 
+/* Plus de fd ouvert ici */
+
 int	handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head)
 {
 	int		pipe_fd[2];
@@ -105,11 +112,19 @@ int	handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head)
 			free(line);
 			break ;
 		}
-		write(pipe_fd[1], line, ft_strlen(line));
-		write(pipe_fd[1], "\n", 1);
+		if (write(pipe_fd[1], line, ft_strlen(line)) == -1
+			|| write(pipe_fd[1], "\n", 1) == -1)
+		{
+			perror("Write function failed\n");
+			free(line);
+			close(pipe_fd[1]);
+			close(pipe_fd[0]);
+			return (-1);
+		}
 		free(line);
 	}
 	close(pipe_fd[1]);
 	cmd->heredoc = pipe_fd[0];
+	close(pipe_fd[0]);
 	return (0);
 }

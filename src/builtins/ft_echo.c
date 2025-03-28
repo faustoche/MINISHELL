@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:52:28 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/27 21:22:24 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/28 09:31:52 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	ft_echo(t_cmd *cmd)
 
 	newline = 1;
 	i = 1;
-
 	while (i < cmd->nb_arg && cmd->args[i][0] == '-'
 		&& cmd->args[i][0] == '-' && cmd->args[i][1] == 'n')
 	{

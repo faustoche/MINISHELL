@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/27 11:53:33 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/28 12:12:50 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	execute_pipeline_cmd(t_cmd *cmd, t_env *env_list)
 {
 	char	*pathname;
 
+	check_open_fds();
 	if (cmd->args && cmd->args[0])
 	{
 		if (is_builtins(cmd->args[0]))
@@ -39,6 +40,7 @@ void	execute_pipeline_cmd(t_cmd *cmd, t_env *env_list)
 	}
 	else
 		print_error_message("Error: empty command in pipeline\n");
+	check_open_fds();
 }
 
 /* 
@@ -48,12 +50,11 @@ Le processus enfant écrit son output dans le pipe
 
 void	execute_child(t_cmd *cmd, int pipefd[2], t_env *env_list)
 {
-	(void)env_list;
 	close(pipefd[0]);
 	dup2(pipefd[1], STDOUT_FILENO);
 	close(pipefd[1]);
 	execute_pipeline_cmd(cmd, env_list);
-	exit(EXIT_SUCCESS);
+	exit(EXIT_FAILURE);
 }
 
 /*
@@ -92,7 +93,7 @@ void	execute_pipeline(t_cmd *cmd, t_env *env_list)
 		return ;
 	}
 	if (create_pipe(pipefd) == -1)
-		return ;
+	return ;
 	pid = create_process();
 	if (pid == -1)
 	{
