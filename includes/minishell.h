@@ -115,7 +115,6 @@ char	**expand_wildcards(char *sign);
 
 /* BUILTINS */
 
-t_env	*change_var_value(t_env *env_list, char *name, char *value);
 t_env	*ft_cd(t_cmd *cmd, t_env *env_list);
 void	ft_echo(t_cmd *cmd);
 void	ft_env(t_env *env_list);
@@ -206,6 +205,8 @@ int		handle_std_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env);
 
 /* UTILS */
 
+char	*find_var_value(t_env *env_list, char *name);
+t_env	*change_var_value(t_env *env_list, char *name, char *value);
 void	free_env_list(t_env *env_list);
 void	free_elements(t_env *element);
 void	free_commands(t_cmd *cmd);
