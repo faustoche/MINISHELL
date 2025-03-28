@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/26 17:46:07 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/28 11:10:28 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,4 +51,38 @@ int	is_numeric(char *str)
 		i++;
 	}
 	return (1);
+}
+
+void check_open_fds(void) 
+{
+    char fd_path[256];
+    DIR *dir;
+    struct dirent *entry;
+
+    snprintf(fd_path, sizeof(fd_path), "/proc/%d/fd", getpid());
+    
+    dir = opendir(fd_path);
+    if (dir == NULL) {
+        perror("Impossible d'ouvrir le répertoire des descripteurs");
+        return;
+    }
+
+    printf("Descripteurs de fichiers ouverts :\n");
+    while ((entry = readdir(dir)) != NULL) {
+        if (entry->d_name[0] != '.') {
+            char full_path[512];
+            char link_target[1024];
+            int len;
+
+            snprintf(full_path, sizeof(full_path), "%s/%s", fd_path, entry->d_name);
+            len = readlink(full_path, link_target, sizeof(link_target) - 1);
+            
+            if (len != -1) {
+                link_target[len] = '\0';
+                printf("FD %s -> %s\n", entry->d_name, link_target);
+            }
+        }
+    }
+
+    closedir(dir);
 }

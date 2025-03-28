@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/27 21:17:29 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/28 12:00:43 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -219,5 +219,7 @@ int		is_separator(int c);
 int		is_space(int c);
 void	skip_space(t_lexer *lexer);
 int		is_numeric(char *str);
+
+void check_open_fds(void);
 
 #endif
