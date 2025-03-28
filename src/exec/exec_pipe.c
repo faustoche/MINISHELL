@@ -6,19 +6,18 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/28 12:12:50 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/28 14:12:04 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Exécute la commande */
+/* Exécute la commande // pas de soucis de fd ici */
 
 void	execute_pipeline_cmd(t_cmd *cmd, t_env *env_list)
 {
 	char	*pathname;
 
-	check_open_fds();
 	if (cmd->args && cmd->args[0])
 	{
 		if (is_builtins(cmd->args[0]))
@@ -40,7 +39,6 @@ void	execute_pipeline_cmd(t_cmd *cmd, t_env *env_list)
 	}
 	else
 		print_error_message("Error: empty command in pipeline\n");
-	check_open_fds();
 }
 
 /* 
