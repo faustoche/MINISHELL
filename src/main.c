@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/28 11:35:16 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/28 14:29:42 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	main(int ac, char **av, char **envp)
 		{
 			if (commands)
 			{
-				if (is_builtins(commands->args[0]) && !has_pipes(commands))
+				if (is_builtins(commands->args[0]) && !has_pipes(commands) && is_redirection(commands))
 				{
 					printf("builtins main");
 					builtins_execution(commands, &env_list);

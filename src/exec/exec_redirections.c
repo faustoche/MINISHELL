@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:30:49 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/27 12:39:08 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/28 14:22:27 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,7 @@ static void	handle_builtin_redirection(t_cmd *cmd, t_env **env_list)
 	int	original_stdin;
 	int	original_stdout;
 
+	check_open_fds();
 	original_stdin = handle_input_redirection(cmd);
 	if (original_stdin == -1)
 		return ;
@@ -73,6 +74,7 @@ static void	handle_builtin_redirection(t_cmd *cmd, t_env **env_list)
 	dup2(original_stdout, STDOUT_FILENO);
 	close(original_stdin);
 	close(original_stdout);
+	check_open_fds();
 }
 
 static void	handle_pipe_redirection(t_cmd *cmd, t_env *env_list)
