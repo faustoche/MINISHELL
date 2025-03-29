@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/28 14:29:42 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/29 22:09:21 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ static char	*prompt(void)
 
 int	main(int ac, char **av, char **envp)
 {
-	//char	*pwd;
+	char	*pwd;
 	char	*input;
 	t_token	*token_list;
 	t_cmd	*commands;
@@ -32,11 +32,11 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	//pwd = getcwd(NULL, 0);
+	pwd = getcwd(NULL, 0);
 	env_list = copy_env_list(init_env(envp));
 	if (!env_list)
 		return (print_error_message("Error: env variable init\n"));
-	//env_list = change_var_value(env_list, "OLDPWD", pwd);
+	env_list = change_var_value(env_list, "OLDPWD", pwd);
 	while (1)
 	{
 		input = prompt();
@@ -83,7 +83,7 @@ int	main(int ac, char **av, char **envp)
 		free_token_list(token_list);
 		free(input);
 	}
-	//free(pwd);
+	free(pwd);
 	quit_minislay(input, commands, token_list, env_list);
 	return (0);
 }

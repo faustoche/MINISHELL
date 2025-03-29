@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 11:38:54 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/28 11:13:02 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/29 21:46:58 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, int *stdin_save
 		if (is_builtins(cmd->args[0]))
 			exit(EXIT_SUCCESS);
 		if (cmd->next)
-			handle_pipe(pipefd, 0, NULL);
+			handle_pipe_redirect(pipefd, 0, NULL);
 		if (cmd->in)
 			redirect(open_file(cmd->in, REDIR_IN), STDIN_FILENO);
 		else if (cmd->heredoc != -1)
@@ -52,8 +52,20 @@ void	execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, int *stdin_save
 				fd_out = open_file(cmd->out, REDIR_OUT);
 			redirect(fd_out, STDOUT_FILENO);
 		}
-		execute_pipeline_cmd(cmd, env_list);
-		exit(EXIT_FAILURE);
+		char *binary_path = find_binary_path(cmd->args[0]);
+        if (!binary_path)
+        {
+            printf(ERR_CMD, cmd->args[0]);
+            exit(127);
+        }
+        if (execve(binary_path, cmd->args, NULL) == -1)
+        {
+            perror("execve");
+            free(binary_path);
+            exit(1);
+        }
+        
+        exit(EXIT_FAILURE);
 	}
 	else
 	{
@@ -61,15 +73,15 @@ void	execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, int *stdin_save
 			builtins_execution(cmd, &env_list);
 		if (cmd->next)
 		{
-			handle_pipe(pipefd, 1, stdin_save);
+			handle_pipe_redirect(pipefd, 1, stdin_save);
 			execute_commands(cmd->next, env_list);
-			handle_pipe(pipefd, 2, stdin_save);
+			handle_pipe_redirect(pipefd, 2, stdin_save);
 		}
 		waitpid(pid, NULL, 0);
 	}
 }
 
-void	handle_pipe(int pipefd[2], int mode, int *stdin_save)
+void	handle_pipe_redirect(int pipefd[2], int mode, int *stdin_save)
 {
 	check_open_fds();
 	if (mode == 0)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/28 12:00:43 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/29 22:13:34 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,18 @@
 # define TOKEN_OPEN_PARENT 		10
 # define TOKEN_CLOSE_PARENT 	11
 # define TOKEN_AND
+
+/*--------------- DEFINES COLORS --------------*/
+
+# define BLACKB "\033[1;30m"
+# define REDB "\033[1;31m"
+# define GREENB "\033[1;32m"
+# define YELLOWB "\033[1;33m"
+# define BLUEB "\033[1;34m"
+# define MAGENTAB "\033[1;35m"
+# define CYANB "\033[1;36m"
+# define WHITEB "\033[1;37m"
+# define RESET "\033[0m"
 
 /*--------------- DEFINES ERRORS --------------*/
 
@@ -130,7 +142,7 @@ void	builtins_execution(t_cmd *cmd, t_env **env_list);
 char	*build_pathname(char *directory, char *arg);
 char	*find_binary_path(char *arg);
 void	execute_commands(t_cmd *cmd, t_env *env_list);
-void	execute_pipeline_cmd(t_cmd *cmd, t_env *env_list);
+//void	execute_pipeline_cmd(t_cmd *cmd, t_env *env_list);
 void	execute_child(t_cmd *cmd, int pipefd[2], t_env *env_list);
 void	execute_parent_pipeline(t_cmd *cmd, int fd[2], pid_t pid, t_env *env);
 void	execute_pipeline(t_cmd *cmd, t_env *env_list);
@@ -141,7 +153,15 @@ int		has_pipes(t_cmd *cmd);
 pid_t	create_pipe_and_fork(int pipefd[2]);
 void	execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, int *stdin_save, t_env *env_list);
 void	execute_redirection(t_cmd *cmd, t_env *env_list);
-void	handle_pipe(int pipefd[2], int mode, int *stdin_save);
+void	handle_pipe_redirect(int pipefd[2], int mode, int *stdin_save);
+
+// void	redirect_pipe(int input_fd, int pipe_fd[2], t_cmd *current);
+// void	handle_child_pipe(t_cmd *current, int inpsdcsdcut_fd, int pipe_fd[2], t_env *env);
+// void	create_execute_pipe(t_cmd *current, int *input_fd, int pipe_fd[2], t_env *env);
+// void	execute_pipeline_cmd(t_cmd *current, t_env *env_list);
+// void	handle_parent_pipe(pid_t pid, int *input_fd, int pipe_fd[2], t_cmd *current);
+// void	handle_fork(t_cmd *current, int pipe_fd[2]);
+// void	handle_pipe(int pipe_fd[2]);
 
 /* EXPAND */
 
