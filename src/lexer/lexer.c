@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:36:11 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/28 09:46:19 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/31 16:57:56 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,11 @@ void	add_token(t_lexer *lexer, char *word, int length, int type)
 
 	new_token = malloc(sizeof(t_token));
 	if (!new_token)
-		return ;
+	return ;
 	new_token->value = ft_strndup(word, length);
 	if (!new_token->value)
 	{
+		free(current);
 		free(new_token);
 		return ;
 	}

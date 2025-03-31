@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 20:05:00 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/29 21:50:15 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/31 20:23:13 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
 	pid_t	pid;
 	int		pipe_fd[2];
 	int		input_fd;
+	t_env	*old_env; // a voir
 
 	input_fd = STDIN_FILENO;
 	current = cmd;
@@ -75,7 +76,11 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
 			}
 			if (is_builtins(current->args[0]))
 			{
+				old_env = env_list;
 				builtins_execution(current, &env_list);
+				if (old_env != env_list)
+					free_env_list(old_env);
+				free_env_list(env_list);
 				exit(0);
 			}
 			else

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:50:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/27 11:10:08 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/31 20:11:29 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,12 @@ t_env	*ft_export(t_env *env_list, char *arg)
 	{
 		new_var = malloc(sizeof(t_env));
 		if (!new_var)
+		{
+			free(name);
+			free(value);
+			free_env_list(new_env_list);
 			return (NULL);
+		}
 		new_var->name = ft_strdup(name);
 		new_var->value = ft_strdup(value);
 		ft_lstadd_back(&new_env_list, new_var);

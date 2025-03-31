@@ -79,7 +79,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT_DIR)/libft.a
 	@echo "\033[1;33m\n🪩  COMPILING MINISHELL... 🪩\n"
-	$(CC) $(OBJS) $(CFLAGS) $(LDFLAGS) $(LIBFT) -o $(NAME) -s
+	$(CC) $(OBJS) $(CFLAGS) $(LDFLAGS) $(LIBFT) -o $(NAME)
 	@echo "\033[1;32m💾 ./$(NAME) created 💾\n"
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
