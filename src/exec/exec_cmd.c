@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/03/31 15:14:55 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/31 21:11:07 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* Complete pathname by adding '/' and name of binary */
+
+/* Ici à modifier car // ou n'importe quoi devrait envoyer ERR SYNTAX*/
 
 char	*build_pathname(char *directory, char *arg)
 {
@@ -71,7 +73,7 @@ static void	execute_child_process(char **args, char *binary_path)
 		printf(ERR_CMD, args[0]);
 	else if (execve(binary_path, args, NULL) == -1)
 	{
-		perror("Execve failed");
+		printf("Execve failed\n");
 		exit(EXIT_FAILURE);
 	}
 }
