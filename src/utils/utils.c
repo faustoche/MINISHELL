@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/29 22:08:20 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/31 16:56:20 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ void	skip_space(t_lexer *lexer)
 
 int	is_redirection(t_cmd *cmd)
 {
-    printf("Checking redirection: in=%p, out=%p, heredoc=%d\n", cmd->in, cmd->out, cmd->heredoc);
 	return (cmd->in || cmd->out || cmd->append || cmd->heredoc);
 }
 

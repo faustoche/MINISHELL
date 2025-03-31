@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/29 22:09:21 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/31 16:53:30 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,21 @@ int	main(int ac, char **av, char **envp)
 	t_token	*token_list;
 	t_cmd	*commands;
 	t_env	*env_list;
+	t_env	*original_env;
 
 	(void)ac;
 	(void)av;
 	pwd = getcwd(NULL, 0);
-	env_list = copy_env_list(init_env(envp));
+	if (!pwd)
+		return (print_error_message("Error: can't get pwd\n"));
+	original_env = init_env(envp);
+	env_list = copy_env_list(original_env);
+	free_env_list(original_env);
 	if (!env_list)
+	{
+		free(pwd);
 		return (print_error_message("Error: env variable init\n"));
+	}
 	env_list = change_var_value(env_list, "OLDPWD", pwd);
 	while (1)
 	{
@@ -55,35 +63,24 @@ int	main(int ac, char **av, char **envp)
 		commands = parse_commands(token_list, env_list);
 		if (commands)
 		{
-			if (commands)
-			{
-				if (is_builtins(commands->args[0]) && !has_pipes(commands) && is_redirection(commands))
-				{
-					printf("builtins main");
-					builtins_execution(commands, &env_list);
-				}
-				else if (has_pipes(commands))
-				{
-					printf("execute pipeline main\n");
-					execute_pipeline(commands, env_list);
-				}
-				else if (is_redirection(commands))
-				{
-					printf("execute redirection\n");
-					execute_redirection(commands, env_list);
-				}
-				else
-				{
-					printf("execute command\n");
-					execute_commands(commands, env_list);
-				}
-				free_commands(commands);
-			}
+			if (is_builtins(commands->args[0]) && !has_pipes(commands) && is_redirection(commands))
+				builtins_execution(commands, &env_list);
+			else if (has_pipes(commands))
+				execute_pipeline(commands, env_list);
+			else if (is_redirection(commands))
+				execute_redirection(commands, env_list);
+			else
+				execute_commands(commands, env_list);
+			free_commands(commands);
+			commands = NULL;
 		}
 		free_token_list(token_list);
+		token_list = NULL;
 		free(input);
+		input = NULL;
 	}
 	free(pwd);
-	quit_minislay(input, commands, token_list, env_list);
+	free_env_list(env_list);
+	clear_history();
 	return (0);
 }

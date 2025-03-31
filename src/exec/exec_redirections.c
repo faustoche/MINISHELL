@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirections.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:30:49 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/29 21:39:52 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/31 15:16:19 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ static void	handle_builtin_redirection(t_cmd *cmd, t_env **env_list)
 	int	original_stdin;
 	int	original_stdout;
 
-	check_open_fds();
 	original_stdin = handle_input_redirection(cmd);
 	if (original_stdin == -1)
 		return ;

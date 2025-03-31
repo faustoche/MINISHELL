@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 11:38:54 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/29 21:46:58 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/31 15:16:43 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,6 @@ void	execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, int *stdin_save
 
 void	handle_pipe_redirect(int pipefd[2], int mode, int *stdin_save)
 {
-	check_open_fds();
 	if (mode == 0)
 	{
 		close(pipefd[0]);
@@ -107,5 +106,4 @@ void	handle_pipe_redirect(int pipefd[2], int mode, int *stdin_save)
 			perror("dup2 failed (stdin)\n");
 		close(*stdin_save);
 	}
-	check_open_fds();
 }
