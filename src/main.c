@@ -53,6 +53,7 @@ int	main(int ac, char **av, char **envp)
 			printf("error\n");
 			break ;
 		}
+		check_signals();
 		token_list = parse_input(input);
 		if (!token_list)
 		{

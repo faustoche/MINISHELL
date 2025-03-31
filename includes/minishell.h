@@ -242,6 +242,10 @@ int		is_space(int c);
 void	skip_space(t_lexer *lexer);
 int		is_numeric(char *str);
 
+/* SIGNALS */
+
+void	check_signals(void);
+
 void check_open_fds(void);
 
 #endif
