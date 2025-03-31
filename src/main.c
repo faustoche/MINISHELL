@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/31 16:53:30 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/31 20:00:27 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ int	main(int ac, char **av, char **envp)
 				builtins_execution(commands, &env_list);
 			else if (has_pipes(commands))
 				execute_pipeline(commands, env_list);
-			else if (is_redirection(commands))
+			else if (!is_redirection(commands))
 				execute_redirection(commands, env_list);
 			else
 				execute_commands(commands, env_list);

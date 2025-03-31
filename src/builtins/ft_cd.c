@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 08:47:18 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/31 15:49:54 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/31 20:10:26 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,13 @@ t_env	*ft_cd(t_cmd *cmd, t_env *env_list)
 	if (access(new_dir, F_OK) == -1)
 	{
 		perror("cd");
+		free_env_list(new_env_list);
 		return (NULL);
 	}
 	if (chdir(new_dir) == -1)
 	{
 		perror("cd");
+		free_env_list(new_env_list);
 		return (NULL);
 	}
 	new_dir = getcwd(NULL, 0);

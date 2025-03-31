@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:18:42 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/31 16:40:58 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/31 20:12:16 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,6 @@ t_env	*copy_env_list(t_env *original_env)
 			free(new_element);
 			free_env_list(copy_head);
 			return (NULL);
-			
 		}
 		new_element->next = NULL;
 		if (!copy_head)
