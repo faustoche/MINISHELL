@@ -45,6 +45,7 @@ int	main(int ac, char **av, char **envp)
 			printf("error\n");
 			break ;
 		}
+		check_signals();
 		token_list = parse_input(input);
 		if (!token_list)
 		{
@@ -59,7 +60,7 @@ int	main(int ac, char **av, char **envp)
 			{
 				if (is_builtins(commands->args[0]) && !has_pipes(commands) && is_redirection(commands))
 				{
-					printf("builtins main");
+					printf("builtins main\n");
 					builtins_execution(commands, &env_list);
 				}
 				else if (has_pipes(commands))
