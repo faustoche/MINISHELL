@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/03/27 10:46:35 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/03/31 15:14:55 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,9 +114,7 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 	while (current)
 	{
 		if (current->args && current->args[0] && is_builtins(current->args[0]))
-		{
 			builtins_execution(current, &env_list);
-		}
 		else
 		{
 			binary_path = find_binary_path(current->args[0]);

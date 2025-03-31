@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/27 21:15:27 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/03/31 16:31:53 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ void	free_commands(t_cmd *cmd)
 		cmd = cmd->next;
 		if (tmp->args)
 		{
+			i = 0;
 			while (tmp->args[i])
 				free(tmp->args[i++]);
 			free(tmp->args);
@@ -55,12 +56,16 @@ void	free_tokens(char **tokens)
 
 void	quit_minislay(char *line, t_cmd *cmd, t_token *token, t_env *env)
 {
-	free(cmd);
+	t_token	*tmp;
+	
 	free(line);
-	while (token->next)
+	if (cmd)
+		free_commands(cmd);
+	while (token)
 	{
-		free(token->next);
-		token = token->next;
+		tmp = token->next;
+		free(token);
+		token = tmp;
 	}
 	free_env_list(env);
 	clear_history();
