@@ -68,7 +68,7 @@ LIBFT 			= -L$(LIBFT_DIR) -lft
 
 CC          = cc
 CFLAGS      = -Wall -Werror -Wextra -g -g3 -I$(INCLUDES_MINI) -I$(INCLUDES_LIB)
-LDFLAGS		= -lreadline # option pour l'éditeur de liens
+LDFLAGS		= -lreadline
 RM = rm -rf
 
 # ************************************************************************ #
@@ -79,7 +79,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT_DIR)/libft.a
 	@echo "\033[1;33m\n🪩  COMPILING MINISHELL... 🪩\n"
-	$(CC) $(OBJS) $(CFLAGS) $(LDFLAGS) $(LIBFT) -o $(NAME)
+	$(CC) $(OBJS) $(CFLAGS) $(LDFLAGS) $(LDSFLAGS) $(LIBFT) -o $(NAME)
 	@echo "\033[1;32m💾 ./$(NAME) created 💾\n"
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c

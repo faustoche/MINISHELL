@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/03/31 21:11:07 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/01 11:11:36 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ static void	create_child_process(char **args, char *binary_path)
 			return ;
 		}
 		else if (!WIFEXITED(status))
-			printf("Processus fils termine anormalement.");
+			printf("Error: child process ended weirdly\n");
 	}
 }
 
@@ -117,11 +117,22 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 	{
 		if (current->args && current->args[0] && is_builtins(current->args[0]))
 			builtins_execution(current, &env_list);
-		else
+		else if (current->args && current->args[0])
 		{
-			binary_path = find_binary_path(current->args[0]);
-			create_child_process(current->args, binary_path);
-			free(binary_path);
+			if ((current->args[0][0] == '/' || current->args[0][0] == '.')
+				&& (current->args[0][1] == '/' || current->args[0][1] == '.'))
+				printf(ERR_DIR, current->args[0]);
+			else
+			{
+				binary_path = find_binary_path(current->args[0]);
+				if (binary_path == NULL)
+					printf(ERR_CMD, current->args[0]);
+				else
+				{
+					create_child_process(current->args, binary_path);
+					free(binary_path);
+				}
+			}
 		}
 		current = current->next;
 	}
