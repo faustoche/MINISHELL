@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:18:42 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/31 20:12:16 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/01 15:33:37 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ t_env	*copy_env_list(t_env *original_env)
 		new_element->name = ft_strdup(original_current->name);
 		if (!new_element->name)
 		{
+			free(new_element->name);
+			free(new_element->value);
 			free(new_element);
 			free_env_list(copy_head);
 			return (NULL);
@@ -115,6 +117,7 @@ t_env	*copy_env_list(t_env *original_env)
 		if (!new_element->value)
 		{
 			free(new_element->name);
+			free(new_element->value);
 			free(new_element);
 			free_env_list(copy_head);
 			return (NULL);

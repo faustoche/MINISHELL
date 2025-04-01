@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_separator.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 10:08:09 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/01 12:03:07 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/01 16:05:36 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ int	handle_delimiter(t_lexer *lexer, int i)
 		len = 2;
 	delim = ft_strndup(lexer->input + i, len);
 	if (!delim)
+	{
+		free(delim);
 		return (-1);
+	}
 	type = get_token_type(delim, &lexer->command);
 	add_token(lexer, delim, len, type);
 	free(delim);

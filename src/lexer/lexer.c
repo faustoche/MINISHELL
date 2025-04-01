@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:36:11 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/31 21:04:55 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/01 15:58:16 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,14 @@ void	add_token(t_lexer *lexer, char *word, int length, int type)
 
 	new_token = malloc(sizeof(t_token));
 	if (!new_token)
-	return ;
+	{
+		free(new_token);
+		return ;
+	}
 	new_token->value = ft_strndup(word, length);
 	if (!new_token->value)
 	{
-		free(new_token);
+		free(new_token->value);
 		return ;
 	}
 	new_token->type = type;
@@ -87,7 +90,10 @@ int	handle_word(t_lexer *lexer, int start)
 		return (end);
 	word = ft_strndup(lexer->input + start, end - start);
 	if (!word)
+	{
+		free(word);
 		return (-1);
+	}
 	type = get_token_type(word, &lexer->command);
 	add_token(lexer, word, end - start, type);
 	free(word);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/01 11:11:36 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/01 16:46:21 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,14 @@ char	*build_pathname(char *directory, char *arg)
 		directory[j + 1] = '\0';
 	}
 	len = ft_strlen(directory) + ft_strlen(arg);
-	binary_path = malloc(sizeof(char) * len + 1);
+	binary_path = malloc(sizeof(char) * len + 1); // ici leaks
 	if (!binary_path)
+	{
+		free(directory);
+		free(binary_path);
 		return (NULL);
-	binary_path = ft_strjoin(directory, arg);
+	}
+	binary_path = ft_strjoin(directory, arg); // ici leaks
 	free(directory);
 	return (binary_path);
 }
@@ -50,16 +54,24 @@ char	*find_binary_path(char *arg)
 	int		i;
 
 	path_env = getenv("PATH");
-	split_path = ft_split(path_env, ':');
+	split_path = ft_split(path_env, ':'); // ici leaks
 	if (!split_path)
+	{
+		free(split_path);
 		return (NULL);
+	}
 	i = 0;
 	while (split_path && split_path[i])
 	{
-		binary_path = build_pathname(split_path[i], arg);
+		binary_path = build_pathname(split_path[i], arg); // ici leak
 		if (!access(binary_path, F_OK))
 		{
 			free(split_path);
+			while (split_path[i])
+			{
+				free(split_path[i]);
+				i++;
+			}
 			return (binary_path);
 		}
 		i++;

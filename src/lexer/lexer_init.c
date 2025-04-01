@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:54:08 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/01 11:35:18 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/01 16:03:54 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static t_token	*tokenize_input(char *input)
 		if (!lexer.input[lexer.pos])
 			break ;
 		result = handle_special_char(&lexer);
-		if (result < 0)
+		if (result == -1)
 		{
 			free_token_list(lexer.tokens);
 			return (NULL);
