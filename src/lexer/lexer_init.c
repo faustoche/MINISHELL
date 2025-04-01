@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:54:08 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/31 15:18:33 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/01 11:35:18 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,13 @@ static t_token	*validate_tokens(t_token *tokens)
 t_token	*lexing(char *input)
 {
 	t_token	*tokens;
+	char	*processed_input;
 
-	tokens = tokenize_input(input);
+	processed_input = handle_escape_char(input);
+	if (!processed_input)
+		return (NULL);
+	tokens = tokenize_input(processed_input);
+	free(processed_input);
 	if (!tokens)
 		return (NULL);
 	return (validate_tokens(tokens));
