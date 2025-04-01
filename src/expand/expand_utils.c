@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 11:52:10 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/31 15:17:49 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/01 15:22:34 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int	resize_result_buffer(t_expand *exp)
 	char	*temp;
 
 	exp->capacity *= 2;
+	// exp->result = NULL; soit j'ai un conditional jump, soit ca ne fonctio
 	temp = ft_realloc(exp->result, exp->capacity);
 	if (!temp)
 	{

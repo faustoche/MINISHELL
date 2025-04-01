@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:42:02 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/31 15:12:18 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/01 16:09:08 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 void	ft_env(t_env *env_list)
 {
 	t_env	*current;
-
+	
 	current = env_list;
-	while (current)
+	while (current != NULL)
 	{
 		printf("%s=%s\n", current->name, current->value);
 		current = current->next;

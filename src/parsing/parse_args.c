@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/31 15:19:29 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/01 15:54:14 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ int	init_args(t_cmd *cmd)
 	cmd->max_arg = 4;
 	cmd->args = malloc(sizeof(char *) * (cmd->max_arg + 1));
 	if (!cmd->args)
+	{
+		free(cmd->args);
 		return (-1);
+	}
 	cmd->nb_arg = 0;
 	cmd->args[0] = NULL;
 	return (0);
@@ -50,7 +53,10 @@ int	add_args(t_token *token, t_cmd *cmd)
 	if (!cmd->args)
 	{
 		if (init_args(cmd) == -1)
+		{
+			free(cmd);
 			return (-1);
+		}
 	}
 	if (cmd->nb_arg >= cmd->max_arg - 1)
 	{

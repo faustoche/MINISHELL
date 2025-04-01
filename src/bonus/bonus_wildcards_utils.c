@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 18:11:06 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/26 18:11:48 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/01 16:00:24 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,10 @@ int	add_match(char **matches, int count, char *name)
 {
 	matches[count] = ft_strdup(name);
 	if (!matches[count])
+	{
+		free(matches[count]);	
 		return (0);
+	}
 	return (-1);
 }
 

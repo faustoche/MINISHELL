@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/31 15:19:48 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/01 16:29:16 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	handle_std_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env)
 		if (!new_cmd)
 		{
 			free_commands(*head);
+			free(new_cmd);
 			return (-1);
 		}
 		new_cmd->env_list = env;
