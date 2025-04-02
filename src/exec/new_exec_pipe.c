@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 20:05:00 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/02 10:15:39 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/02 17:41:57 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,18 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
 				if (old_env != env_list)
 					free_env_list(old_env);
 				free_env_list(env_list);
+				t_cmd *temp_cmd = cmd;
+				while (temp_cmd) {
+					t_cmd *next = temp_cmd->next;
+					if (temp_cmd->args) {
+						for (int i = 0; temp_cmd->args[i]; i++) {
+							free(temp_cmd->args[i]);
+						}
+						free(temp_cmd->args);
+					}
+					free(temp_cmd);
+					temp_cmd = next;
+				}
 				exit(0);
 			}
 			else
@@ -88,13 +100,16 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
 				binary_path = find_binary_path(current->args[0]);
 				if (!binary_path)
 				{
-					printf(ERR_CMD, cmd->args[0]);
+					printf(ERR_CMD, current->args[0]);
+					free_env_list(env_list);
+					free_commands(cmd);
 					exit(127);
 				}
 				if (execve(binary_path, current->args, NULL) == -1)
 				{
-					perror("execve");
 					free(binary_path);
+					free_env_list(env_list);
+					free_commands(cmd);
 					exit(1);
 				}
 			}
@@ -116,104 +131,3 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
 		close(input_fd);
 	while (wait(NULL) > 0);
 }
-
-
-// static void	handle_pipe(int pipe_fd[2])
-// {
-// 	if (pipe(pipe_fd) == -1)
-// 		print_error_message("Pipe failed\n");
-// }
-
-// static void	handle_fork(t_cmd *current, int pipe_fd[2])
-// {
-// 	perror("Fork creation failed");
-// 	if (current->next)
-// 	{
-// 		close(pipe_fd[0]);
-// 		close(pipe_fd[1]);
-// 	}
-// 	exit (EXIT_FAILURE);
-// }
-
-// static void	redirect_pipe(int input_fd, int pipe_fd[2], t_cmd *current)
-// {
-// 	if (input_fd != STDIN_FILENO)
-// 	{
-// 		dup2(input_fd, STDIN_FILENO);
-// 		close(input_fd);
-// 	}
-// 	if (current->next)
-// 	{
-// 		close(pipe_fd[0]);
-// 		dup2(pipe_fd[1], STDOUT_FILENO);
-// 		close(pipe_fd[1]);
-// 	}
-// }
-
-// void	execute_pipeline_cmd(t_cmd *current, t_env *env_list)
-// {
-// 	char	*binary_path;
-
-// 	if (is_builtins(current->args[0]))
-// 	{
-// 		builtins_execution(current, &env_list);
-// 		exit(0);
-// 	}
-// 	else
-// 	{
-// 		binary_path = find_binary_path(current->args[0]);
-// 		if (!binary_path)
-// 		{
-// 			printf(ERR_CMD, current->args[0]);
-// 			exit(127);
-// 		}
-// 		if (execve(binary_path, current->args, NULL) == -1)
-// 		{
-// 			perror("Execve failed");
-// 			free(binary_path);
-// 			exit(1);
-// 		}
-// 	}
-// 	exit(0);
-// }
-
-// void	execute_pipeline(t_cmd *cmd, t_env *env_list)
-// {
-// 	t_cmd	*current;
-// 	int		pipe_fd[2];
-// 	int		input_fd;
-// 	pid_t	pid;
-
-// 	current = cmd;
-// 	input_fd = STDIN_FILENO;
-// 	while (current)
-// 	{
-// 		if (current->next)
-// 			handle_pipe(pipe_fd);
-// 		pid = fork();
-// 		if (pid == -1)
-// 		{
-// 			handle_fork(current, pipe_fd);
-// 			return ;
-// 		}
-// 		else if (pid == 0)
-// 		{
-// 			redirect_pipe(input_fd, pipe_fd, current);
-// 			execute_pipeline_cmd(current, env_list);
-// 		}
-// 		else
-// 		{
-// 			if (input_fd != STDIN_FILENO)
-// 				close(input_fd);
-// 			if (current->next)
-// 			{
-// 				close(pipe_fd[1]);
-// 				input_fd = pipe_fd[0];
-// 			}
-// 			current = current->next;
-// 		}
-// 	}
-// 	if (input_fd != STDIN_FILENO)
-// 		close(input_fd);
-// 	wait(NULL);
-// }

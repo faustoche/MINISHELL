@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:54:08 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/01 16:03:54 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/02 16:18:21 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ t_token	*lexing(char *input)
 	t_token	*tokens;
 	char	*processed_input;
 
+	if (!input || !*input)
+		return (NULL);
 	processed_input = handle_escape_char(input);
 	if (!processed_input)
 		return (NULL);

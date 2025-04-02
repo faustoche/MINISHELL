@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/03 10:55:47 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/31 16:09:08 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/02 16:59:43 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,12 @@ char	*ft_strdup(const char *s)
 	int		len;
 	int		i;
 
+	if (!s)
+		return (NULL);
 	len = 0;
 	while (s[len])
 		len++;
-	src = (char *) malloc(sizeof(char) * (len + 1));
+	src = (char *)malloc(sizeof(char) * (len + 1));
 	if (!src)
 		return (NULL);
 	i = 0;

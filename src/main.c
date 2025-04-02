@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/02 15:00:31 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/02 17:33:04 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int	main(int ac, char **av, char **envp)
 			else
 				execute_commands(commands, env_list);
 		}
+		free_commands(commands);
 		commands = NULL;
 		token_list = NULL;
 		free(input);
