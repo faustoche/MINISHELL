@@ -14,9 +14,8 @@
 
 void	ft_pwd()
 {
-	char *cwd;
+	char cwd[PATH_MAX];
 	
-	cwd = getcwd(NULL, 0);
+	getcwd(cwd, sizeof(cwd));
 	printf("%s\n", cwd);
-	free(cwd);
 }
