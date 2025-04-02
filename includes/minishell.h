@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/02 12:03:54 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/02 16:17:28 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,9 +108,9 @@ typedef struct s_cmd
 typedef struct s_lexer
 {
 	int				pos;
+	int				command;
 	char			*input;
 	t_token			*tokens;
-	int				command;
 }	t_lexer;
 
 /*-------------- FUNCTIONS --------------*/
