@@ -24,7 +24,7 @@ static char	*prompt(void)
 
 int	main(int ac, char **av, char **envp)
 {
-	char	*pwd;
+	char	pwd[PATH_MAX];
 	char	*input;
 	t_token	*token_list;
 	t_cmd	*commands;
@@ -34,21 +34,18 @@ int	main(int ac, char **av, char **envp)
 	(void)ac;
 	(void)av;
 	token_list = NULL;
-	pwd = getcwd(NULL, 0);
-	if (!pwd)
+	if(!(getcwd(pwd, sizeof(pwd))))
 		return (print_error_message("Error: can't get pwd\n"));
 	original_env = init_env(envp);
 	env_list = copy_env_list(original_env);
 	if (!env_list)
 	{
-		free(pwd);
 		return (print_error_message("Error: invalid env variable\n"));
 	}
 	free_env_list(original_env);
 	if (!env_list)
 	{
 		free_env_list(original_env);
-		free(pwd);
 		return (print_error_message("Error: env variable init\n"));
 	}
 	env_list = change_var_value(env_list, "OLDPWD", pwd);
@@ -90,7 +87,6 @@ int	main(int ac, char **av, char **envp)
 		free(input);
 		input = NULL;
 	}
-	free(pwd);
 	free_env_list(env_list);
 	clear_history();
 	return (0);
