@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/01 11:33:46 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/02 12:03:54 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,7 @@
 # include <readline/history.h>
 # include "../src/get_next_line/get_next_line.h"
 # include "../libft/libft.h"
+#include <mcheck.h>
 
 /*------------- STRUCTURES --------------*/
 
@@ -114,6 +115,7 @@ typedef struct s_lexer
 
 /*-------------- FUNCTIONS --------------*/
 void close_all_fds();
+int size_list(t_token *token);
 
 /* BONUSES */
 

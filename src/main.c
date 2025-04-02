@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/01 16:21:32 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/02 15:00:31 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,20 +33,29 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
+	token_list = NULL;
 	pwd = getcwd(NULL, 0);
 	if (!pwd)
 		return (print_error_message("Error: can't get pwd\n"));
 	original_env = init_env(envp);
 	env_list = copy_env_list(original_env);
+	if (!env_list)
+	{
+		free(pwd);
+		return (print_error_message("Error: invalid env variable\n"));
+	}
 	free_env_list(original_env);
 	if (!env_list)
 	{
+		free_env_list(original_env);
 		free(pwd);
 		return (print_error_message("Error: env variable init\n"));
 	}
 	env_list = change_var_value(env_list, "OLDPWD", pwd);
 	while (1)
 	{
+		if (token_list != NULL)
+			free_token_list(token_list);
 		input = prompt();
 		if (!input)
 		{
@@ -62,20 +71,21 @@ int	main(int ac, char **av, char **envp)
 		}
 		expand_tokens(token_list, env_list);
 		commands = parse_commands(token_list, env_list);
+		free_token_list(token_list);
 		if (commands)
 		{
 			if (is_builtins(commands->args[0]) && !has_pipes(commands) && is_redirection(commands))
+			{
 				builtins_execution(commands, &env_list);
+			}
 			else if (has_pipes(commands))
 				execute_pipeline(commands, env_list);
 			else if (!is_redirection(commands))
 				execute_redirection(commands, env_list);
 			else
 				execute_commands(commands, env_list);
-			free_commands(commands);
-			commands = NULL;
 		}
-		free_token_list(token_list);
+		commands = NULL;
 		token_list = NULL;
 		free(input);
 		input = NULL;

@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/01 16:46:21 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/02 10:20:41 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,6 @@ char	*find_binary_path(char *arg)
 		if (!access(binary_path, F_OK))
 		{
 			free(split_path);
-			while (split_path[i])
-			{
-				free(split_path[i]);
-				i++;
-			}
 			return (binary_path);
 		}
 		i++;
@@ -115,7 +110,10 @@ static void	create_child_process(char **args, char *binary_path)
 			return ;
 		}
 		else if (!WIFEXITED(status))
-			printf("Error: child process ended weirdly\n");
+		{
+			printf("Error: child process ended weirdly\n"); // pas besoin du message d'erreur non ? 
+			return ;	
+		}
 	}
 }
 

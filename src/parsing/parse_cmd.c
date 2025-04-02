@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/31 15:19:33 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/02 13:22:56 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,11 @@ t_cmd	*parse_commands(t_token *token_list, t_env *env_list)
 			return (NULL);
 	}
 	if (head == NULL)
+	{
 		printf(ERR_SYNTAX);
+		if (current != NULL && current != head)
+			free_commands(current);
+	}
 	return (head);
 }
 
