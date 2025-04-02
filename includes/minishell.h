@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/02 16:17:28 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/02 18:42:14 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,6 +117,7 @@ typedef struct s_lexer
 /*-------------- FUNCTIONS --------------*/
 void close_all_fds();
 int size_list(t_token *token);
+void	free_split(char **split);
 
 /* BONUSES */
 

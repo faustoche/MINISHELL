@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/02 10:20:41 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/02 18:48:22 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,32 +14,48 @@
 
 /* Complete pathname by adding '/' and name of binary */
 
-/* Ici à modifier car // ou n'importe quoi devrait envoyer ERR SYNTAX*/
+void	free_split(char **split)
+{
+	int	i;
+
+	if (!split)
+		return ;
+	i = 0;
+	while (split[i])
+	{
+		free(split[i]);
+		i++;
+	}
+	free(split);
+}
 
 char	*build_pathname(char *directory, char *arg)
 {
 	char	*binary_path;
+	char	*tmp;
 	int		j;
 	size_t	len;
 
 	j = 0;
 	directory = ft_realloc(directory, ft_strlen(directory) + 2);
-	while (directory[j])
-		j++;
-	if (directory[j] == '\0')
+	if (!directory)
+		return (NULL);
+	if (directory[ft_strlen(directory) - 1] != '/')
 	{
-		directory[j] = '/';
-		directory[j + 1] = '\0';
+		tmp = directory;
+		directory = ft_strjoin(directory, "/");
+		free(tmp);
 	}
 	len = ft_strlen(directory) + ft_strlen(arg);
 	binary_path = malloc(sizeof(char) * len + 1); // ici leaks
 	if (!binary_path)
 	{
 		free(directory);
-		free(binary_path);
 		return (NULL);
 	}
+	tmp = binary_path;
 	binary_path = ft_strjoin(directory, arg); // ici leaks
+	free(tmp);
 	free(directory);
 	return (binary_path);
 }
@@ -54,23 +70,25 @@ char	*find_binary_path(char *arg)
 	int		i;
 
 	path_env = getenv("PATH");
+	if (!path_env)
+		return (NULL);
 	split_path = ft_split(path_env, ':'); // ici leaks
 	if (!split_path)
-	{
-		free(split_path);
 		return (NULL);
-	}
 	i = 0;
-	while (split_path && split_path[i])
+	binary_path = NULL;
+	while (split_path[i])
 	{
 		binary_path = build_pathname(split_path[i], arg); // ici leak
 		if (!access(binary_path, F_OK))
 		{
-			free(split_path);
+			free_split(split_path);
 			return (binary_path);
 		}
+		free(binary_path);
 		i++;
 	}
+	free_split(split_path);
 	return (NULL);
 }
 
@@ -136,7 +154,12 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 			{
 				binary_path = find_binary_path(current->args[0]);
 				if (binary_path == NULL)
+				{
 					printf(ERR_CMD, current->args[0]);
+					free_env_list(env_list);
+					free_commands(cmd);
+					free(binary_path);
+				}
 				else
 				{
 					create_child_process(current->args, binary_path);

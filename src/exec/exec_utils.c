@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 11:38:54 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/02 14:55:50 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/02 18:09:30 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,8 @@ void	execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, int *stdin_save
         if (!binary_path)
         {
             printf(ERR_CMD, cmd->args[0]);
+			free_env_list(env_list);
+			free_commands(cmd);
             exit(127);
         }
         if (execve(binary_path, cmd->args, NULL) == -1)

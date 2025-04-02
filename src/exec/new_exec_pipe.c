@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 20:05:00 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/02 17:41:57 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/02 18:41:54 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
 	int		pipe_fd[2];
 	int		input_fd;
 	t_env	*old_env; // a voir
+	char	**split_path = NULL;
 
 	input_fd = STDIN_FILENO;
 	current = cmd;
@@ -129,5 +130,7 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
 	}
 	if (input_fd != STDIN_FILENO)
 		close(input_fd);
+	if (split_path)
+		free_split(split_path);
 	while (wait(NULL) > 0);
 }
