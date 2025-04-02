@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/31 15:19:37 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/02 10:39:58 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,20 @@
 
 /* Free the list */
 
-void	free_token_list(t_token *head)
+void free_token_list(t_token *tokens)
 {
-	t_token	*tmp;
+    t_token *current;
+    t_token *next;
 
-	while (head)
-	{
-		tmp = head;
-		head = head->next;
-		free(tmp->value);
-		free(tmp);
-	}
+    current = tokens;
+    while (current)
+    {
+        next = current->next;
+        if (current->value)
+            free(current->value);
+        free(current);
+        current = next;
+    }
 }
 
 /* Split l'entrée utilisateur en tokens */

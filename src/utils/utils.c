@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/31 16:56:20 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/02 12:03:40 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,17 @@ void check_open_fds(void)
     }
 
     closedir(dir);
+}
+
+int size_list(t_token *token)
+{
+    int i;
+
+    i = 0;
+    while (token)
+    {
+        token = token->next;
+        i++;
+    }
+    return (i);
 }

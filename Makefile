@@ -67,7 +67,7 @@ LIBFT 			= -L$(LIBFT_DIR) -lft
 # ************************************************************************ #
 
 CC          = cc
-CFLAGS      = -Wall -Werror -Wextra -g -g3 -I$(INCLUDES_MINI) -I$(INCLUDES_LIB)
+CFLAGS      = -Wall -Werror -Wextra -g3 -I$(INCLUDES_MINI) -I$(INCLUDES_LIB)
 LDFLAGS		= -lreadline
 RM = rm -rf
 

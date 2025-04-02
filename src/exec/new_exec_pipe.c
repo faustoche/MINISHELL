@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   new_exec_pipe.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 20:05:00 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/31 20:23:13 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/02 10:15:39 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,6 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
 		close(input_fd);
 	while (wait(NULL) > 0);
 }
-
-
 
 
 // static void	handle_pipe(int pipe_fd[2])

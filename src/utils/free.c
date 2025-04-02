@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/31 16:31:53 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/02 13:19:42 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,44 +14,42 @@
 
 /* Free the command */
 
-void	free_commands(t_cmd *cmd)
+void free_commands(t_cmd *cmd)
 {
-	t_cmd	*tmp;
-	int		i;
+    t_cmd *tmp;
+    int i;
 
-	i = 0;
-	while (cmd)
-	{
-		tmp = cmd;
-		cmd = cmd->next;
-		if (tmp->args)
-		{
-			i = 0;
-			while (tmp->args[i])
-				free(tmp->args[i++]);
-			free(tmp->args);
-		}
-		if (tmp->in)
-			free(tmp->in);
-		if (tmp->out)
-			free(tmp->out);
-		free(tmp);
-	}
+    while (cmd)
+    {
+        tmp = cmd->next;
+        if (cmd->args)
+        {
+            i = 0;
+            while (cmd->args[i])
+            {
+                free(cmd->args[i]);
+                i++;
+            }
+            free(cmd->args);
+        }
+        free(cmd);
+        cmd = tmp;
+    }
 }
 
-void	free_tokens(char **tokens)
+void	free_tab(char **input)
 {
 	int	i;
 
 	i = 0;
-	if (!tokens)
+	if (!input)
 		return ;
-	while (tokens[i])
+	while (input[i])
 	{
-		free(tokens[i]);
+		free(input[i]);
 		i++;
 	}
-	free(tokens);
+	free(input);
 }
 
 void	quit_minislay(char *line, t_cmd *cmd, t_token *token, t_env *env)
@@ -103,3 +101,6 @@ char	*ft_realloc(char *str, size_t size)
 	free(str);
 	return (new_str);
 }
+
+
+//fonction qui imprime la taille de la liste 
