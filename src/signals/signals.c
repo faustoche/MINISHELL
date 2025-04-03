@@ -20,9 +20,12 @@ static void	sigint_handler() // print "^C" et rend nouvelle ligne de prompt
 	rl_redisplay(); // redessiner la ligne apres une modif par ex
 }
 
+/* si process enfant en cours, ne fait rien (ex: "sleep 5").
+	si process enfant qui attend arg, exit l'enfant et retourne ds parent (rend le prompt) (ex : cat)
+	si process parent (et ligne vide), exit minishell */
 static void	eof_handler() // si prompt vide exit le shell
 {
-	//quit_minislay();
+	printf("exit\n");
 	exit(0);
 }
 
@@ -31,4 +34,5 @@ void	check_signals()
 	signal(SIGINT, sigint_handler); //ctrl+C : nouvelle ligne de prompt
 	signal(EOF, eof_handler); //Ctrl+D : exit minislay
 	signal(SIGQUIT, SIG_IGN); //ctrl+barre : rien
+	signal(SIGTSTP, SIG_IGN); //ctrl+Z a ignorer
 }
