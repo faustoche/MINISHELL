@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/03 17:25:53 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 19:11:07 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,7 @@ int	main(int ac, char **av, char **envp)
 			free_token_list(token_list);
 		input = prompt();
 		if (!input)
-		{
-			printf("error\n");
 			break ;
-		}
 		token_list = parse_input(input);
 		if (!token_list)
 		{
@@ -72,6 +69,7 @@ int	main(int ac, char **av, char **envp)
 		expand_tokens(token_list, env_list);
 		commands = parse_commands(token_list, env_list);
 		free_token_list(token_list);
+		close_all_fd(3);
 		if (commands)
 		{
 			if (is_builtins(commands->args[0]) && !has_pipes(commands) && is_redirection(commands))

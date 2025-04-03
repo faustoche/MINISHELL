@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/03 17:22:10 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 18:37:14 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,9 +105,10 @@ static void	execute_child_process(char **args, char *binary_path)
 		printf(ERR_CMD, args[0]);
 	else if (execve(binary_path, args, NULL) == -1)
 	{
-		printf("Execve failed\n");
+		close_all_fd(3);
 		exit(EXIT_FAILURE);
 	}
+	close_all_fd(3);
 }
 
 /* Create child process and execute */
@@ -129,6 +130,7 @@ static void	create_child_process(char **args, char *binary_path)
 	else if (pid > 0)
 	{
 		result = waitpid(pid, &status, 0);
+		close_all_fd(3);
 		if (result == -1)
 		{
 			perror("waitpid failed");
@@ -137,6 +139,7 @@ static void	create_child_process(char **args, char *binary_path)
 		else if (!WIFEXITED(status))
 			return ;	
 	}
+	close_all_fd(3);
 }
 
 void	execute_commands(t_cmd *cmd, t_env *env_list)
