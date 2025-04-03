@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 11:52:10 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/03 18:03:26 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 22:51:16 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,92 +53,78 @@ int	copy_variable_value(t_expand *exp, char *value, char *name)
 }
 
 /* Processes a variable for expansion */
+
 int process_variable(t_expand *exp)
 {
-    int var_start;
-    int var_end;
-    char *var_name;
-    char *var_value;
-    
-    // On garde le $ dans le résultat si on est à la fin de la chaîne
-    if (!exp->str[exp->i + 1]) {
-        exp->result[exp->j++] = '$';
-        exp->i++;
-        return (1);
-    }
-    
-    exp->i++;
-    
-    // Cas spécial: caractère qui n'est pas un début d'identifiant valide et pas un cas spécial
-    if (exp->str[exp->i] != '{' && 
-        !isalnum(exp->str[exp->i]) && 
-        exp->str[exp->i] != '_' && 
-        exp->str[exp->i] != '"' && 
-        exp->str[exp->i] != '\'' && 
-        exp->str[exp->i] != '`') {
-        
-        // On garde le $ dans le résultat
-        exp->result[exp->j++] = '$';
-        return (1);
-    }
-    
-    // Cas d'un chiffre après $
-    if (isdigit(exp->str[exp->i])) {
-        exp->i++;
-        return (1);
-    }
-    
-    // Cas des guillemets
-    if (exp->str[exp->i] == '"' || exp->str[exp->i] == '\'' || exp->str[exp->i] == '`') {
-        char quote_type = exp->str[exp->i];
-        exp->i++;
-        if (exp->str[exp->i] == quote_type) {
-            exp->i++;
-            return (1);
-        }
-        var_start = exp->i;
-        while (exp->str[exp->i] && exp->str[exp->i] != quote_type)
-            exp->i++;
-        if (exp->str[exp->i])
-            exp->i++;
-        copy_str_to_result(exp, exp->str + var_start, exp->i - var_start - 1);
-        return (1);
-    }
-    
-    // Cas d'échappement
-    if (exp->i > 1 && exp->str[exp->i-2] == '\\') {
-        exp->result[exp->j++] = '$';
-        return (1);
-    }
-    
-    var_start = exp->i;
-    if (exp->str[exp->i] == '{') {
-        exp->i++;
-        var_start = exp->i;
-        while (exp->str[exp->i] && exp->str[exp->i] != '}')
-            exp->i++;
-        var_end = exp->i;
-        if (exp->str[exp->i] == '}')
-            exp->i++;
-    } else {
-        while (exp->str[exp->i] && (isalnum(exp->str[exp->i]) || exp->str[exp->i] == '_'))
-            exp->i++;
-        var_end = exp->i;
-    }
-    
-    var_name = ft_strndup(exp->str + var_start, var_end - var_start);
-    if (!var_name)
-        return (0);
-    
-    var_value = get_env_value(exp->env_list, var_name);
-    free(var_name);
-    
-    if (var_value) {
-        if (!copy_str_to_result(exp, var_value, ft_strlen(var_value)))
-            return (0);
-    }
-    
-    return (1);
+	int     var_start;
+	int     var_end;
+	char    *var_name;
+	char    *var_value;
+	char    *quote_type;
+
+	if (!exp->str[exp->i + 1])
+	{
+		exp->result[exp->j++] = '$';
+		exp->i++;
+		return (-1);
+	}
+	exp->i++;
+	if (exp->str[exp->i] != '{' && !isalnum(exp->str[exp->i]) && exp->str[exp->i] != '_'
+		&& exp->str[exp->i] != '"' && exp->str[exp->i] != '\'' && exp->str[exp->i] != '`')
+	{
+		exp->result[exp->j++] = '$';
+		return (-1);
+	}
+	if (isdigit(exp->str[exp->i]))
+	{
+		exp->i++;
+		return (-1);
+	}
+	if (exp->str[exp->i] == '"' || exp->str[exp->i] == '\'' || exp->str[exp->i] == '`')
+	{
+		quote_type = &exp->str[exp->i];
+		exp->i++;
+		if (exp->str[exp->i] == *quote_type) 
+		{
+			exp->i++;
+			return (-1);
+		}
+		var_start = exp->i;
+		while (exp->str[exp->i] && exp->str[exp->i] != *quote_type)
+			exp->i++;
+		if (exp->str[exp->i])
+			exp->i++;
+		copy_str_to_result(exp, exp->str + var_start, exp->i - var_start - 1);
+		return (-1);
+	}
+	var_start = exp->i;
+	if (exp->str[exp->i] == '{')
+	{
+		exp->i++;
+		var_start = exp->i;
+		while (exp->str[exp->i] && exp->str[exp->i] != '}')
+			exp->i++;
+		var_end = exp->i;
+		if (exp->str[exp->i] == '}')
+			exp->i++;
+	} 
+	else
+	{
+		while (exp->str[exp->i] && (isalnum(exp->str[exp->i]) || exp->str[exp->i] == '_'))
+			exp->i++;
+		var_end = exp->i;
+	}
+	var_name = ft_strndup(exp->str + var_start, var_end - var_start);
+	if (!var_name)
+		return (0);
+	var_value = get_env_value(exp->env_list, var_name);
+	free(var_name);
+	if (var_value)
+	{
+		if (!copy_str_to_result(exp, var_value, ft_strlen(var_value)))
+			return (0);
+	}
+	return (1);
 }
 
 /* Resizes the result buffer if necessary */

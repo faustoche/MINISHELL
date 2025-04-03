@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_separator.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 10:08:09 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/03 18:24:22 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 22:49:38 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	handle_delimiter(t_lexer *lexer, int i)
 
 // creation d'une nouvelle chaine qui est la chaine traite sans les caracteres d'echappement
 
-char	*handle_escape_char(char *input)
+char    *handle_escape_char(char *input)
 {
 	char	*processed;
 	int		i;
@@ -82,7 +82,7 @@ char	*handle_escape_char(char *input)
 			{
 				if (input[i + 1] == '"' || input[i + 1] == '\\' || input[i + 1] == '$')
 				{
-					i++;
+					processed[j++] = input[i++];
 					processed[j++] = input[i++];
 				}
 				else
@@ -90,14 +90,21 @@ char	*handle_escape_char(char *input)
 			}
 			else
 			{
-				i++;
-				processed[j++] = input[i++];
+				if (input[i + 1] == '$')
+				{
+					i++;
+					processed[j++] = 1;
+					processed[j++] = input[i++];
+				}
+				else
+				{
+					i++;
+					processed[j++] = input[i++];
+				}
 			}
 		}
 		else
-		{
 			processed[j++] = input[i++];
-		}
 	}
 	processed[j] = '\0';
 	return (processed);
