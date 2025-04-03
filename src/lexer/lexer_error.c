@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 22:29:51 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/31 15:18:21 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 11:06:26 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ int	syntax_error(char *input)
 	char	*var;
 
 	var = getenv("PATH");
+	if (input[0] == '<')
+		return (0);
 	if ((input[0] == '\\' && input[1] == '\\') || input[0] == '\\')
 	{
 		printf(ERR_CMD, input);

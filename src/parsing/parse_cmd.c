@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/02 13:22:56 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 11:43:06 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ t_cmd	*init_command(void)
 	cmd->nb_arg = 0;
 	cmd->max_arg = 0;
 	cmd->heredoc = -1;
+	cmd->processed = 0;
 	cmd->env_list = NULL;
 	return (cmd);
 }

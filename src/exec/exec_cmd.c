@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/03 09:25:20 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 11:43:32 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,10 +135,7 @@ static void	create_child_process(char **args, char *binary_path)
 			return ;
 		}
 		else if (!WIFEXITED(status))
-		{
-			printf("Error: child process ended weirdly\n"); // pas besoin du message d'erreur non ? 
 			return ;	
-		}
 	}
 }
 
@@ -150,6 +147,7 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 	current = cmd;
 	while (current)
 	{
+		current->processed = 1;
 		if (current->args && current->args[0] && is_builtins(current->args[0]))
 			builtins_execution(current, &env_list);
 		else if (current->args && current->args[0])
@@ -163,9 +161,9 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 				if (binary_path == NULL)
 				{
 					printf(ERR_CMD, current->args[0]);
-					free_env_list(env_list);
-					free_commands(cmd);
-					free(binary_path);
+					// free_env_list(env_list);
+					// free_commands(cmd);
+					// free(binary_path);
 				}
 				else
 				{

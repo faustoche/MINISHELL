@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:50:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/01 16:02:52 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 14:40:57 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ t_env	*ft_export(t_env *env_list, char *arg)
 	if (!arg || *arg == '\0' || *arg == '=')
 	{
 		printf(ERR_SYNTAX);
-		free_env_list(env_list);
-		free_env_list(new_env_list);
+		free_env_list(&env_list);
+		free_env_list(&new_env_list);
 		return (env_list);
 	}
 	equal_pos = ft_strchr(arg, '=');
@@ -52,7 +52,7 @@ t_env	*ft_export(t_env *env_list, char *arg)
 		if (equal_pos == arg)
 		{
 			printf(ERR_SYNTAX);
-			free_env_list(new_env_list);
+			free_env_list(&new_env_list);
 			return (env_list);
 		}
 		name = ft_strndup(arg, equal_pos - arg);
@@ -67,7 +67,7 @@ t_env	*ft_export(t_env *env_list, char *arg)
 	{
 		free(name);
 		free(value);
-		free_env_list(new_env_list);
+		free_env_list(&new_env_list);
 		return (env_list);
 	}
 	current = new_env_list;
@@ -88,14 +88,14 @@ t_env	*ft_export(t_env *env_list, char *arg)
 		{
 			free(name);
 			free(value);
-			free_env_list(new_env_list);
+			free_env_list(&new_env_list);
 			return (NULL);
 		}
 		new_var->name = ft_strdup(name);
 		new_var->value = ft_strdup(value);
 		ft_lstadd_back(&new_env_list, new_var);
 	}
-	free_env_list(env_list);
+	free_env_list(&env_list);
 	free(name);
 	free(value);
 	return (new_env_list);
