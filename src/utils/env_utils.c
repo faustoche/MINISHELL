@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:28:18 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/03 14:39:16 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 19:10:17 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,8 +51,7 @@ void free_env_list(t_env **env)
 	t_env *tmp;
 
 	if (!env || !(*env))
-		return;
-
+		return ;
 	while (*env)
 	{
 		tmp = (*env)->next;
@@ -63,8 +62,6 @@ void free_env_list(t_env **env)
 	}
 	*env = NULL;
 }
-
-
 
 void	free_elements(t_env *element)
 {
