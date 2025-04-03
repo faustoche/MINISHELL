@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/03 14:46:02 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 17:25:53 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ int	main(int ac, char **av, char **envp)
 	env_list = change_var_value(env_list, "OLDPWD", pwd);
 	while (1)
 	{
+		check_signals();
 		if (token_list != NULL)
 			free_token_list(token_list);
 		input = prompt();
@@ -60,7 +61,6 @@ int	main(int ac, char **av, char **envp)
 			printf("error\n");
 			break ;
 		}
-		check_signals();
 		token_list = parse_input(input);
 		if (!token_list)
 		{
@@ -75,9 +75,7 @@ int	main(int ac, char **av, char **envp)
 		if (commands)
 		{
 			if (is_builtins(commands->args[0]) && !has_pipes(commands) && is_redirection(commands))
-			{
 				builtins_execution(commands, &env_list);
-			}
 			else if (has_pipes(commands))
 				execute_pipeline(commands, env_list);
 			else if (!is_redirection(commands))
@@ -85,6 +83,7 @@ int	main(int ac, char **av, char **envp)
 			else
 				execute_commands(commands, env_list);
 		}
+		close_all_fd(3);
 		free_commands(commands);
 		commands = NULL;
 		token_list = NULL;
@@ -93,5 +92,6 @@ int	main(int ac, char **av, char **envp)
 	}
 	free_env_list(&env_list);
 	clear_history();
+	close_all_fd(3);
 	return (0);
 }

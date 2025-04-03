@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/03 14:39:36 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 17:17:51 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ typedef struct s_lexer
 }	t_lexer;
 
 /*-------------- FUNCTIONS --------------*/
-void close_all_fds();
+void close_all_fd(int fd);
 int size_list(t_token *token);
 void	free_split(char **split);
 
@@ -184,8 +184,7 @@ char	*expand_variable(t_env *env_list, char *str, int quote_type);
 char	*init_expand_result(const char *str, t_expand *exp);
 int		expand_loop(t_expand *exp);
 void	expand_variable_in_token(t_token *token, t_env *env_list);
-void	add_wildcard_tokens(t_lexer *lexer, char **matches, int start_index);
-void	expand_wildcard_in_token(t_token *token, t_lexer *lexer);
+int		copy_str_to_result(t_expand *exp, char *str, int len);
 void	expand_tokens(t_token *token_list, t_env *env_list);
 
 /* LEXER */
