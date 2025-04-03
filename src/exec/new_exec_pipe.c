@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 20:05:00 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/02 18:41:54 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 14:41:34 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@
 // gestion du parent, je close quand j;ai fini
 // je stock ce que je viens de lire pour la prochaine commande
 // j'attend que tout le monde ai fini sqa popote waitpid
+/*
+À chaque itération, temp_cmd avance à temp_cmd->next avant que l'élément courant soit libéré.
+Sans cette variable temporaire, si tu faisais cmd = cmd->next en essayant de parcourir la liste avec cmd directement,
+tu perdrais l'adresse du début de la liste et ne pourrais pas la libérer correctement.
+*/
+
 
 int	has_pipes(t_cmd *cmd)
 {
@@ -40,6 +46,9 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
 	int		pipe_fd[2];
 	int		input_fd;
 	t_env	*old_env; // a voir
+	t_cmd	*temp_cmd;
+	t_cmd	*next;
+	int		i;
 	char	**split_path = NULL;
 
 	input_fd = STDIN_FILENO;
@@ -80,14 +89,19 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
 				old_env = env_list;
 				builtins_execution(current, &env_list);
 				if (old_env != env_list)
-					free_env_list(old_env);
-				free_env_list(env_list);
-				t_cmd *temp_cmd = cmd;
-				while (temp_cmd) {
-					t_cmd *next = temp_cmd->next;
-					if (temp_cmd->args) {
-						for (int i = 0; temp_cmd->args[i]; i++) {
+					free_env_list(&old_env);
+				free_env_list(&env_list);
+				temp_cmd = cmd;
+				while (temp_cmd) 
+				{
+					i = 0;
+					next = temp_cmd->next;
+					if (temp_cmd->args) 
+					{
+						while(temp_cmd->args[i])
+						{
 							free(temp_cmd->args[i]);
+							i++;
 						}
 						free(temp_cmd->args);
 					}
@@ -102,14 +116,14 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
 				if (!binary_path)
 				{
 					printf(ERR_CMD, current->args[0]);
-					free_env_list(env_list);
+					free_env_list(&env_list);
 					free_commands(cmd);
 					exit(127);
 				}
 				if (execve(binary_path, current->args, NULL) == -1)
 				{
 					free(binary_path);
-					free_env_list(env_list);
+					free_env_list(&env_list);
 					free_commands(cmd);
 					exit(1);
 				}

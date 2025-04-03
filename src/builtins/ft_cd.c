@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 08:47:18 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/02 15:01:05 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 14:40:23 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ t_env	*ft_cd(t_cmd *cmd, t_env *env_list)
 	if (access(new_dir, F_OK) == -1)
 	{
 		perror("cd");
-		free_env_list(new_env_list);
+		free_env_list(&new_env_list);
 		return (NULL);
 	}
 	if (chdir(new_dir) == -1)
 	{
 		perror("cd");
-		free_env_list(new_env_list);
+		free_env_list(&new_env_list);
 		return (NULL);
 	}
 	if(!(getcwd(new_dir, sizeof(new_dir))))
@@ -63,6 +63,6 @@ t_env	*ft_cd(t_cmd *cmd, t_env *env_list)
 	new_env_list = change_var_value(new_env_list, "PWD", new_dir);
 	if (cmd->nb_arg == 2 && ft_strcmp(cmd->args[1], "-") == 0)
 		ft_pwd();
-	free_env_list(env_list);
+	free_env_list(&env_list);
 	return (new_env_list);
 }

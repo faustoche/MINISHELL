@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:04:05 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/31 15:12:42 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 14:41:01 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,6 @@ t_env	*ft_unset(t_env *env_list, char *name)
 		prev = current;
 		current = current->next;
 	}
-	free_env_list(env_list);
+	free_env_list(&env_list);
 	return (new_env_list);
 }
