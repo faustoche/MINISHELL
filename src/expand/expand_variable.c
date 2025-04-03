@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 12:01:35 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/31 15:18:05 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 16:02:21 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,21 +45,25 @@ char	*init_expand_result(const char *str, t_expand *exp)
 
 /* Main expansion loop */
 
-int	expand_loop(t_expand *exp)
+int expand_loop(t_expand *exp)
 {
-	while (exp->str[exp->i])
+    while (exp->str[exp->i])
 	{
-		if (!check_buffer_size(exp))
-			return (0);
-		if (exp->str[exp->i] == '$' && exp->str[exp->i + 1]
-			&& isalpha(exp->str[exp->i + 1]))
+        if (!check_buffer_size(exp))
+            return (0);
+        if (exp->str[exp->i] == '\\' && exp->str[exp->i + 1] == '$')
 		{
-			if (!process_variable(exp))
-				return (0);
-		}
-		else
-			exp->result[(exp->j)++] = exp->str[(exp->i)++];
-	}
-	exp->result[exp->j] = '\0';
-	return (1);
+            exp->result[exp->j++] = '$';
+            exp->i += 2;
+            continue;
+        }
+        if (exp->str[exp->i] == '$')
+		{
+            if (!process_variable(exp))
+                return (0);
+        } else
+            exp->result[exp->j++] = exp->str[exp->i++];
+    }
+    exp->result[exp->j] = '\0';
+    return (1);
 }
