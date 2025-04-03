@@ -31,4 +31,5 @@ void	check_signals()
 	signal(SIGINT, sigint_handler); //ctrl+C : nouvelle ligne de prompt
 	signal(EOF, eof_handler); //Ctrl+D : exit minislay
 	signal(SIGQUIT, SIG_IGN); //ctrl+barre : rien
+	signal(SIGTSTP, SIG_IGN); //ctrl+Z a ignorer
 }
