@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 20:05:00 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/03 14:41:34 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 18:18:12 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,7 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
 					}
 					free(temp_cmd);
 					temp_cmd = next;
+					close_all_fd(3);
 				}
 				exit(0);
 			}
@@ -147,4 +148,5 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
 	if (split_path)
 		free_split(split_path);
 	while (wait(NULL) > 0);
+	close_all_fd(3);
 }
