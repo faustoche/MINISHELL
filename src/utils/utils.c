@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/02 12:03:40 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 17:19:23 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,15 +87,10 @@ void check_open_fds(void)
     closedir(dir);
 }
 
-int size_list(t_token *token)
+void    close_all_fd(int fd)
 {
-    int i;
-
-    i = 0;
-    while (token)
-    {
-        token = token->next;
-        i++;
-    }
-    return (i);
+    if (fd >= 1024)
+        return ;
+    close(fd);
+    close_all_fd(fd + 1);
 }
