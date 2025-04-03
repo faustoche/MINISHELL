@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:42:02 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/01 16:09:08 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 14:45:22 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ void	ft_env(t_env *env_list)
 	current = env_list;
 	while (current != NULL)
 	{
-		printf("%s=%s\n", current->name, current->value);
+		if (current->name && current->value)
+			printf("%s=%s\n", current->name, current->value);
+		else
+			printf("jsp quoi\n");
 		current = current->next;
 	}
 }

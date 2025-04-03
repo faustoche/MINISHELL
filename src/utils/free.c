@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/02 13:19:42 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 15:03:29 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ void free_commands(t_cmd *cmd)
     t_cmd *tmp;
     int i;
 
+	if (!cmd)
+		return ;
     while (cmd)
     {
         tmp = cmd->next;
@@ -65,7 +67,7 @@ void	quit_minislay(char *line, t_cmd *cmd, t_token *token, t_env *env)
 		free(token);
 		token = tmp;
 	}
-	free_env_list(env);
+	free_env_list(&env);
 	clear_history();
 }
 

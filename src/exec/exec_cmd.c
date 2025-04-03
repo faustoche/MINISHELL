@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/02 18:48:22 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 11:43:32 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,14 +47,14 @@ char	*build_pathname(char *directory, char *arg)
 		free(tmp);
 	}
 	len = ft_strlen(directory) + ft_strlen(arg);
-	binary_path = malloc(sizeof(char) * len + 1); // ici leaks
+	binary_path = malloc(sizeof(char) * len + 1);
 	if (!binary_path)
 	{
 		free(directory);
 		return (NULL);
 	}
 	tmp = binary_path;
-	binary_path = ft_strjoin(directory, arg); // ici leaks
+	binary_path = ft_strjoin(directory, arg);
 	free(tmp);
 	free(directory);
 	return (binary_path);
@@ -67,19 +67,26 @@ char	*find_binary_path(char *arg)
 	char	*path_env;
 	char	**split_path;
 	char	*binary_path;
+	char	*path_copy;
 	int		i;
 
 	path_env = getenv("PATH");
 	if (!path_env)
 		return (NULL);
-	split_path = ft_split(path_env, ':'); // ici leaks
+	split_path = ft_split(path_env, ':');
 	if (!split_path)
 		return (NULL);
 	i = 0;
 	binary_path = NULL;
 	while (split_path[i])
 	{
-		binary_path = build_pathname(split_path[i], arg); // ici leak
+		path_copy = ft_strdup(split_path[i]);
+		if (!path_copy)
+		{
+			free_split(split_path);
+			return (NULL);
+		}
+		binary_path = build_pathname(path_copy, arg);
 		if (!access(binary_path, F_OK))
 		{
 			free_split(split_path);
@@ -128,10 +135,7 @@ static void	create_child_process(char **args, char *binary_path)
 			return ;
 		}
 		else if (!WIFEXITED(status))
-		{
-			printf("Error: child process ended weirdly\n"); // pas besoin du message d'erreur non ? 
 			return ;	
-		}
 	}
 }
 
@@ -143,6 +147,7 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 	current = cmd;
 	while (current)
 	{
+		current->processed = 1;
 		if (current->args && current->args[0] && is_builtins(current->args[0]))
 			builtins_execution(current, &env_list);
 		else if (current->args && current->args[0])
@@ -156,9 +161,9 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 				if (binary_path == NULL)
 				{
 					printf(ERR_CMD, current->args[0]);
-					free_env_list(env_list);
-					free_commands(cmd);
-					free(binary_path);
+					// free_env_list(env_list);
+					// free_commands(cmd);
+					// free(binary_path);
 				}
 				else
 				{

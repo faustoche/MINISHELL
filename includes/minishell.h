@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/02 18:42:14 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 14:39:36 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,6 +103,7 @@ typedef struct s_cmd
 	size_t			nb_arg;
 	struct s_cmd	*next;
 	t_env			*env_list;
+	int				processed;
 	int				exit_status;
 }	t_cmd;
 
@@ -233,7 +234,7 @@ int		handle_std_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env);
 
 char	*find_var_value(t_env *env_list, char *name);
 t_env	*change_var_value(t_env *env_list, char *name, char *value);
-void	free_env_list(t_env *env_list);
+void	free_env_list(t_env **env_list);
 void	free_elements(t_env *element);
 void	free_commands(t_cmd *cmd);
 void	free_tokens(char **tokens);

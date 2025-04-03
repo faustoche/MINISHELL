@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/02 17:33:04 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 14:46:02 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
+	commands = NULL;
 	token_list = NULL;
 	if(!(getcwd(pwd, sizeof(pwd))))
 		return (print_error_message("Error: can't get pwd\n"));
@@ -42,10 +43,10 @@ int	main(int ac, char **av, char **envp)
 	{
 		return (print_error_message("Error: invalid env variable\n"));
 	}
-	free_env_list(original_env);
+	free_env_list(&original_env);
 	if (!env_list)
 	{
-		free_env_list(original_env);
+		free_env_list(&original_env);
 		return (print_error_message("Error: env variable init\n"));
 	}
 	env_list = change_var_value(env_list, "OLDPWD", pwd);
@@ -64,6 +65,8 @@ int	main(int ac, char **av, char **envp)
 		if (!token_list)
 		{
 			free(input);
+			free_token_list(token_list);
+			free_commands(commands);
 			continue ;
 		}
 		expand_tokens(token_list, env_list);
@@ -88,7 +91,7 @@ int	main(int ac, char **av, char **envp)
 		free(input);
 		input = NULL;
 	}
-	free_env_list(env_list);
+	free_env_list(&env_list);
 	clear_history();
 	return (0);
 }

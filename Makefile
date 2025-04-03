@@ -51,9 +51,7 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				utils/env_utils.c\
 				utils/free.c\
 				utils/utils.c\
-				signals/signals.c\
-				bonus/bonus_wildcards_utils.c\
-				bonus/wildcards.c)
+				signals/signals.c)
 
 SRCS			= ${MINISHELL}
 MINISHELL_OBJS	= ${MINISHELL:${SRCS_DIR}/%.c=$(OBJS_DIR)/%.o}
