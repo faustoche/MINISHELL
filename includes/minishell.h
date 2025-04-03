@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/03 17:17:51 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 21:54:32 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@
 
 /*-------------- LIBRARIES --------------*/
 
-# include <linux/limits.h>
+# include <limits.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <string.h>
@@ -64,7 +64,6 @@
 # include <readline/history.h>
 # include "../src/get_next_line/get_next_line.h"
 # include "../libft/libft.h"
-#include <mcheck.h>
 
 /*------------- STRUCTURES --------------*/
 

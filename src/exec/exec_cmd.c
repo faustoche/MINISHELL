@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/03 18:37:14 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/03 21:55:08 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,8 @@ char	*build_pathname(char *directory, char *arg)
 {
 	char	*binary_path;
 	char	*tmp;
-	int		j;
 	size_t	len;
 
-	j = 0;
 	directory = ft_realloc(directory, ft_strlen(directory) + 2);
 	if (!directory)
 		return (NULL);
