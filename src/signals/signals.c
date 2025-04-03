@@ -22,7 +22,7 @@ static void	sigint_handler() // print "^C" et rend nouvelle ligne de prompt
 
 static void	eof_handler() // si prompt vide exit le shell
 {
-	//quit_minislay();
+	printf("exit\n");
 	exit(0);
 }
 
