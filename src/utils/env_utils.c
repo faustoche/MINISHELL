@@ -76,5 +76,5 @@ void	free_elements(t_env *element)
 int	print_error_message(char *str)
 {
 	printf("%s\n", str);
-	return (-1);
+	return (EXIT_FAILURE);
 }

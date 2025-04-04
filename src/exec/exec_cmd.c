@@ -126,9 +126,13 @@ static void	create_child_process(char **args, char *binary_path)
 		return ;
 	}
 	if (pid == 0)
+	{
+		signal(SIGQUIT, SIG_DFL);
 		execute_child_process(args, binary_path);
+	}
 	else if (pid > 0)
 	{
+		signal(SIGQUIT, sigquit_handler);
 		result = waitpid(pid, &status, 0);
 		close_all_fd(3);
 		if (result == -1)

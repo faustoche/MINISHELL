@@ -66,6 +66,10 @@
 # include "../libft/libft.h"
 #include <mcheck.h>
 
+/*------------- VARIABLE GLOBALE --------------*/
+
+extern volatile sig_atomic_t	g_received_signal;
+
 /*------------- STRUCTURES --------------*/
 
 typedef struct s_env
@@ -249,7 +253,9 @@ int		is_numeric(char *str);
 
 /* SIGNALS */
 
-void	check_signals(void);
+void	sigquit_handler(int sig);
+void	sigint_handler(int sig);
+void	set_signal_handlers(void);
 
 void check_open_fds(void);
 

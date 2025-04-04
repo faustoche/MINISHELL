@@ -12,11 +12,27 @@
 
 #include "minishell.h"
 
+/* - volatile : force le compilateur a acceder a 
+			la memoire ou la variable est stockee,
+			pour etre sur que mise a jour bien effectuee
+			dans gestionnaire de signaux.
+	- sig_atomic_t : garantit que acces a la variable ne peuvent
+			etre interrompus ou modifies de facon incomplete. */
+
+volatile sig_atomic_t	g_received_signal = 0;
+
 static char	*prompt(void)
 {
 	char	*line;
 
 	line = readline("minislay> \033[1;32m→\033[0m \033[1;34m~\033[0m ");
+	if (!line)
+	{
+		printf("exit\n");
+		rl_clear_history();
+		free(line);
+		return (NULL);
+	}
 	if (line && *line)
 		add_history(line);
 	return (line);
@@ -52,7 +68,7 @@ int	main(int ac, char **av, char **envp)
 	env_list = change_var_value(env_list, "OLDPWD", pwd);
 	while (1)
 	{
-		check_signals();
+		set_signal_handlers();
 		if (token_list != NULL)
 			free_token_list(token_list);
 		input = prompt();
@@ -91,5 +107,5 @@ int	main(int ac, char **av, char **envp)
 	free_env_list(&env_list);
 	clear_history();
 	close_all_fd(3);
-	return (0);
+	return (EXIT_SUCCESS);
 }
