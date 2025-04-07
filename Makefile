@@ -37,7 +37,8 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				lexer/lexer_quotes2.c\
 				lexer/lexer_separator.c\
 				lexer/lexer_syntax.c\
-				lexer/lexer_words.c\
+				lexer/lexer_words1.c\
+				lexer/lexer_words2.c\
 				env/env_init.c\
 				expand/expand_token.c\
 				expand/expand_variable.c\
@@ -56,6 +57,7 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				utils/utils_free_list.c\
 				utils/utils_parsing.c\
 				utils/utils_others.c\
+				utils/utils_checks.c\
 				signals/signals.c)
 
 SRCS			= ${MINISHELL}
