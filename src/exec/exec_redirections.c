@@ -155,13 +155,14 @@ static void handle_pipe_redirection(t_cmd *cmd, t_env *env_list)
 		close(pipefd[1]);
 		if (cmd->args && cmd->args[0])
 		{
+			char **env = env_list_to_array(env_list);
 			char *binary_path = find_binary_path(cmd->args[0]);
 			if (!binary_path)
 			{
 				printf(ERR_CMD, cmd->args[0]);
+				free_env_array(env);
 				exit(EXIT_FAILURE);
 			}
-			char **env = env_list_to_array(env_list);
 			if (execve(binary_path, cmd->args, env) == -1)
 			{
 				perror("execve failed");
