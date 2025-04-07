@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:30:49 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/06 12:44:01 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/07 16:16:46 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ static void handle_pipe_redirection(t_cmd *cmd, t_env *env_list)
 			{
 				perror("execve failed");
 				free(binary_path);
+				free_env_array(env);
 				exit(EXIT_FAILURE);
 			}
 			free(binary_path);
