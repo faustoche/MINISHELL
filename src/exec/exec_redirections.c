@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:30:49 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/06 12:44:01 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/07 16:05:35 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,17 +155,19 @@ static void handle_pipe_redirection(t_cmd *cmd, t_env *env_list)
 		close(pipefd[1]);
 		if (cmd->args && cmd->args[0])
 		{
+			char **env = env_list_to_array(env_list);
 			char *binary_path = find_binary_path(cmd->args[0]);
 			if (!binary_path)
 			{
 				printf(ERR_CMD, cmd->args[0]);
+				free_env_array(env);
 				exit(EXIT_FAILURE);
 			}
-			char **env = env_list_to_array(env_list);
 			if (execve(binary_path, cmd->args, env) == -1)
 			{
 				perror("execve failed");
 				free(binary_path);
+				free_env_array(env);
 				exit(EXIT_FAILURE);
 			}
 			free(binary_path);

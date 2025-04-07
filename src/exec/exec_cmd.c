@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/05 15:47:01 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/07 15:59:59 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,7 +149,10 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 			{
 				binary_path = find_binary_path(current->args[0]);
 				if (binary_path == NULL)
+				{
 					printf(ERR_CMD, current->args[0]);
+					close_all_fd(3);
+				}
 				else
 				{
 					create_child_process(current->args, binary_path);

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_error.c                                      :+:      :+:    :+:   */
+/*   lexer_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 22:29:51 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/06 12:42:46 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/07 16:03:31 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,11 @@ int	syntax_error(char *input)
 int	delimiter_error(char *input)
 {
 	if (input[0] == '&' && input[1] != '&')
+	{
+		printf(ERR_SYNTAX);
+		return (-1);
+	}
+	if (input[0] == '!' && input[1] != '!')
 	{
 		printf(ERR_SYNTAX);
 		return (-1);
