@@ -118,6 +118,13 @@ static void	create_child_process(char **args, char *binary_path)
 	pid_t	pid;
 	pid_t	result;
 	int		status;
+	struct sigaction	sa_sigquit_child;
+	int		res;
+
+	res = 0;
+	sa_sigquit_child.sa_handler = sigquit_child_handler;
+	sa_sigquit_child.sa_flags = 0;
+	sigemptyset(&sa_sigquit_child.sa_mask);
 
 	pid = fork();
 	if (pid == -1)
@@ -125,14 +132,20 @@ static void	create_child_process(char **args, char *binary_path)
 		perror("Fork failed\n");
 		return ;
 	}
-	if (pid == 0)
+	if (pid == 0) //enfant
 	{
-		signal(SIGQUIT, SIG_DFL);
+		sigaction(SIGQUIT, &sa_sigquit_child, NULL);
+		if(res == -1)
+		{
+			perror("Error handling SIGQUIT in child process");
+			return ;
+		}
+		if(res == 0)
+			perror("SIGQUIT child");
 		execute_child_process(args, binary_path);
 	}
-	else if (pid > 0)
+	else if (pid > 0) //parent
 	{
-		signal(SIGQUIT, sigquit_handler);
 		result = waitpid(pid, &status, 0);
 		close_all_fd(3);
 		if (result == -1)

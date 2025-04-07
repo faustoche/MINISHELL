@@ -12,6 +12,7 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# define _GNU_SOURCE //pour sigaction dans vscode
 
 /*--------------- DEFINES TOKENS --------------*/
 
@@ -253,6 +254,7 @@ int		is_numeric(char *str);
 
 /* SIGNALS */
 
+void	sigquit_child_handler(int sig);
 void	sigquit_handler(int sig);
 void	sigint_handler(int sig);
 void	set_signal_handlers(void);
