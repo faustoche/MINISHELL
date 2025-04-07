@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_quotes2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:25:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/06 18:31:12 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/07 22:25:09 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
 
 char *fix_dollar_quote(char *input)
 {

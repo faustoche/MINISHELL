@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirections.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:30:49 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/07 17:35:41 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/07 21:56:25 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -167,7 +167,6 @@ static void handle_pipe_redirection(t_cmd *cmd, t_env *env_list)
 				free_env_list(&env_list);
 				exit(EXIT_FAILURE);
 			}
-			char **env = env_list_to_array(env_list);
 			execve(binary_path, cmd->args, env);
 			free(binary_path);
 			free_env_array(env);

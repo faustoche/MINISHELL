@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/06 21:51:01 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/07 22:16:06 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,14 @@ typedef struct s_lexer
 	t_token			*tokens;
 }	t_lexer;
 
+typedef struct s_state
+{
+	int				i;
+	int				j;
+	int				singles;
+	int				doubles;
+}	t_state;
+
 /*-------------- FUNCTIONS --------------*/
 void close_all_fd(int fd);
 int size_list(t_token *token);
@@ -140,6 +148,9 @@ void	ft_lstadd_back(t_env **lst, t_env *new);
 void	print_sorted_env(t_env *env_list);
 t_env	*no_args_export(t_env *env_list);
 int	is_valid_identifier(char *name);
+char	*handle_char(char *merged_word, char current_char, int *in_quotes, char *quote_char);
+int	is_escaped_char(char c);
+
 
 /* BONUSES */
 
