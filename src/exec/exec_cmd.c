@@ -149,7 +149,10 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 			{
 				binary_path = find_binary_path(current->args[0]);
 				if (binary_path == NULL)
+				{
 					printf(ERR_CMD, current->args[0]);
+					close_all_fd(3);
+				}
 				else
 				{
 					create_child_process(current->args, binary_path);
