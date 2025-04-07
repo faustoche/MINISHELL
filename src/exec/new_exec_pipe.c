@@ -6,30 +6,11 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 20:05:00 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/03 18:18:12 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/07 09:36:52 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-// lancement de ma boucle principale
-// si je constTE qu'il y a d'autres commandes (ex env | grep) je cree un pipe
-// je cree ensuite un enfant
-// si c pas la premiere commande je reidigire l'entree
-// close
-// si j'ai une autre commande, je redirige
-// close encore
-// execution builtins
-// execution command si pas builtins
-// gestion du parent, je close quand j;ai fini
-// je stock ce que je viens de lire pour la prochaine commande
-// j'attend que tout le monde ai fini sqa popote waitpid
-/*
-À chaque itération, temp_cmd avance à temp_cmd->next avant que l'élément courant soit libéré.
-Sans cette variable temporaire, si tu faisais cmd = cmd->next en essayant de parcourir la liste avec cmd directement,
-tu perdrais l'adresse du début de la liste et ne pourrais pas la libérer correctement.
-*/
-
 
 int	has_pipes(t_cmd *cmd)
 {
@@ -45,7 +26,7 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
 	pid_t	pid;
 	int		pipe_fd[2];
 	int		input_fd;
-	t_env	*old_env; // a voir
+	//t_env	*old_env; // a voir
 	t_cmd	*temp_cmd;
 	t_cmd	*next;
 	int		i;
@@ -86,10 +67,15 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
 			}
 			if (is_builtins(current->args[0]))
 			{
-				old_env = env_list;
+				if (current->next)
+				{
+					dup2(pipe_fd[1], STDOUT_FILENO);
+					close(pipe_fd[1]);
+				}
+				// old_env = env_list;
 				builtins_execution(current, &env_list);
-				if (old_env != env_list)
-					free_env_list(&old_env);
+				// if (old_env != env_list)
+				// 	free_env_list(&old_env);
 				free_env_list(&env_list);
 				temp_cmd = cmd;
 				while (temp_cmd) 
@@ -113,17 +99,20 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
 			}
 			else
 			{
+				char **env = env_list_to_array(env_list);
 				binary_path = find_binary_path(current->args[0]);
 				if (!binary_path)
 				{
 					printf(ERR_CMD, current->args[0]);
+					free_env_array(env);
 					free_env_list(&env_list);
 					free_commands(cmd);
 					exit(127);
 				}
-				if (execve(binary_path, current->args, NULL) == -1)
+				if (execve(binary_path, current->args, env) == -1)
 				{
 					free(binary_path);
+					free_env_array(env);
 					free_env_list(&env_list);
 					free_commands(cmd);
 					exit(1);

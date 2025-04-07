@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:04:05 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/03 14:41:01 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/07 09:33:09 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,12 @@ t_env	*ft_unset(t_env *env_list, char *name)
 	prev = NULL;
 	while (current)
 	{
+		if (!is_valid_identifier(name))
+		{
+			printf(ERR_EXP, name);
+			free_env_list(&env_list);
+			return (new_env_list);
+		}
 		if (strcmp(current->name, name) == 0)
 		{
 			if (prev)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_separator.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 10:08:09 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/03 22:49:38 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/06 12:42:53 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,6 @@ int	handle_delimiter(t_lexer *lexer, int i)
 		lexer->command = 1;
 	return (i + len);
 }
-
-/* Gestion des caractères d'échappement */
-
-// creation d'une nouvelle chaine qui est la chaine traite sans les caracteres d'echappement
 
 char    *handle_escape_char(char *input)
 {

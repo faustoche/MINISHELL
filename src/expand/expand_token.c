@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 11:58:53 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/03 22:49:52 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/06 12:41:41 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,9 @@ void	expand_variable_in_token(t_token *token, t_env *env_list)
 {
 	char	*expanded;
 
-	if (token->value && ft_strchr(token->value, '$')
-		&& token->type != SINGLE_QUOTE)
+	if (token->type == SINGLE_QUOTE)
+		return ;
+	if (token->value && ft_strchr(token->value, '$'))
 	{
 		expanded = expand_variable(env_list, token->value, token->type);
 		if (expanded)

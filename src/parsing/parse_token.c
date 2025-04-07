@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/02 13:32:08 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/07 08:29:11 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ int	get_token_type(char *token, int *command)
 int	handle_std_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env)
 {
 	t_cmd	*new_cmd;
+	t_cmd	*tmp;
 
 	if (!(*curr))
 	{
@@ -53,7 +54,15 @@ int	handle_std_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env)
 		if (!(*head))
 			*head = new_cmd;
 		else
-			(*curr)->next = new_cmd;
+		{
+			tmp = *head;
+            while (tmp && tmp->next)
+                tmp = tmp->next;
+            if (tmp)
+                tmp->next = new_cmd;
+            else
+                *head = new_cmd;
+		}
 		*curr = new_cmd;
 	}
 	if (add_args(*tok, *curr) == -1)
@@ -79,10 +88,13 @@ int	process_other_token(t_token **token, t_cmd **curr, t_cmd **head, t_env *env)
 
 int	process_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env)
 {
+	if (!(*token))
+		return (0);
 	if ((*token)->type == TOKEN_PIPE)
 		return (process_pipe_token(token, current, head));
-	else if (redirection_token(*token))
-		return (process_redirection_token(token, current, head));
+	else if ((*token)->type == REDIR_OUT || (*token)->type == REDIR_APPEND
+		|| (*token)->type == REDIR_IN || (*token)->type == HEREDOC)
+		return (process_redir_token(token, current, head, env));
 	else
 		return (process_other_token(token, current, head, env));
 }

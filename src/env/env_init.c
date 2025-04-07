@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:18:42 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/03 14:41:11 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/07 08:53:56 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,4 +132,42 @@ t_env	*copy_env_list(t_env *original_env)
 		original_current = original_current->next;
 	}
 	return (copy_head);
+}
+
+char	*find_var_value(t_env *env_list, char *name)
+{
+	t_env	*current;
+
+	current = env_list;
+	while (current)
+	{
+		if (ft_strcmp(current->name, name) == 0)
+			return (current->value);
+		current = current->next;
+	}
+	return (NULL);
+}
+
+t_env	*change_var_value(t_env *env_list, char *name, char *value)
+{
+	t_env	*current;
+	t_env	*head;
+	char	*new_value;
+
+	head = env_list;
+	current = env_list;
+	while (current)
+	{
+		if (ft_strcmp(current->name, name) == 0)
+		{
+			new_value = ft_strdup(value);
+			if (!new_value)
+				return (head);
+			free(current->value);
+			current->value = new_value;
+			break ;
+		}
+		current = current->next;
+	}
+	return (head);
 }

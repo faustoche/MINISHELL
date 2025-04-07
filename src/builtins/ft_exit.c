@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 18:14:36 by faustoche         #+#    #+#             */
-/*   Updated: 2025/03/31 15:12:21 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/07 12:16:24 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,13 @@
 - 1000 % 256 = 232 thus exit 1000 = exit 232
 */
 
-/* Ajouter une fonction a la toute fin pour exit le programme proprement */
 
 void	ft_exit(t_cmd *cmd)
 {
 	int		exit_code;
 
-	printf("Adieu 💀\n");
 	exit_code = 0;
+	printf("Adieu 💀\n");
 	if (cmd->args[1])
 	{
 		if (!is_numeric(cmd->args[1]))
@@ -40,7 +39,8 @@ void	ft_exit(t_cmd *cmd)
 			return ;
 		}
 		else
-			exit_code = ft_atoi(cmd->args[1]) % 256;
+		exit_code = ft_atoi(cmd->args[1]) % 256;
 	}
+	quit_minislay(NULL, cmd, NULL, NULL);
 	exit(exit_code);
 }

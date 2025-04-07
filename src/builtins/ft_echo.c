@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:52:28 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/03/31 15:12:11 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/06 20:59:02 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,15 @@
 
 /* Ajouter un clean propre a la fin */
 
-void	ft_echo(t_cmd *cmd)
+static size_t	is_newline(t_cmd *cmd, int *newline)
 {
 	size_t	i;
 	size_t	j;
-	int		newline;
 
-	newline = 1;
+	*newline = 1;
 	i = 1;
 	while (i < cmd->nb_arg && cmd->args[i][0] == '-'
-		&& cmd->args[i][0] == '-' && cmd->args[i][1] == 'n')
+		&& cmd->args[i][1] == 'n')
 	{
 		j = 1;
 		while (cmd->args[i][j] == 'n')
@@ -33,6 +32,15 @@ void	ft_echo(t_cmd *cmd)
 		newline = 0;
 		i++;
 	}
+	return (i);
+}
+
+void	ft_echo(t_cmd *cmd)
+{
+	size_t	i;
+	int		newline;
+
+	i = is_newline(cmd, &newline);
 	while (i < cmd->nb_arg)
 	{
 		printf("%s", cmd->args[i]);

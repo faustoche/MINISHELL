@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 08:47:18 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/03 14:40:23 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/07 11:58:30 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,22 @@ t_env	*ft_cd(t_cmd *cmd, t_env *env_list)
 	char	new_dir[PATH_MAX];
 	t_env	*new_env_list;
 
+	ft_memset(new_dir, 0, sizeof(new_dir)); // on rempli de 0 pour etre sur de pas acceder a des trucs non initialises
 	new_env_list = copy_env_list(env_list);
+	if (!new_env_list) // ajout de cette verification
+		return (env_list);
 	home = find_var_value(new_env_list, "HOME");
 	old_pwd = find_var_value(new_env_list, "PWD");
 	if (cmd->nb_arg == 1)
+	{
+		if (!home || *home == '\0')
+		{
+			printf("cd: HOME not set\n");
+			free_env_list(&new_env_list);
+			return (env_list);
+		}
 		ft_strcpy(new_dir, home);
+	}
 	else if (cmd->nb_arg == 2)
 	{
 		if (ft_strcmp(cmd->args[1], "-") == 0)
@@ -47,18 +58,17 @@ t_env	*ft_cd(t_cmd *cmd, t_env *env_list)
 		printf(ERR_ARG, cmd->args[0]); // autre chose ??
 	if (access(new_dir, F_OK) == -1)
 	{
-		perror("cd");
 		free_env_list(&new_env_list);
-		return (NULL);
+		return (env_list); // retourner env list ici au lieu de null
 	}
 	if (chdir(new_dir) == -1)
 	{
 		perror("cd");
 		free_env_list(&new_env_list);
-		return (NULL);
+		return (env_list); // idem ici on retourne pas null
 	}
 	if(!(getcwd(new_dir, sizeof(new_dir))))
-		perror("error on getcwd");
+		perror("error retrieving current directory");
 	new_env_list = change_var_value(new_env_list, "OLDPWD", old_pwd);
 	new_env_list = change_var_value(new_env_list, "PWD", new_dir);
 	if (cmd->nb_arg == 2 && ft_strcmp(cmd->args[1], "-") == 0)

@@ -6,17 +6,33 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/04 17:21:25 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/07 09:02:44 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/* - volatile : force le compilateur a acceder a 
+			la memoire ou la variable est stockee,
+			pour etre sur que mise a jour bien effectuee
+			dans gestionnaire de signaux.
+	- sig_atomic_t : garantit que acces a la variable ne peuvent
+			etre interrompus ou modifies de facon incomplete. */
+
+volatile sig_atomic_t	g_received_signal = 0;
 
 static char	*prompt(void)
 {
 	char	*line;
 
 	line = readline("minislay> \033[1;32m→\033[0m \033[1;34m~\033[0m ");
+	if (!line)
+	{
+		printf("exit\n");
+		clear_history();
+		free(line);
+		return (NULL);
+	}
 	if (line && *line)
 		add_history(line);
 	return (line);
@@ -40,9 +56,7 @@ int	main(int ac, char **av, char **envp)
 	original_env = init_env(envp);
 	env_list = copy_env_list(original_env);
 	if (!env_list)
-	{
 		return (print_error_message("Error: invalid env variable\n"));
-	}
 	free_env_list(&original_env);
 	if (!env_list)
 	{
@@ -50,36 +64,49 @@ int	main(int ac, char **av, char **envp)
 		return (print_error_message("Error: env variable init\n"));
 	}
 	env_list = change_var_value(env_list, "OLDPWD", pwd);
-	// t_env *tmp = change_var_value(env_list, "OLDPWD", pwd);
-	// free_env_list(&env_list);
-	// env_list = tmp; 
 	while (1)
 	{
-		check_signals();
-		if (token_list != NULL)
-			free_token_list(token_list);
+		set_signal_handlers();
 		input = prompt();
 		if (!input)
-			break ;
+			break;
+		char *fixed_input = fix_dollar_quote(input);
+		free(input);
+		if (!fixed_input)
+			continue ;
+		input = fixed_input;
 		token_list = parse_input(input);
 		if (!token_list)
 		{
 			free(input);
-			free_token_list(token_list);
-			free_commands(commands);
+			input = NULL;
+			// free_token_list(token_list);
+			// free_commands(commands);
 			continue ;
 		}
 		expand_tokens(token_list, env_list);
 		commands = parse_commands(token_list, env_list);
 		free_token_list(token_list);
+		free(input);
+		input = NULL;
 		close_all_fd(3);
 		if (commands)
 		{
-			if (is_builtins(commands->args[0]) && !has_pipes(commands) && is_redirection(commands))
-				builtins_execution(commands, &env_list);
+			if (is_empty_command(commands))
+			{
+				if (is_redirection(commands))
+					execute_only_redirections(commands);
+			}
+			else if (is_builtins(commands->args[0]) && !has_pipes(commands))
+			{
+				if (is_redirection(commands))
+					handle_builtin_redirection(commands, &env_list);
+				else
+					builtins_execution(commands, &env_list);
+			}
 			else if (has_pipes(commands))
 				execute_pipeline(commands, env_list);
-			else if (!is_redirection(commands))
+			else if (is_redirection(commands))
 				execute_redirection(commands, env_list);
 			else
 				execute_commands(commands, env_list);
@@ -87,12 +114,19 @@ int	main(int ac, char **av, char **envp)
 		close_all_fd(3);
 		free_commands(commands);
 		commands = NULL;
-		token_list = NULL;
-		free(input);
-		input = NULL;
+		// token_list = NULL;
+		// free(input);
+		// input = NULL;
 	}
+	if (input)
+		free(input);
 	free_env_list(&env_list);
 	clear_history();
 	close_all_fd(3);
-	return (0);
+	return (EXIT_SUCCESS);
+}
+
+int is_empty_command(t_cmd *cmd)
+{
+    return (!cmd->args || !cmd->args[0] || ft_strlen(cmd->args[0]) == 0);
 }

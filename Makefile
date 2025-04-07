@@ -27,16 +27,17 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				exec/exec_redirections.c\
 				exec/exec_builtins.c\
 				exec/exec_utils.c\
-				parsing/parse_args.c\
-				parsing/parse_cmd.c\
-				parsing/parse_input.c\
+				parsing/parse_heredoc.c\
+				parsing/parse_init.c\
 				parsing/parse_token.c\
-				parsing/parse_redirection.c\
-				lexer/lexer.c\
-				lexer/lexer_quotes.c\
-				lexer/lexer_error.c\
-				lexer/lexer_separator.c\
+				parsing/parse_redir1.c\
+				parsing/parse_redir2.c\
 				lexer/lexer_init.c\
+				lexer/lexer_quotes1.c\
+				lexer/lexer_quotes2.c\
+				lexer/lexer_separator.c\
+				lexer/lexer_syntax.c\
+				lexer/lexer_words.c\
 				env/env_init.c\
 				expand/expand_token.c\
 				expand/expand_variable.c\
@@ -45,12 +46,16 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				builtins/ft_echo.c\
 				builtins/ft_exit.c\
 				builtins/ft_env.c\
-				builtins/ft_export.c\
+				builtins/ft_export1.c\
+				builtins/ft_export2.c\
 				builtins/ft_pwd.c\
 				builtins/ft_unset.c\
-				utils/env_utils.c\
-				utils/free.c\
-				utils/utils.c\
+				utils/utils_clean.c\
+				utils/utils_files.c\
+				utils/utils_free_cmd.c\
+				utils/utils_free_list.c\
+				utils/utils_parsing.c\
+				utils/utils_others.c\
 				signals/signals.c)
 
 SRCS			= ${MINISHELL}
@@ -64,9 +69,10 @@ LIBFT 			= -L$(LIBFT_DIR) -lft
 # ************************************************************************ #
 
 CC          = cc
-CFLAGS      = -Wall -Werror -Wextra -g3 -I$(INCLUDES_MINI) -I$(INCLUDES_LIB)
-LDFLAGS		= -lreadline
-RM = rm -rf
+CFLAGS      = -Wall -Werror -Wextra -g3 -I$(INCLUDES_MINI) -I$(INCLUDES_LIB) -I/opt/homebrew/opt/readline/include
+LDFLAGS     = -L/opt/homebrew/opt/readline/lib -lreadline
+RM          = rm -rf
+
 
 # ************************************************************************ #
 #                  		       	 PROCESS                                   #
@@ -76,7 +82,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT_DIR)/libft.a
 	@echo "\033[1;33m\n🪩  COMPILING MINISHELL... 🪩\n"
-	$(CC) $(OBJS) $(CFLAGS) $(LDFLAGS) $(LDSFLAGS) $(LIBFT) -o $(NAME)
+	$(CC) $(OBJS) $(CFLAGS) $(LDFLAGS) $(LIBFT) -o $(NAME)
 	@echo "\033[1;32m💾 ./$(NAME) created 💾\n"
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c

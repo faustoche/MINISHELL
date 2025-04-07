@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 11:38:54 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/03 14:41:18 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/05 14:26:11 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,59 +30,28 @@ pid_t	create_pipe_and_fork(int pipefd[2])
 	return (pid);
 }
 
-void	execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, int *stdin_save, t_env *env_list)
+void execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, t_env *env_list)
 {
-	int	fd_out;
-
 	if (pid == 0)
 	{
+		handle_input_redirection(cmd);
+		handle_output_redirection(cmd);
+		close(pipefd[0]);
 		if (is_builtins(cmd->args[0]))
-			exit(EXIT_SUCCESS);
-		if (cmd->next)
-			handle_pipe_redirect(pipefd, 0, NULL);
-		if (cmd->in)
-			redirect(open_file(cmd->in, REDIR_IN), STDIN_FILENO);
-		else if (cmd->heredoc != -1)
-			redirect(cmd->heredoc, STDIN_FILENO);
-		if (cmd->out)
-		{
-			if (cmd->append)
-				fd_out = open_file(cmd->out, REDIR_APPEND);
-			else
-				fd_out = open_file(cmd->out, REDIR_OUT);
-			redirect(fd_out, STDOUT_FILENO);
-		}
-		char *binary_path = find_binary_path(cmd->args[0]);
-        if (!binary_path)
-        {
-            printf(ERR_CMD, cmd->args[0]);
-			free_env_list(&env_list);
-			free_commands(cmd);
-            exit(127);
-        }
-        if (execve(binary_path, cmd->args, NULL) == -1)
-        {
-            perror("execve");
-            free(binary_path);
-            exit(1);
-        }
-        
-        exit(EXIT_FAILURE);
+			builtins_execution(cmd, &env_list);
+		else
+			execute_commands(cmd, env_list);
+		exit(0);
 	}
 	else
 	{
-		if (is_builtins(cmd->args[0]))
-		{
-			builtins_execution(cmd, &env_list);
-			free_commands(cmd);
-		}
-		if (cmd->next)
-		{
-			handle_pipe_redirect(pipefd, 1, stdin_save);
-			execute_commands(cmd->next, env_list);
-			handle_pipe_redirect(pipefd, 2, stdin_save);
-		}
+		close(pipefd[1]);
 		waitpid(pid, NULL, 0);
+		if (cmd->heredoc != -1)
+		{
+			close(cmd->heredoc);
+			cmd->heredoc = -1;
+		}
 	}
 }
 

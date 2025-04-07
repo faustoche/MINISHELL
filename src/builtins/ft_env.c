@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:42:02 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/03 14:45:22 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/06 21:02:53 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,21 @@ void	ft_env(t_env *env_list)
 	{
 		if (current->name && current->value)
 			printf("%s=%s\n", current->name, current->value);
-		else
-			printf("jsp quoi\n");
+		current = current->next;
+	}
+}
+
+void	print_sorted_env(t_env *env_list)
+{
+	t_env *current;
+
+	current = env_list;
+	while (current)
+	{
+		if (current->name && current->value && *current->value)
+			printf("export %s=\"%s\"\n", current->name, current->value);
+		else if (current->name)
+			printf("export %s\n", current->name);
 		current = current->next;
 	}
 }

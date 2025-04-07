@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 11:52:10 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/03 22:51:16 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/06 12:40:03 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,12 @@ char	*extract_variable_name(t_expand *exp, size_t *len)
 	size_t	start;
 
 	start = exp->i;
-	while (exp->str[exp->i] && (isalnum(exp->str[exp->i])
-			|| exp->str[exp->i] == '_'))
+	if (!exp->str[exp->i] || (!isalpha(exp->str[exp->i]) && exp->str[exp->i] != '_'))
+	{
+		*len = 0;
+		return (NULL);
+	}
+	while (exp->str[exp->i] && (isalnum(exp->str[exp->i]) || exp->str[exp->i] == '_'))
 		(exp->i)++;
 	*len = exp->i - start;
 	return (ft_strndup(exp->str + start, *len));
@@ -54,14 +58,51 @@ int	copy_variable_value(t_expand *exp, char *value, char *name)
 
 /* Processes a variable for expansion */
 
-int process_variable(t_expand *exp)
+int	process_variable(t_expand *exp)
 {
-	int     var_start;
-	int     var_end;
-	char    *var_name;
-	char    *var_value;
-	char    *quote_type;
+	int		var_start;
+	int		var_end;
+	char	*var_name;
+	char	*var_value;
+	char	*quote_type;
 
+	if (exp->i > 0 && exp->str[exp->i - 1] == '"' &&
+		exp->str[exp->i] == '$' && exp->str[exp->i + 1] == '"')
+	{
+		exp->result[exp->j++] = '$';
+		exp->i++;
+		if (exp->str[exp->i] == '"')
+			exp->i++;
+		return (1);
+	}
+	if (exp->i > 0 && exp->str[exp->i - 1] == '"' && exp->str[exp->i] == '$')
+	{
+		int temp_i = exp->i + 1;
+		while (exp->str[temp_i] && exp->str[temp_i] != ' ' &&
+				exp->str[temp_i] != '"' && exp->str[temp_i] != '\'')
+			temp_i++;
+		if (exp->str[temp_i] == '"' && exp->str[temp_i + 1] && 
+			!is_space(exp->str[temp_i + 1]) && exp->str[temp_i + 1] != '\0')
+		{
+			exp->result[exp->j++] = exp->str[exp->i - 1];
+			exp->result[exp->j++] = exp->str[exp->i++];
+			return (1);
+		}
+	}
+	if (exp->str[exp->i] == '$' && exp->i + 1 < ft_strlen(exp->str) && 
+		(exp->str[exp->i + 1] == '"' || exp->str[exp->i + 1] == '\''))
+	{
+		char quote = exp->str[exp->i + 1];
+		exp->i += 2;
+		size_t start = exp->i;
+		while (exp->str[exp->i] && exp->str[exp->i] != quote)
+			exp->i++;
+		if (start < exp->i)
+			copy_str_to_result(exp, exp->str + start, exp->i - start);
+		if (exp->str[exp->i] == quote)
+			exp->i++;
+		return (1);
+	}
 	if (!exp->str[exp->i + 1])
 	{
 		exp->result[exp->j++] = '$';
@@ -84,7 +125,7 @@ int process_variable(t_expand *exp)
 	{
 		quote_type = &exp->str[exp->i];
 		exp->i++;
-		if (exp->str[exp->i] == *quote_type) 
+		if (exp->str[exp->i] == *quote_type)
 		{
 			exp->i++;
 			return (-1);
@@ -107,7 +148,7 @@ int process_variable(t_expand *exp)
 		var_end = exp->i;
 		if (exp->str[exp->i] == '}')
 			exp->i++;
-	} 
+	}
 	else
 	{
 		while (exp->str[exp->i] && (isalnum(exp->str[exp->i]) || exp->str[exp->i] == '_'))
@@ -134,7 +175,6 @@ int	resize_result_buffer(t_expand *exp)
 	char	*temp;
 
 	exp->capacity *= 2;
-	// exp->result = NULL; soit j'ai un conditional jump, soit ca ne fonctio
 	temp = ft_realloc(exp->result, exp->capacity);
 	if (!temp)
 	{

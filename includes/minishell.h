@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/03 21:54:32 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/06 21:51:01 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@
 # define TOKEN_CLOSE_PARENT 	11
 # define TOKEN_AND
 
+# define PATH_MAX				4096
+
 /*--------------- DEFINES COLORS --------------*/
 
 # define BLACKB "\033[1;30m"
@@ -47,6 +49,7 @@
 # define ERR_CMD "bash: %s: command not found\n"
 # define ERR_DIR "bash: %s: is a directory\n"
 # define ERR_ARG "bash: %s: too many arguments\n"
+# define ERR_EXP "bash: export: %s: not a valid identifier\n"
 
 /*-------------- LIBRARIES --------------*/
 
@@ -64,6 +67,10 @@
 # include <readline/history.h>
 # include "../src/get_next_line/get_next_line.h"
 # include "../libft/libft.h"
+
+/*------------- VARIABLE GLOBALE --------------*/
+
+extern volatile sig_atomic_t	g_received_signal;
 
 /*------------- STRUCTURES --------------*/
 
@@ -118,6 +125,21 @@ typedef struct s_lexer
 void close_all_fd(int fd);
 int size_list(t_token *token);
 void	free_split(char **split);
+int is_empty_command(t_cmd *cmd);
+void execute_only_redirections(t_cmd *cmd);
+int	handle_output_redirection(t_cmd *cmd);
+void execute_with_heredoc(t_cmd *cmd, t_env *env_list);
+int has_heredoc(t_cmd *cmd);
+int handle_input_redirection(t_cmd *cmd);
+void handle_builtin_redirection(t_cmd *cmd, t_env **env_list);
+void free_env_array(char **env_array);
+char **env_list_to_array(t_env *env_list);
+char *fix_dollar_quote(char *input);
+int	is_valid_identifier(char *name);
+void	ft_lstadd_back(t_env **lst, t_env *new);
+void	print_sorted_env(t_env *env_list);
+t_env	*no_args_export(t_env *env_list);
+int	is_valid_identifier(char *name);
 
 /* BONUSES */
 
@@ -156,7 +178,7 @@ int		create_pipe(int pipefd[2]);
 pid_t	create_process(void);
 int		has_pipes(t_cmd *cmd);
 pid_t	create_pipe_and_fork(int pipefd[2]);
-void	execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, int *stdin_save, t_env *env_list);
+void	execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, t_env *env_list);
 void	execute_redirection(t_cmd *cmd, t_env *env_list);
 void	handle_pipe_redirect(int pipefd[2], int mode, int *stdin_save);
 
@@ -207,13 +229,14 @@ char	*handle_escape_char(char *input);
 
 /* PARSING */
 
+void execute_cat_with_heredoc(t_cmd *cmd);
 int		init_args(t_cmd *cmd);
 int		expand_args(t_cmd *cmd);
 int		add_args(t_token *token, t_cmd *cmd);
 t_cmd	*init_command(void);
 t_cmd	*parse_commands(t_token *token_lis, t_env *env_list);
 int		process_pipe_token(t_token **token, t_cmd **current, t_cmd **head);
-int		process_redirection_token(t_token **token, t_cmd **current, t_cmd **head);
+int	process_redir_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env);
 int		process_other_token(t_token **token, t_cmd **curr, t_cmd **head, t_env *env);
 int		process_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env);
 int		redirection_token(t_token *token);
@@ -248,7 +271,9 @@ int		is_numeric(char *str);
 
 /* SIGNALS */
 
-void	check_signals(void);
+void	sigquit_handler(int sig);
+void	sigint_handler(int sig);
+void	set_signal_handlers(void);
 
 void check_open_fds(void);
 

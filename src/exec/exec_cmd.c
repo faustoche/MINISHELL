@@ -3,31 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/03 21:55:08 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/05 15:47:01 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* Complete pathname by adding '/' and name of binary */
-
-void	free_split(char **split)
-{
-	int	i;
-
-	if (!split)
-		return ;
-	i = 0;
-	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-}
 
 char	*build_pathname(char *directory, char *arg)
 {
@@ -124,9 +109,13 @@ static void	create_child_process(char **args, char *binary_path)
 		return ;
 	}
 	if (pid == 0)
+	{
+		signal(SIGQUIT, SIG_DFL);
 		execute_child_process(args, binary_path);
+	}
 	else if (pid > 0)
 	{
+		signal(SIGQUIT, sigquit_handler);
 		result = waitpid(pid, &status, 0);
 		close_all_fd(3);
 		if (result == -1)
