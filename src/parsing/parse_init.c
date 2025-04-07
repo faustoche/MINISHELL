@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/05 22:08:37 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/07 16:53:10 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,11 @@ t_cmd	*parse_commands(t_token *token_list, t_env *env_list)
 	while (token)
 	{
 		if (process_token(&token, &current, &head, env_list))
+		{
+			if (head)
+				free_commands(head);
 			return (NULL);
+		}
 	}
 	if (head == NULL)
 	{
