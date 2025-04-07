@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/07 09:02:44 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/07 17:36:39 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,8 +80,6 @@ int	main(int ac, char **av, char **envp)
 		{
 			free(input);
 			input = NULL;
-			// free_token_list(token_list);
-			// free_commands(commands);
 			continue ;
 		}
 		expand_tokens(token_list, env_list);
@@ -114,9 +112,6 @@ int	main(int ac, char **av, char **envp)
 		close_all_fd(3);
 		free_commands(commands);
 		commands = NULL;
-		// token_list = NULL;
-		// free(input);
-		// input = NULL;
 	}
 	if (input)
 		free(input);

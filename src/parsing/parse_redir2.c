@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/06 18:20:36 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/07 16:48:06 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,13 @@ int	process_redir_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env)
 		return (-1);
 	}
 	if (handle_redirection(*tok, *curr, *head) == -1)
+	{
+		if (*head)
+			free_commands(*head);
+		*head = NULL;
+		*curr = NULL;
 		return (-1);
+	}
 	*tok = (*tok)->next;
 	if (*tok)
 		*tok = (*tok)->next;
