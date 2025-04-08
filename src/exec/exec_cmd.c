@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/08 12:35:39 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 13:58:05 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,7 +132,7 @@ static void	create_child_process(char **args, char *binary_path, t_env *env_list
 	}
 	else if (pid > 0) //parent
 	{
-		signal(SIGQUIT, sigquit_handler);
+		//signal(SIGQUIT, sigquit_handler);
 		result = waitpid(pid, &status, 0);
 		close_all_fd(3);
 		if (result == -1)

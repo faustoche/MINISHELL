@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:40:12 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/08 12:28:53 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 13:54:59 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ void	sigquit_child_handler(int sig) // si le pid est celui du parent, return. Si
 
 void	sigint_handler(int sig) // print "^C" et rend nouvelle ligne de prompt
 {
+	(void)sig;
 	printf("\n");
 	rl_replace_line("", 0);
 	rl_on_new_line(); //signifier qu'une nouvelle ligne va commencer

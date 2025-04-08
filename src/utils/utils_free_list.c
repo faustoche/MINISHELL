@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:28:18 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/08 12:30:02 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 13:58:32 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,4 @@ void	free_token_list(t_token *tokens)
 		free(current);
 		current = next;
 	}
-}
-
-int	print_error_message(char *str)
-{
-	printf("%s\n", str);
-	return (EXIT_FAILURE);
 }

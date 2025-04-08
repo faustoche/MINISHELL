@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 20:05:00 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/07 09:36:52 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 14:34:39 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,18 @@ int	has_pipes(t_cmd *cmd)
 
 void execute_pipeline(t_cmd *cmd, t_env *env_list)
 {
-	t_cmd	*current; 
+	t_cmd	*current;
+	int		fd;
 	char	*binary_path;
 	pid_t	pid;
 	int		pipe_fd[2];
 	int		input_fd;
-	//t_env	*old_env; // a voir
 	t_cmd	*temp_cmd;
 	t_cmd	*next;
 	int		i;
 	char	**split_path = NULL;
+	int		status;
+	pid_t	wait_pid;
 
 	input_fd = STDIN_FILENO;
 	current = cmd;
@@ -59,11 +61,37 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
 				dup2(input_fd, STDIN_FILENO); // redirection de l'entree
 				close(input_fd);
 			}
+			if (current->in)
+			{
+				fd = open_file(current->in, REDIR_IN);
+				if (fd != -1)
+				{
+					dup2(fd, STDIN_FILENO);
+					close (fd);
+				}
+			}
+			if (current->heredoc != -1)
+			{
+				dup2(current->heredoc, STDIN_FILENO);
+				close(current->heredoc);
+			}
 			if (current->next)
 			{
 				close(pipe_fd[0]);
 				dup2(pipe_fd[1], STDOUT_FILENO); // s'il y a une autre commande, reidrection
 				close(pipe_fd[1]);
+			}
+			if (current->out)
+			{
+				if (current->append)
+					fd = open_file(current->out, REDIR_APPEND);
+				else
+					fd = open_file(current->out, REDIR_OUT);
+				if (fd != -1)
+				{
+					dup2(fd, STDOUT_FILENO);
+					close(fd);
+				}
 			}
 			if (is_builtins(current->args[0]))
 			{
@@ -72,10 +100,7 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
 					dup2(pipe_fd[1], STDOUT_FILENO);
 					close(pipe_fd[1]);
 				}
-				// old_env = env_list;
 				builtins_execution(current, &env_list);
-				// if (old_env != env_list)
-				// 	free_env_list(&old_env);
 				free_env_list(&env_list);
 				temp_cmd = cmd;
 				while (temp_cmd) 
@@ -129,6 +154,8 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
 				close(pipe_fd[1]);
 				input_fd = pipe_fd[0];
 			}
+			if (current->heredoc != -1)
+				close(current->heredoc);
 			current = current->next;
 		}
 	}
@@ -136,6 +163,6 @@ void execute_pipeline(t_cmd *cmd, t_env *env_list)
 		close(input_fd);
 	if (split_path)
 		free_split(split_path);
-	while (wait(NULL) > 0);
+	while ((wait_pid = waitpid(-1, &status, 0)) > 0);
 	close_all_fd(3);
 }
