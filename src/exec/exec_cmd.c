@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/08 12:02:21 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 12:35:39 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,13 @@ static void	create_child_process(char **args, char *binary_path, t_env *env_list
 	pid_t	pid;
 	pid_t	result;
 	int		status;
+	struct sigaction	sa_sigquit_child;
+	int		res;
+
+	res = 0;
+	sa_sigquit_child.sa_handler = sigquit_child_handler;
+	sa_sigquit_child.sa_flags = 0;
+	sigemptyset(&sa_sigquit_child.sa_mask);
 
 	pid = fork();
 	if (pid == -1)
@@ -111,12 +118,19 @@ static void	create_child_process(char **args, char *binary_path, t_env *env_list
 		perror("Fork failed\n");
 		return ;
 	}
-	if (pid == 0)
+	if (pid == 0) //enfant
 	{
-		signal(SIGQUIT, SIG_DFL);
+		sigaction(SIGQUIT, &sa_sigquit_child, NULL);
+		if(res == -1)
+		{
+			perror("Error handling SIGQUIT in child process");
+			return ;
+		}
+		if(res == 0)
+			perror("SIGQUIT child");
 		execute_child_process(args, binary_path, env_list);
 	}
-	else if (pid > 0)
+	else if (pid > 0) //parent
 	{
 		signal(SIGQUIT, sigquit_handler);
 		result = waitpid(pid, &status, 0);

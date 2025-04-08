@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/07 17:36:39 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 12:27:32 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static char	*prompt(void)
 	if (!line)
 	{
 		printf("exit\n");
-		clear_history();
+		rl_clear_history();
 		free(line);
 		return (NULL);
 	}
@@ -67,6 +67,8 @@ int	main(int ac, char **av, char **envp)
 	while (1)
 	{
 		set_signal_handlers();
+		if (token_list != NULL)
+			free_token_list(token_list);
 		input = prompt();
 		if (!input)
 			break;
