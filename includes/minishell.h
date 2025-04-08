@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/07 22:16:06 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/08 12:24:49 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+# define _GNU_SOURCE //pour sigaction dans vscode
 
 /*--------------- DEFINES TOKENS --------------*/
 
@@ -282,6 +283,7 @@ int		is_numeric(char *str);
 
 /* SIGNALS */
 
+void	sigquit_child_handler(int sig);
 void	sigquit_handler(int sig);
 void	sigint_handler(int sig);
 void	set_signal_handlers(void);
