@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/07 16:53:10 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 11:26:22 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	init_args(t_cmd *cmd)
 {
-	cmd->max_arg = 4;
+	cmd->max_arg = 6;
 	cmd->args = malloc(sizeof(char *) * (cmd->max_arg + 1));
 	if (!cmd->args)
 		return (-1);

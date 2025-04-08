@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/07 16:25:55 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 12:02:21 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,21 +82,24 @@ char	*find_binary_path(char *arg)
 	return (NULL);
 }
 
-static void	execute_child_process(char **args, char *binary_path)
+static void	execute_child_process(char **args, char *binary_path, t_env *env_list)
 {
+	char	**env = env_list_to_array(env_list); // rajout de env list en parametre et appel de env dans execve
 	if (access(binary_path, X_OK) == -1)
 		printf(ERR_CMD, args[0]);
-	else if (execve(binary_path, args, NULL) == -1)
+	else if (execve(binary_path, args, env) == -1) // sans ca, execve ne peut pas utiliser /bin/env
 	{
 		close_all_fd(3);
+		free_env_array(env);
 		exit(EXIT_FAILURE);
 	}
+	free_env_array(env);
 	close_all_fd(3);
 }
 
 /* Create child process and execute */
 
-static void	create_child_process(char **args, char *binary_path)
+static void	create_child_process(char **args, char *binary_path, t_env *env_list)
 {
 	pid_t	pid;
 	pid_t	result;
@@ -111,7 +114,7 @@ static void	create_child_process(char **args, char *binary_path)
 	if (pid == 0)
 	{
 		signal(SIGQUIT, SIG_DFL);
-		execute_child_process(args, binary_path);
+		execute_child_process(args, binary_path, env_list);
 	}
 	else if (pid > 0)
 	{
@@ -142,7 +145,15 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 			builtins_execution(current, &env_list);
 		else if (current->args && current->args[0])
 		{
-			if ((current->args[0][0] == '/' || current->args[0][0] == '.')
+			if (current->args[0][0] == '/')
+			{
+				binary_path = ft_strdup(current->args[0]);
+				if (!binary_path)
+					return ;
+				create_child_process(current->args, binary_path, env_list);
+				free(binary_path);
+			}
+			else if ((current->args[0][0] == '/' || current->args[0][0] == '.')
 				&& (current->args[0][1] == '/' || current->args[0][1] == '.'))
 				printf(ERR_DIR, current->args[0]);
 			else
@@ -155,7 +166,7 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 				}
 				else
 				{
-					create_child_process(current->args, binary_path);
+					create_child_process(current->args, binary_path, env_list);
 					free(binary_path);
 				}
 			}
