@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/06 18:18:23 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 21:32:02 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static int	read_heredoc_content(char *delimiter, int write_fd)
 		if (!input)
 		{
 			printf("Error: heredoc delimited with eof\n");
+			close(write_fd);
 			return (0);
 		}
 		if (ft_strcmp(input, delimiter) == 0)
@@ -34,6 +35,7 @@ static int	read_heredoc_content(char *delimiter, int write_fd)
 		write(write_fd, "\n", 1);
 		free(input);
 	}
+	close(write_fd);
 	return (0);
 }
 
@@ -49,6 +51,7 @@ int	handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head)
 	if (pipe(pipe_fd) == -1)
 		return (print_error_message("Error: pipe creation failed\n"));
 	read_heredoc_content(delimiter, pipe_fd[1]);
+	close(pipe_fd[1]);
 	close(pipe_fd[1]);
 	if (cmd->heredoc != -1)
 		close(cmd->heredoc);

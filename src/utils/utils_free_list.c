@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_free_list.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:28:18 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/08 13:58:32 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 23:05:20 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,30 @@ void	free_token_list(t_token *tokens)
 		free(current);
 		current = next;
 	}
+}
+
+void	free_pipe_redir(t_cmd *cmd)
+{
+	t_cmd	*tmp_cmd;
+	t_cmd	*next;
+	int		i;
+	
+	tmp_cmd = cmd;
+	while (tmp_cmd) 
+	{
+		i = 0;
+		next = tmp_cmd->next;
+		if (tmp_cmd->args) 
+		{
+			while(tmp_cmd->args[i])
+			{
+				free(tmp_cmd->args[i]);
+				i++;
+			}
+			free(tmp_cmd->args);
+		}
+		free(tmp_cmd);
+		tmp_cmd = next;
+	}
+	close_all_fd(3);
 }

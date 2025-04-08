@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_quotes1.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 16:50:10 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/08 15:50:32 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 23:19:38 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	add_merged_token(t_lexer *lexer, char *merged_word, int is_first_token)
+static int	add_merged_token(t_lexer *lexer, char *merged_word, int is_first_token)
 {
 	int	token_type;
 
@@ -27,7 +27,7 @@ int	add_merged_token(t_lexer *lexer, char *merged_word, int is_first_token)
 
 /* Extract quoted content or handle non quoted char */
 
-int	process_token_segment(t_lexer *lexer, int start, char **merged_word)
+static int	process_token_segment(t_lexer *lexer, int start, char **merged_word)
 {
 	int		end;
 	char	quote_type;
@@ -55,7 +55,7 @@ int	process_token_segment(t_lexer *lexer, int start, char **merged_word)
 
 /* Merge the quoted content */
 
-char	*merge_quote_content(char *merged_word, char *quote_content)
+static char	*merge_quote_content(char *merged_word, char *quote_content)
 {
 	char	*temp;
 	char	*new_merged;
@@ -71,7 +71,7 @@ char	*merge_quote_content(char *merged_word, char *quote_content)
 
 /* Add a non quoted char to the list in progrss */
 
-int	process_non_quote_char(t_lexer *lexer, int end, char **merged_word)
+static int	process_non_quote_char(t_lexer *lexer, int end, char **merged_word)
 {
 	char	temp[2];
 	char	*temp_merged;
