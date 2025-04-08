@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 11:58:53 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/06 12:41:41 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 17:59:04 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,14 @@ void	expand_tokens(t_token *token_list, t_env *env_list)
 		expand_variable_in_token(token, env_list);
 		token = token->next;
 	}
+}
+
+int	process_variable_part6(t_expand *exp)
+{
+	if (isdigit(exp->str[exp->i]))
+	{
+		exp->i++;
+		return (1);
+	}
+	return (0);
 }

@@ -6,48 +6,13 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:25:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 16:02:58 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 18:26:17 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	is_dollar_quote(char *input, int i)
-{
-	return (input[i] == '$' && (input[i + 1] == '"' || input[i + 1] == '\''));
-}
-
-static int	handle_dollar_quote(char *input, char *result, int i, int *j)
-{
-	char	quote;
-
-	quote = input[i + 1];
-	i += 2;
-	while (input[i] && input[i] != quote)
-		result[(*j)++] = input[i++];
-	if (input[i] == quote)
-		i++;
-	return (i);
-}
-
-static int	handle_quote_state(int state)
-{
-	if (state == 0)
-		return (1);
-	else
-		return (0);
-}
-
-static int	handle_dollar_in_double_quote(char *input, char *result, int i, int *j)
-{
-	result[(*j)++] = '$';
-	i++;
-	if (input[i] == '"')
-		i++;
-	return (i);
-}
-
-static char	*process_input(char *input, char *result)
+char	*process_input(char *input, char *result)
 {
 	int	i;
 	int	j;

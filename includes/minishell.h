@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 15:43:24 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 18:07:29 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,7 +151,19 @@ t_env	*no_args_export(t_env *env_list);
 int	is_valid_identifier(char *name);
 char	*handle_char(char *merged, char current, int *quotes, char *quote_char);
 int	is_escaped_char(char c);
-
+int	process_variable_part1(t_expand *exp);
+int	process_variable_part2(t_expand *exp);
+int	process_variable_part3(t_expand *exp);
+int	process_variable_part4(t_expand *exp);
+int	process_variable_part5(t_expand *exp);
+int	process_variable_part6(t_expand *exp);
+int	is_dollar_quote(char *input, int i);
+int	handle_dollar_quote(char *input, char *result, int i, int *j);
+int	handle_quote_state(int state);
+int	handle_dollar_in_double_quote(char *input, char *result, int i, int *j);
+void	handle_outside_quotes(char *input, char *processed, t_state *state);
+char	*create_final_word(t_lexer *lexer, char *word, int start, int end);
+int	check_quote_errors(t_lexer *lexer, char *word, int end);
 
 /* BONUSES */
 

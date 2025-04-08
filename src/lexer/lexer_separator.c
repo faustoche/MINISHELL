@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 10:08:09 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 15:59:52 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 18:05:12 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,21 +60,6 @@ static void	handle_backslash_quotes(char *input, char *proc, t_state *state)
 		}
 		else
 			proc[state->j++] = input[state->i++];
-	}
-}
-
-static void	handle_outside_quotes(char *input, char *processed, t_state *state)
-{
-	if (input[state->i + 1] == '$')
-	{
-		state->i++;
-		processed[state->j++] = 1;
-		processed[state->j++] = input[state->i++];
-	}
-	else
-	{
-		state->i++;
-		processed[state->j++] = input[state->i++];
 	}
 }
 
