@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 15:08:59 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 22:14:14 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,13 +29,29 @@ static char	*prompt(void)
 	if (!line)
 	{
 		printf("exit\n");
-		rl_clear_history();
+		clear_history();
 		free(line);
 		return (NULL);
 	}
 	if (line && *line)
 		add_history(line);
 	return (line);
+}
+
+static int handle_all_heredocs(t_cmd *cmd)
+{
+	while (cmd)
+	{
+		if (cmd->heredoc_eof)
+		{
+			if (handle_heredoc(cmd, cmd->heredoc_eof, cmd) == -1)
+				return (-1);
+			free(cmd->heredoc_eof);
+			cmd->heredoc_eof = NULL;
+		}
+		cmd = cmd->next;
+	}
+	return (0);
 }
 
 int	main(int ac, char **av, char **envp)
@@ -90,6 +106,11 @@ int	main(int ac, char **av, char **envp)
 		close_all_fd(3);
 		if (commands)
 		{
+			if (commands && handle_all_heredocs(commands) == -1)
+			{
+				free_commands(commands);
+				continue ;
+			}
 			if (is_empty_command(commands))
 			{
 				if (is_redirection(commands))
@@ -119,9 +140,4 @@ int	main(int ac, char **av, char **envp)
 	clear_history();
 	close_all_fd(3);
 	return (EXIT_SUCCESS);
-}
-
-int is_empty_command(t_cmd *cmd)
-{
-    return (!cmd->args || !cmd->args[0] || ft_strlen(cmd->args[0]) == 0);
 }

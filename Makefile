@@ -23,7 +23,8 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				get_next_line/get_next_line.c\
 				get_next_line/get_next_line_utils.c\
 				exec/exec_cmd.c\
-				exec/new_exec_pipe.c\
+				exec/exec_pipe1.c\
+				exec/exec_pipe2.c\
 				exec/exec_redirections.c\
 				exec/exec_builtins.c\
 				exec/exec_utils.c\
@@ -31,7 +32,6 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				parsing/parse_init.c\
 				parsing/parse_token.c\
 				parsing/parse_redir1.c\
-				parsing/parse_redir2.c\
 				lexer/lexer_init.c\
 				lexer/lexer_quotes1.c\
 				lexer/lexer_quotes2.c\

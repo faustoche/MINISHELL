@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 14:45:41 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 23:11:46 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	init_args(t_cmd *cmd)
 	return (0);
 }
 
-int	expand_args(t_cmd *cmd)
+static int	expand_args(t_cmd *cmd)
 {
 	char	**new_args;
 	size_t	i;

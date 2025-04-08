@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/08 16:24:56 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 21:23:06 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,13 +103,10 @@ static void	execute_child_process(char **args, char *binary_path, t_env *env_lis
 static void	create_child_process(char **args, char *binary_path, t_env *env_list)
 {
 	pid_t	pid;
-	pid_t	result;
 	int		status;
 	struct sigaction	sa_sigquit_child;
 	struct sigaction	sa_sigint_parent;
-	int		res;
 
-	res = 0;
 	status = 0;
 	sa_sigint_parent.sa_handler = sigint_parent_handler;
 	sa_sigint_parent.sa_flags = 0;
@@ -134,7 +131,7 @@ static void	create_child_process(char **args, char *binary_path, t_env *env_list
 	}
 	else if (pid > 0)
 	{
-		result = waitpid(pid, &status, 0);
+		waitpid(pid, &status, 0);
 		close_all_fd(3);
 		// else if (WIFEXITED(status))
 		// {

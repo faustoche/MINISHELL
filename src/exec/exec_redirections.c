@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redirections.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/13 18:30:49 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/08 16:46:19 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 21:38:09 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ static void handle_pipe_redirection(t_cmd *cmd, t_env *env_list)
 		{
 			if (dup2(heredoc_fd, STDIN_FILENO) == -1)
 				(perror("dup2 failed for heredoc"), exit(EXIT_FAILURE));
+			close(heredoc_fd);
 		}
 		else if (cmd->in)
 		{

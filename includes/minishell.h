@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 19:13:52 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 23:24:33 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ typedef struct s_cmd
 	char			*out;
 	int				append;
 	int				heredoc;
+	char			*heredoc_eof;
 	size_t			max_arg;
 	size_t			nb_arg;
 	struct s_cmd	*next;
@@ -130,6 +131,14 @@ typedef struct s_state
 	int				doubles;
 }	t_state;
 
+typedef struct s_pipe
+{
+	t_cmd	*cmd; // liste des commands
+	t_env	**env_list; // variavles d'environnemt
+	int		input_fd; // entree
+	int		pipe_fd[2]; // descripteur pipe
+}	t_pipe;
+
 /*-------------- FUNCTIONS --------------*/
 void close_all_fd(int fd);
 int size_list(t_token *token);
@@ -143,7 +152,6 @@ int handle_input_redirection(t_cmd *cmd);
 void handle_builtin_redirection(t_cmd *cmd, t_env **env_list);
 void free_env_array(char **env_array);
 char **env_list_to_array(t_env *env_list);
-char *fix_dollar_quote(char *input);
 int	is_valid_identifier(char *name);
 void	ft_lstadd_back(t_env **lst, t_env *new);
 void	print_sorted_env(t_env *env_list);
@@ -156,28 +164,19 @@ int	process_variable_part2(t_expand *exp);
 int	process_variable_part3(t_expand *exp);
 int	process_variable_part4(t_expand *exp);
 int	process_variable_part5(t_expand *exp);
-int	process_variable_part6(t_expand *exp);
-int	is_dollar_quote(char *input, int i);
-int	handle_dollar_quote(char *input, char *result, int i, int *j);
-int	handle_quote_state(int state);
-int	handle_dollar_dq(char *input, char *result, int i, int *j);
-void	handle_outside_quotes(char *input, char *processed, t_state *state);
 char	*create_final_word(t_lexer *lexer, char *word, int start, int end);
 int	check_quote_errors(t_lexer *lexer, char *word, int end);
 int	handle_quote_case(char *input, char *result, int *index, int *quotes);
 int	handle_dollar_case(char *input, char *result, int *index, int sq);
 int	handle_edge_quotes(char *input, char *result, int *index);
-
-/* BONUSES */
-
-int		match_wildcard(char *sign, char *name);
-char	**init_matches(void);
-void	clean_matches(char **matches, int count, DIR *dir);
-int		add_match(char **matches, int count, char *name);
-char	**handle_no_matches(char *sign);
-int		collect_matches(char **matches, DIR *dir, char *sign);
-void	free_wildcards(char **matches);
-char	**expand_wildcards(char *sign);
+int has_heredoc(t_cmd *cmd);
+void execute_with_heredoc(t_cmd *cmd, t_env *env_list);
+void	free_pipe_redir(t_cmd *cmd);
+int setup_pipe(t_pipe *pipe_data);
+void    in_redirection(t_cmd *current, int input_fd);
+void    out_redirection(t_cmd *current, t_pipe *pipe_data);
+void    pipe_builtin(t_cmd *current, t_pipe *pipe_data);
+void    pipe_execve(t_cmd *current, t_pipe *pipe_data);
 
 /* BUILTINS */
 
@@ -235,48 +234,54 @@ void	expand_variable_in_token(t_token *token, t_env *env_list);
 int		copy_str_to_result(t_expand *exp, char *str, int len);
 void	expand_tokens(t_token *token_list, t_env *env_list);
 
-/* LEXER */
 
+/* LEXER - ok*/
+
+t_token	*parse_input(char *input);
+t_token	*lexing(char *input);
+int		handle_mixed_quotes(t_lexer *lexer, int start);
+char	*fix_dollar_quote(char *input);
+int		is_dollar_quote(char *input, int i);
+int		handle_dollar_quote(char *input, char *result, int i, int *j);
+int		handle_quote_state(int state);
+int		handle_dollar_dq(char *input, char *result, int i, int *j);
+void	handle_outside_quotes(char *input, char *processed, t_state *state);
+int		handle_dollar_case(char *input, char *result, int *index, int sq);
+int		handle_quote_case(char *input, char *result, int *index, int *quotes);
+int		handle_edge_quotes(char *input, char *result, int *index);
+int		handle_delimiter(t_lexer *lexer, int i);
+char	*handle_escape_char(char *input);
 int		syntax_error(char *input);
 int		delimiter_error(char *input);
 int		character_error(char *input);
 int		input_check(char *input);
-t_token	*lexing(char *input);
-int		add_merged_token(t_lexer *lexer, char *merged_word, int is_first_token);
-int		process_token_segment(t_lexer *lexer, int start, char **merged_word);
-char	*merge_quote_content(char *merged_word, char *quote_content);
-int		process_non_quote_char(t_lexer *lexer, int end, char **merged_word);
-int		handle_mixed_quotes(t_lexer *lexer, int start);
-int		double_delimiter(char *input, int i);
-int		handle_delimiter(t_lexer *lexer, int i);
+int		handle_word(t_lexer *lexer, int start);
 int		handle_special_char(t_lexer *lexer);
 void	add_token(t_lexer *lexer, char *word, int length, int type);
-int		handle_word(t_lexer *lexer, int start);
-char	*handle_escape_char(char *input);
+char	*handle_char(char *merged, char current, int *quotes, char *quote_char);
+int		check_quote_errors(t_lexer *lexer, char *word, int end);
+char	*create_final_word(t_lexer *lexer, char *word, int start, int end);
 
-/* PARSING */
+/* PARSING - OK */
 
-void execute_cat_with_heredoc(t_cmd *cmd);
+int		handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head);
 int		init_args(t_cmd *cmd);
-int		expand_args(t_cmd *cmd);
 int		add_args(t_token *token, t_cmd *cmd);
 t_cmd	*init_command(void);
 t_cmd	*parse_commands(t_token *token_lis, t_env *env_list);
-int		process_pipe_token(t_token **token, t_cmd **current, t_cmd **head);
-int	process_redir_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env);
-int		process_other_token(t_token **token, t_cmd **curr, t_cmd **head, t_env *env);
-int		process_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env);
-int		redirection_token(t_token *token);
-int		redirection_process(t_token **token, t_cmd **current, t_cmd **head);
-void	free_token_list(t_token *head);
-t_token	*parse_input(char *input);
-int		open_file(char *filename, int token);
-void	redirect(int fd, int std_fd);
 int		handle_redirection(t_token *token, t_cmd *current, t_cmd *head);
-int		redirection(t_cmd *cmd, char *file, int out, int append);
-int		handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head);
+int		process_redir_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env);
 int		get_token_type(char *token, int *command);
 int		handle_std_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env);
+int		process_other_token(t_token **token, t_cmd **curr, t_cmd **head, t_env *env);
+int		process_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env);
+int		process_pipe_token(t_token **token, t_cmd **current, t_cmd **head);
+
+
+
+
+void	free_token_list(t_token *head);
+int		open_file(char *filename, int token);
 
 /* UTILS */
 
