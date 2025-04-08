@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:50:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 16:15:06 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 17:13:27 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,7 @@ static int	modify_env_var(t_env *env_list, char *name, char *value)
 		if (ft_strcmp(current->name, name) == 0)
 		{
 			free(current->value);
-			if (value)
 			current->value = ft_strdup(value);
-			else
-			current->value = NULL;
 			return (1);
 		}
 		current = current->next;

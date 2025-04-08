@@ -6,32 +6,11 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:36:11 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/08 15:47:16 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 18:07:00 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-static int	check_quote_errors(t_lexer *lexer, char *word, int end)
-{
-	if (lexer->input[end] == '\'' || lexer->input[end] == '"')
-	{
-		if (lexer->command)
-		{
-			printf(ERR_CMD, word);
-			free(word);
-			return (-1);
-		}
-	}
-	return (0);
-}
-
-static char	*create_final_word(t_lexer *lexer, char *word, int start, int end)
-{
-	if (!word)
-		return (ft_strndup(lexer->input + start, end - start));
-	return (word);
-}
 
 static int	process_word(t_lexer *lexer, char *word, int end)
 {
