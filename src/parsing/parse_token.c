@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/07 08:29:11 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 16:21:20 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,12 +56,12 @@ int	handle_std_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env)
 		else
 		{
 			tmp = *head;
-            while (tmp && tmp->next)
-                tmp = tmp->next;
-            if (tmp)
-                tmp->next = new_cmd;
-            else
-                *head = new_cmd;
+			while (tmp && tmp->next)
+				tmp = tmp->next;
+			if (tmp)
+				tmp->next = new_cmd;
+			else
+				*head = new_cmd;
 		}
 		*curr = new_cmd;
 	}

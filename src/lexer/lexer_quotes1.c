@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 16:50:10 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/06 18:25:35 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 15:50:32 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,11 +87,11 @@ int	process_non_quote_char(t_lexer *lexer, int end, char **merged_word)
 	return (end + 1);
 }
 
-int handle_mixed_quotes(t_lexer *lexer, int start)
+int	handle_mixed_quotes(t_lexer *lexer, int start)
 {
-	int end;
-	char *merged_word;
-	
+	int		end;
+	char	*merged_word;
+
 	end = start;
 	merged_word = NULL;
 	while (lexer->input[end] && !is_space(lexer->input[end]))
@@ -105,5 +105,5 @@ int handle_mixed_quotes(t_lexer *lexer, int start)
 	}
 	if (merged_word)
 		add_merged_token(lexer, merged_word, lexer->command);
-	return end;
+	return (end);
 }

@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/08 14:51:00 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 16:24:56 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,17 +118,12 @@ static void	create_child_process(char **args, char *binary_path, t_env *env_list
 		perror("Fork failed\n");
 		return ;
 	}
-	if (pid == 0) //enfant
+	if (pid == 0)
 	{
 		sigaction(SIGQUIT, &sa_sigquit_child, NULL);
-		if(res == -1)
-		{
-			perror("Error handling SIGQUIT in child process");
-			return ;
-		}
 		execute_child_process(args, binary_path, env_list);
 	}
-	else if (pid > 0) //parent
+	else if (pid > 0)
 	{
 		//signal(SIGQUIT, sigquit_handler);
 		result = waitpid(pid, &status, 0);
@@ -172,10 +167,7 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 			{
 				binary_path = find_binary_path(current->args[0]);
 				if (binary_path == NULL)
-				{
-					printf(ERR_CMD, current->args[0]);
-					close_all_fd(3);
-				}
+					(printf(ERR_CMD, current->args[0]), close_all_fd(3));
 				else
 				{
 					create_child_process(current->args, binary_path, env_list);

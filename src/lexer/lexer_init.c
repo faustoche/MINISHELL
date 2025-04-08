@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:54:08 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/06 18:22:35 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 15:49:45 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ static t_token	*validate_tokens(t_token *tokens)
 	while (current)
 	{
 		if ((current->type == REDIR_IN || current->type == REDIR_OUT
-			|| current->type == HEREDOC || current->type == REDIR_APPEND))
+				|| current->type == HEREDOC || current->type == REDIR_APPEND))
 		{
-			if (!current->next || (current->next->type != TOKEN_ARGUMENT 
-				&& current->next->type != TOKEN_COMMAND))
+			if (!current->next || (current->next->type != TOKEN_ARGUMENT
+					&& current->next->type != TOKEN_COMMAND))
 			{
 				printf(ERR_SYNTAX);
 				free_token_list(tokens);

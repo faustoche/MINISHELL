@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 11:52:10 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/06 12:40:03 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 16:08:05 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@ char	*extract_variable_name(t_expand *exp, size_t *len)
 	size_t	start;
 
 	start = exp->i;
-	if (!exp->str[exp->i] || (!isalpha(exp->str[exp->i]) && exp->str[exp->i] != '_'))
+	if (!exp->str[exp->i] || (!isalpha(exp->str[exp->i])
+			&& exp->str[exp->i] != '_'))
 	{
 		*len = 0;
 		return (NULL);
 	}
-	while (exp->str[exp->i] && (isalnum(exp->str[exp->i]) || exp->str[exp->i] == '_'))
+	while (exp->str[exp->i] && (isalnum(exp->str[exp->i])
+			|| exp->str[exp->i] == '_'))
 		(exp->i)++;
 	*len = exp->i - start;
 	return (ft_strndup(exp->str + start, *len));
@@ -65,9 +67,12 @@ int	process_variable(t_expand *exp)
 	char	*var_name;
 	char	*var_value;
 	char	*quote_type;
+	char	quote;
+	size_t	start;
+	int		temp_i;
 
-	if (exp->i > 0 && exp->str[exp->i - 1] == '"' &&
-		exp->str[exp->i] == '$' && exp->str[exp->i + 1] == '"')
+	if (exp->i > 0 && exp->str[exp->i - 1] == '"'
+		&& exp->str[exp->i] == '$' && exp->str[exp->i + 1] == '"')
 	{
 		exp->result[exp->j++] = '$';
 		exp->i++;
@@ -77,24 +82,24 @@ int	process_variable(t_expand *exp)
 	}
 	if (exp->i > 0 && exp->str[exp->i - 1] == '"' && exp->str[exp->i] == '$')
 	{
-		int temp_i = exp->i + 1;
-		while (exp->str[temp_i] && exp->str[temp_i] != ' ' &&
-				exp->str[temp_i] != '"' && exp->str[temp_i] != '\'')
+		temp_i = exp->i + 1;
+		while (exp->str[temp_i] && exp->str[temp_i] != ' '
+			&& exp->str[temp_i] != '"' && exp->str[temp_i] != '\'')
 			temp_i++;
-		if (exp->str[temp_i] == '"' && exp->str[temp_i + 1] && 
-			!is_space(exp->str[temp_i + 1]) && exp->str[temp_i + 1] != '\0')
+		if (exp->str[temp_i] == '"' && exp->str[temp_i + 1]
+			&& !is_space(exp->str[temp_i + 1]) && exp->str[temp_i + 1] != '\0')
 		{
 			exp->result[exp->j++] = exp->str[exp->i - 1];
 			exp->result[exp->j++] = exp->str[exp->i++];
 			return (1);
 		}
 	}
-	if (exp->str[exp->i] == '$' && exp->i + 1 < ft_strlen(exp->str) && 
-		(exp->str[exp->i + 1] == '"' || exp->str[exp->i + 1] == '\''))
+	if (exp->str[exp->i] == '$' && exp->i + 1 < ft_strlen(exp->str)
+		&& (exp->str[exp->i + 1] == '"' || exp->str[exp->i + 1] == '\''))
 	{
-		char quote = exp->str[exp->i + 1];
+		quote = exp->str[exp->i + 1];
 		exp->i += 2;
-		size_t start = exp->i;
+		start = exp->i;
 		while (exp->str[exp->i] && exp->str[exp->i] != quote)
 			exp->i++;
 		if (start < exp->i)
@@ -110,8 +115,10 @@ int	process_variable(t_expand *exp)
 		return (-1);
 	}
 	exp->i++;
-	if (exp->str[exp->i] != '{' && !isalnum(exp->str[exp->i]) && exp->str[exp->i] != '_'
-		&& exp->str[exp->i] != '"' && exp->str[exp->i] != '\'' && exp->str[exp->i] != '`')
+	if (exp->str[exp->i] != '{' && !isalnum(exp->str[exp->i])
+		&& exp->str[exp->i] != '_'
+		&& exp->str[exp->i] != '"' && exp->str[exp->i] != '\''
+		&& exp->str[exp->i] != '`')
 	{
 		exp->result[exp->j++] = '$';
 		return (-1);
@@ -121,7 +128,8 @@ int	process_variable(t_expand *exp)
 		exp->i++;
 		return (-1);
 	}
-	if (exp->str[exp->i] == '"' || exp->str[exp->i] == '\'' || exp->str[exp->i] == '`')
+	if (exp->str[exp->i] == '"' || exp->str[exp->i] == '\''
+		|| exp->str[exp->i] == '`')
 	{
 		quote_type = &exp->str[exp->i];
 		exp->i++;
@@ -151,7 +159,8 @@ int	process_variable(t_expand *exp)
 	}
 	else
 	{
-		while (exp->str[exp->i] && (isalnum(exp->str[exp->i]) || exp->str[exp->i] == '_'))
+		while (exp->str[exp->i] && (isalnum(exp->str[exp->i])
+				|| exp->str[exp->i] == '_'))
 			exp->i++;
 		var_end = exp->i;
 	}

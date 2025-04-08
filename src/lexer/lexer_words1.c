@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer_words.c                                      :+:      :+:    :+:   */
+/*   lexer_words1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/21 20:36:11 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/07 21:54:07 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/08 15:47:16 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int check_quote_errors(t_lexer *lexer, char *word, int end)
+static int	check_quote_errors(t_lexer *lexer, char *word, int end)
 {
 	if (lexer->input[end] == '\'' || lexer->input[end] == '"')
 	{
@@ -26,14 +26,14 @@ static int check_quote_errors(t_lexer *lexer, char *word, int end)
 	return (0);
 }
 
-static char	*create_final_word(t_lexer *lexer, char *merged_word, int start, int end)
+static char	*create_final_word(t_lexer *lexer, char *word, int start, int end)
 {
-	if (!merged_word)
-		return ft_strndup(lexer->input + start, end - start);
-	return (merged_word);
+	if (!word)
+		return (ft_strndup(lexer->input + start, end - start));
+	return (word);
 }
 
-static int process_word(t_lexer *lexer, char *word, int end)
+static int	process_word(t_lexer *lexer, char *word, int end)
 {
 	int	type;
 
@@ -43,23 +43,23 @@ static int process_word(t_lexer *lexer, char *word, int end)
 	return (end);
 }
 
-static int	check_preliminary_errors(char *merged_word, int start, int end, int in_quotes)
+static int	preliminary_errors(char *word, int start, int end, int in_quotes)
 {
 	if (in_quotes)
 	{
 		printf(ERR_SYNTAX);
-		free(merged_word);
+		free(word);
 		return (-1);
 	}
 	if (end == start)
 	{
-		free(merged_word);
+		free(word);
 		return (end);
 	}
 	return (0);
 }
 
-static int	process_final_word(t_lexer *lexer, char *merged_word, int start, int end)
+static int	final_word(t_lexer *lexer, char *merged_word, int start, int end)
 {
 	char	*word;
 
@@ -69,7 +69,7 @@ static int	process_final_word(t_lexer *lexer, char *merged_word, int start, int 
 	return (process_word(lexer, word, end));
 }
 
-static int	parse_word_characters(t_lexer *lexer, int start, char **merged_word, int *in_quotes)
+static int	parse_word(t_lexer *lexer, int start, char **word, int *in_quotes)
 {
 	int		end;
 	char	quote_char;
@@ -77,19 +77,19 @@ static int	parse_word_characters(t_lexer *lexer, int start, char **merged_word, 
 	end = start;
 	quote_char = 0;
 	*in_quotes = 0;
-	*merged_word = NULL;
+	*word = NULL;
 	while (lexer->input[end])
 	{
 		if (!(*in_quotes) && (is_space(lexer->input[end])
-			|| is_separator(lexer->input[end])))
-			break;
-		*merged_word = handle_char(*merged_word, lexer->input[end], in_quotes, &quote_char);
+				|| is_separator(lexer->input[end])))
+			break ;
+		*word = handle_char(*word, lexer->input[end], in_quotes, &quote_char);
 		if ((*in_quotes && lexer->input[end] == quote_char)
 			|| (!(*in_quotes) && (lexer->input[end] == '\''
-			|| lexer->input[end] == '"')))
+					|| lexer->input[end] == '"')))
 		{
 			end++;
-			continue;
+			continue ;
 		}
 		end++;
 	}
@@ -103,13 +103,12 @@ int	handle_word(t_lexer *lexer, int start)
 	int		result;
 	char	*merged_word;
 
-	end = parse_word_characters(lexer, start, &merged_word, &in_quotes);
-	result = check_preliminary_errors(merged_word, start, end, in_quotes);
+	end = parse_word(lexer, start, &merged_word, &in_quotes);
+	result = preliminary_errors(merged_word, start, end, in_quotes);
 	if (result != 0)
 		return (result);
-	return (process_final_word(lexer, merged_word, start, end));
+	return (final_word(lexer, merged_word, start, end));
 }
-
 
 /* Handle standard words (commands, arguments) */
 
@@ -121,7 +120,7 @@ int	handle_word(t_lexer *lexer, int start)
 // 	char *merged_word = NULL;
 // 	int in_quotes = 0;
 // 	char quote_char = 0;
-	
+
 // 	end = start;
 // 	while (lexer->input[end])
 // 	{

@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/07 17:21:28 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 16:19:39 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	free_commands(t_cmd *cmd)
 			}
 			free(cmd->args);
 		}
-        free(cmd->in);
-        free(cmd->out);
+		free(cmd->in);
+		free(cmd->out);
 		free(cmd);
 		cmd = tmp;
 	}
@@ -99,7 +99,7 @@ void	free_env_array(char **env_array)
 	int	i;
 
 	if (!env_array)
-		return;
+		return ;
 	i = 0;
 	while (env_array[i])
 	{
