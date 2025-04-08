@@ -85,6 +85,7 @@ char	*find_binary_path(char *arg)
 static void	execute_child_process(char **args, char *binary_path, t_env *env_list)
 {
 	char	**env = env_list_to_array(env_list); // rajout de env list en parametre et appel de env dans execve
+	
 	if (access(binary_path, X_OK) == -1)
 		printf(ERR_CMD, args[0]);
 	else if (execve(binary_path, args, env) == -1) // sans ca, execve ne peut pas utiliser /bin/env
@@ -105,43 +106,47 @@ static void	create_child_process(char **args, char *binary_path, t_env *env_list
 	pid_t	result;
 	int		status;
 	struct sigaction	sa_sigquit_child;
+	struct sigaction	sa_sigint_parent;
 	int		res;
 
 	res = 0;
-	sa_sigquit_child.sa_handler = sigquit_child_handler;
-	sa_sigquit_child.sa_flags = 0;
-	sigemptyset(&sa_sigquit_child.sa_mask);
+	status = 0;
+	sa_sigint_parent.sa_handler = sigint_parent_handler;
+	sa_sigint_parent.sa_flags = 0;
+	sigemptyset(&sa_sigint_parent.sa_mask);
+
+	if(sigaction(SIGINT, &sa_sigint_parent, NULL) == -1)
+		return ;
 
 	pid = fork();
 	if (pid == -1)
-	{
-		perror("Fork failed\n");
 		return ;
-	}
+
 	if (pid == 0) //enfant
 	{
-		sigaction(SIGQUIT, &sa_sigquit_child, NULL);
-		if(res == -1)
-		{
-			perror("Error handling SIGQUIT in child process");
+		sa_sigquit_child.sa_handler = SIG_DFL;
+		sa_sigquit_child.sa_flags = 0;
+		sigemptyset(&sa_sigquit_child.sa_mask);
+
+		if(sigaction(SIGQUIT, &sa_sigquit_child, NULL) == -1)
 			return ;
-		}
-		if(res == 0)
-			perror("SIGQUIT child");
 		execute_child_process(args, binary_path, env_list);
+		exit(EXIT_FAILURE);
 	}
 	else if (pid > 0) //parent
 	{
-		//signal(SIGQUIT, sigquit_handler);
 		result = waitpid(pid, &status, 0);
 		close_all_fd(3);
-		if (result == -1)
+		// else if (WIFEXITED(status))
+		// {
+		// 	//changement exit code
+		// }
+		if (WIFSIGNALED(status))
 		{
-			perror("waitpid failed");
-			return ;
+			if (WTERMSIG(status) == SIGQUIT)
+				printf("Quit (core dumped)\n");
 		}
-		else if (!WIFEXITED(status))
-			return ;	
+		set_signal_handlers();
 	}
 	close_all_fd(3);
 }
