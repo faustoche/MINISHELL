@@ -36,6 +36,7 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				lexer/lexer_quotes1.c\
 				lexer/lexer_quotes2.c\
 				lexer/lexer_quotes3.c\
+				lexer/lexer_quotes4.c\
 				lexer/lexer_separator.c\
 				lexer/lexer_syntax.c\
 				lexer/lexer_words1.c\

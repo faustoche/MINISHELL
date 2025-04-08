@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 17:53:37 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 18:00:49 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 18:51:47 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ static int	process_variable_part7(t_expand *exp)
 		if (exp->str[exp->i] == *quote_type)
 		{
 			exp->i++;
-			return (1);
+			return (-1);
 		}
 		var_start = exp->i;
 		while (exp->str[exp->i] && exp->str[exp->i] != *quote_type)
@@ -33,7 +33,7 @@ static int	process_variable_part7(t_expand *exp)
 		if (exp->str[exp->i])
 			exp->i++;
 		copy_str_to_result(exp, exp->str + var_start, exp->i - var_start - 1);
-		return (1);
+		return (-1);
 	}
 	return (0);
 }
