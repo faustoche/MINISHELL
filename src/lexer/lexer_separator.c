@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 10:08:09 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 18:05:12 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 18:50:38 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,7 +141,7 @@ char	*handle_escape_char(char *input)
 // 			else if (doubles)
 // 			{
 // 				if (input[i + 1] == '"' || input[i + 1] == '\\' 
-//					|| input[i + 1] == '$')
+// 					|| input[i + 1] == '$')
 // 				{
 // 					processed[j++] = input[i++];
 // 					processed[j++] = input[i++];

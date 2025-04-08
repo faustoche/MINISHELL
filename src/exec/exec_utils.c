@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 11:38:54 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 14:14:43 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 19:13:38 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ pid_t	create_pipe_and_fork(int pipefd[2])
 	return (pid);
 }
 
-void execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, t_env *env_list)
+void	execute_redir_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, t_env *env)
 {
 	if (pid == 0)
 	{
@@ -40,9 +40,9 @@ void execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, t_env *env_list
 		handle_output_redirection(cmd);
 		close(pipefd[0]);
 		if (is_builtins(cmd->args[0]))
-			builtins_execution(cmd, &env_list);
+			builtins_execution(cmd, &env);
 		else
-			execute_commands(cmd, env_list);
+			execute_commands(cmd, env);
 		exit(0);
 	}
 	else

@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 18:07:29 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 19:13:52 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,10 +160,13 @@ int	process_variable_part6(t_expand *exp);
 int	is_dollar_quote(char *input, int i);
 int	handle_dollar_quote(char *input, char *result, int i, int *j);
 int	handle_quote_state(int state);
-int	handle_dollar_in_double_quote(char *input, char *result, int i, int *j);
+int	handle_dollar_dq(char *input, char *result, int i, int *j);
 void	handle_outside_quotes(char *input, char *processed, t_state *state);
 char	*create_final_word(t_lexer *lexer, char *word, int start, int end);
 int	check_quote_errors(t_lexer *lexer, char *word, int end);
+int	handle_quote_case(char *input, char *result, int *index, int *quotes);
+int	handle_dollar_case(char *input, char *result, int *index, int sq);
+int	handle_edge_quotes(char *input, char *result, int *index);
 
 /* BONUSES */
 
@@ -202,7 +205,7 @@ int		create_pipe(int pipefd[2]);
 pid_t	create_process(void);
 int		has_pipes(t_cmd *cmd);
 pid_t	create_pipe_and_fork(int pipefd[2]);
-void	execute_redirect_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, t_env *env_list);
+void	execute_redir_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, t_env *env);
 void	execute_redirection(t_cmd *cmd, t_env *env_list);
 void	handle_pipe_redirect(int pipefd[2], int mode, int *stdin_save);
 

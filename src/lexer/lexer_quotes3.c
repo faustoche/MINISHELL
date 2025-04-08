@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 18:02:49 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 18:07:57 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 19:07:49 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ int	handle_quote_state(int state)
 		return (0);
 }
 
-int	handle_dollar_in_double_quote(char *input, char *result, int i, int *j)
+int	handle_dollar_dq(char *input, char *result, int i, int *j)
 {
 	result[(*j)++] = '$';
 	i++;
