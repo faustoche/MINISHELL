@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/08 13:58:05 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 14:51:00 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,6 @@ static void	create_child_process(char **args, char *binary_path, t_env *env_list
 			perror("Error handling SIGQUIT in child process");
 			return ;
 		}
-		if(res == 0)
-			perror("SIGQUIT child");
 		execute_child_process(args, binary_path, env_list);
 	}
 	else if (pid > 0) //parent

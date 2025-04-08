@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 11:26:22 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 14:45:41 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,8 +81,8 @@ t_cmd	*init_command(void)
 	if (!cmd)
 		return (NULL);
 	cmd->args = NULL;
-	cmd->in = 0;
-	cmd->out = 0;
+	cmd->in = NULL;
+	cmd->out = NULL;
 	cmd->append = 0;
 	cmd->next = NULL;
 	cmd->nb_arg = 0;
