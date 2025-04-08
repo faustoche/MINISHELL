@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 18:14:36 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/07 12:16:24 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 16:13:10 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@
 - Shell has to bring back the value in the 0-255 range
 - 1000 % 256 = 232 thus exit 1000 = exit 232
 */
-
 
 void	ft_exit(t_cmd *cmd)
 {

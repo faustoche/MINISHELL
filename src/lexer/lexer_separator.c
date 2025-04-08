@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_separator.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 10:08:09 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/07 22:14:23 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/08 15:59:52 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,9 @@ int	handle_delimiter(t_lexer *lexer, int i)
 
 static void	toggle_quote_and_copy(char *input, char *processed, t_state *state)
 {
-	char	c = input[state->i];
+	char	c;
 
+	c = input[state->i];
 	if (c == '\'' && !state->doubles)
 		state->singles = !state->singles;
 	else if (c == '"' && !state->singles)
@@ -46,23 +47,23 @@ static void	toggle_quote_and_copy(char *input, char *processed, t_state *state)
 	processed[state->j++] = input[state->i++];
 }
 
-static void	handle_backslash_in_quotes(char *input, char *processed, t_state *state)
+static void	handle_backslash_quotes(char *input, char *proc, t_state *state)
 {
 	if (state->singles)
-		processed[state->j++] = input[state->i++];
+		proc[state->j++] = input[state->i++];
 	else if (state->doubles)
 	{
 		if (is_escaped_char(input[state->i + 1]))
 		{
-			processed[state->j++] = input[state->i++];
-			processed[state->j++] = input[state->i++];
+			proc[state->j++] = input[state->i++];
+			proc[state->j++] = input[state->i++];
 		}
 		else
-			processed[state->j++] = input[state->i++];
+			proc[state->j++] = input[state->i++];
 	}
 }
 
-static void	handle_backslash_outside_quotes(char *input, char *processed, t_state *state)
+static void	handle_outside_quotes(char *input, char *processed, t_state *state)
 {
 	if (input[state->i + 1] == '$')
 	{
@@ -80,9 +81,9 @@ static void	handle_backslash_outside_quotes(char *input, char *processed, t_stat
 static void	handle_backslash(char *input, char *processed, t_state *state)
 {
 	if (state->singles || state->doubles)
-		handle_backslash_in_quotes(input, processed, state);
+		handle_backslash_quotes(input, processed, state);
 	else
-		handle_backslash_outside_quotes(input, processed, state);
+		handle_outside_quotes(input, processed, state);
 }
 
 char	*handle_escape_char(char *input)
@@ -101,7 +102,8 @@ char	*handle_escape_char(char *input)
 	state.doubles = 0;
 	while (state.i < len)
 	{
-		if ((input[state.i] == '\'' && !state.doubles) || (input[state.i] == '"' && !state.singles))
+		if ((input[state.i] == '\'' && !state.doubles)
+			|| (input[state.i] == '"' && !state.singles))
 			toggle_quote_and_copy(input, processed, &state);
 		else if (input[state.i] == '\\' && (state.i + 1) < len)
 			handle_backslash(input, processed, &state);
@@ -111,7 +113,6 @@ char	*handle_escape_char(char *input)
 	processed[state.j] = '\0';
 	return (processed);
 }
-
 
 // char    *handle_escape_char(char *input)
 // {
@@ -154,7 +155,8 @@ char	*handle_escape_char(char *input)
 // 				processed[j++] = input[i++];
 // 			else if (doubles)
 // 			{
-// 				if (input[i + 1] == '"' || input[i + 1] == '\\' || input[i + 1] == '$')
+// 				if (input[i + 1] == '"' || input[i + 1] == '\\' 
+//					|| input[i + 1] == '$')
 // 				{
 // 					processed[j++] = input[i++];
 // 					processed[j++] = input[i++];

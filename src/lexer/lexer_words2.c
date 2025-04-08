@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_words2.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 21:46:17 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/07 21:46:32 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/08 15:43:02 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,22 +91,22 @@ static char	*append_char_to_word(char *merged_word, char current_char)
 	}
 }
 
-char	*handle_char(char *merged_word, char current_char, int *in_quotes, char *quote_char)
+char	*handle_char(char *merged, char current, int *quotes, char *quote_char)
 {
-	if (!(*in_quotes))
+	if (!(*quotes))
 	{
-		if (current_char == '\'' || current_char == '"')
+		if (current == '\'' || current == '"')
 		{
-			*quote_char = current_char;
-			*in_quotes = 1;
-			return (merged_word);
+			*quote_char = current;
+			*quotes = 1;
+			return (merged);
 		}
 	}
-	else if (current_char == *quote_char)
+	else if (current == *quote_char)
 	{
-		*in_quotes = 0;
+		*quotes = 0;
 		*quote_char = 0;
-		return (merged_word);
+		return (merged);
 	}
-	return (append_char_to_word(merged_word, current_char));
+	return (append_char_to_word(merged, current));
 }

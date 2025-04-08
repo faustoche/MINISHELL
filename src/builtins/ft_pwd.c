@@ -6,16 +6,16 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 14:51:57 by ghieong           #+#    #+#             */
-/*   Updated: 2025/03/31 15:12:39 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 16:13:46 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_pwd()
+void	ft_pwd(void)
 {
-	char cwd[PATH_MAX];
-	
+	char	cwd[PATH_MAX];
+
 	getcwd(cwd, sizeof(cwd));
 	printf("%s\n", cwd);
 }
