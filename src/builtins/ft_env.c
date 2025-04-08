@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 14:42:02 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/06 21:02:53 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/08 16:13:25 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void	ft_env(t_env *env_list)
 {
 	t_env	*current;
-	
+
 	current = env_list;
 	while (current != NULL)
 	{
@@ -27,7 +27,7 @@ void	ft_env(t_env *env_list)
 
 void	print_sorted_env(t_env *env_list)
 {
-	t_env *current;
+	t_env	*current;
 
 	current = env_list;
 	while (current)

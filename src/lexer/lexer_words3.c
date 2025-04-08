@@ -1,21 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   lexer_words3.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/27 14:51:57 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/08 16:13:46 by fcrocq           ###   ########.fr       */
+/*   Created: 2025/04/08 18:06:19 by fcrocq            #+#    #+#             */
+/*   Updated: 2025/04/08 18:07:08 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_pwd(void)
+int	check_quote_errors(t_lexer *lexer, char *word, int end)
 {
-	char	cwd[PATH_MAX];
+	if (lexer->input[end] == '\'' || lexer->input[end] == '"')
+	{
+		if (lexer->command)
+		{
+			printf(ERR_CMD, word);
+			free(word);
+			return (-1);
+		}
+	}
+	return (0);
+}
 
-	getcwd(cwd, sizeof(cwd));
-	printf("%s\n", cwd);
+char	*create_final_word(t_lexer *lexer, char *word, int start, int end)
+{
+	if (!word)
+		return (ft_strndup(lexer->input + start, end - start));
+	return (word);
 }

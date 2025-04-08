@@ -35,19 +35,14 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				lexer/lexer_init.c\
 				lexer/lexer_quotes1.c\
 				lexer/lexer_quotes2.c\
-				lexer/lexer_quotes3.c\
-				lexer/lexer_quotes4.c\
 				lexer/lexer_separator.c\
 				lexer/lexer_syntax.c\
 				lexer/lexer_words1.c\
 				lexer/lexer_words2.c\
-				lexer/lexer_words3.c\
 				env/env_init.c\
-				expand/expand_init.c\
 				expand/expand_token.c\
+				expand/expand_variable.c\
 				expand/expand_utils.c\
-				expand/expand_variable1.c\
-				expand/expand_variable2.c\
 				builtins/ft_cd.c\
 				builtins/ft_echo.c\
 				builtins/ft_exit.c\

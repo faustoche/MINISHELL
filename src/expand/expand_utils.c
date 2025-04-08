@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 11:52:10 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/06 12:40:03 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 18:52:00 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@ char	*extract_variable_name(t_expand *exp, size_t *len)
 	size_t	start;
 
 	start = exp->i;
-	if (!exp->str[exp->i] || (!isalpha(exp->str[exp->i]) && exp->str[exp->i] != '_'))
+	if (!exp->str[exp->i] || (!isalpha(exp->str[exp->i])
+			&& exp->str[exp->i] != '_'))
 	{
 		*len = 0;
 		return (NULL);
 	}
-	while (exp->str[exp->i] && (isalnum(exp->str[exp->i]) || exp->str[exp->i] == '_'))
+	while (exp->str[exp->i] && (isalnum(exp->str[exp->i])
+			|| exp->str[exp->i] == '_'))
 		(exp->i)++;
 	*len = exp->i - start;
 	return (ft_strndup(exp->str + start, *len));
@@ -53,118 +55,6 @@ int	copy_variable_value(t_expand *exp, char *value, char *name)
 	ft_strcpy(exp->result + exp->j, value);
 	exp->j += value_len;
 	free(name);
-	return (1);
-}
-
-/* Processes a variable for expansion */
-
-int	process_variable(t_expand *exp)
-{
-	int		var_start;
-	int		var_end;
-	char	*var_name;
-	char	*var_value;
-	char	*quote_type;
-
-	if (exp->i > 0 && exp->str[exp->i - 1] == '"' &&
-		exp->str[exp->i] == '$' && exp->str[exp->i + 1] == '"')
-	{
-		exp->result[exp->j++] = '$';
-		exp->i++;
-		if (exp->str[exp->i] == '"')
-			exp->i++;
-		return (1);
-	}
-	if (exp->i > 0 && exp->str[exp->i - 1] == '"' && exp->str[exp->i] == '$')
-	{
-		int temp_i = exp->i + 1;
-		while (exp->str[temp_i] && exp->str[temp_i] != ' ' &&
-				exp->str[temp_i] != '"' && exp->str[temp_i] != '\'')
-			temp_i++;
-		if (exp->str[temp_i] == '"' && exp->str[temp_i + 1] && 
-			!is_space(exp->str[temp_i + 1]) && exp->str[temp_i + 1] != '\0')
-		{
-			exp->result[exp->j++] = exp->str[exp->i - 1];
-			exp->result[exp->j++] = exp->str[exp->i++];
-			return (1);
-		}
-	}
-	if (exp->str[exp->i] == '$' && exp->i + 1 < ft_strlen(exp->str) && 
-		(exp->str[exp->i + 1] == '"' || exp->str[exp->i + 1] == '\''))
-	{
-		char quote = exp->str[exp->i + 1];
-		exp->i += 2;
-		size_t start = exp->i;
-		while (exp->str[exp->i] && exp->str[exp->i] != quote)
-			exp->i++;
-		if (start < exp->i)
-			copy_str_to_result(exp, exp->str + start, exp->i - start);
-		if (exp->str[exp->i] == quote)
-			exp->i++;
-		return (1);
-	}
-	if (!exp->str[exp->i + 1])
-	{
-		exp->result[exp->j++] = '$';
-		exp->i++;
-		return (-1);
-	}
-	exp->i++;
-	if (exp->str[exp->i] != '{' && !isalnum(exp->str[exp->i]) && exp->str[exp->i] != '_'
-		&& exp->str[exp->i] != '"' && exp->str[exp->i] != '\'' && exp->str[exp->i] != '`')
-	{
-		exp->result[exp->j++] = '$';
-		return (-1);
-	}
-	if (isdigit(exp->str[exp->i]))
-	{
-		exp->i++;
-		return (-1);
-	}
-	if (exp->str[exp->i] == '"' || exp->str[exp->i] == '\'' || exp->str[exp->i] == '`')
-	{
-		quote_type = &exp->str[exp->i];
-		exp->i++;
-		if (exp->str[exp->i] == *quote_type)
-		{
-			exp->i++;
-			return (-1);
-		}
-		var_start = exp->i;
-		while (exp->str[exp->i] && exp->str[exp->i] != *quote_type)
-			exp->i++;
-		if (exp->str[exp->i])
-			exp->i++;
-		copy_str_to_result(exp, exp->str + var_start, exp->i - var_start - 1);
-		return (-1);
-	}
-	var_start = exp->i;
-	if (exp->str[exp->i] == '{')
-	{
-		exp->i++;
-		var_start = exp->i;
-		while (exp->str[exp->i] && exp->str[exp->i] != '}')
-			exp->i++;
-		var_end = exp->i;
-		if (exp->str[exp->i] == '}')
-			exp->i++;
-	}
-	else
-	{
-		while (exp->str[exp->i] && (isalnum(exp->str[exp->i]) || exp->str[exp->i] == '_'))
-			exp->i++;
-		var_end = exp->i;
-	}
-	var_name = ft_strndup(exp->str + var_start, var_end - var_start);
-	if (!var_name)
-		return (0);
-	var_value = get_env_value(exp->env_list, var_name);
-	free(var_name);
-	if (var_value)
-	{
-		if (!copy_str_to_result(exp, var_value, ft_strlen(var_value)))
-			return (0);
-	}
 	return (1);
 }
 
@@ -219,3 +109,120 @@ int	copy_str_to_result(t_expand *exp, char *str, int len)
 	}
 	return (1);
 }
+
+// int	process_variable(t_expand *exp)
+// {
+// 	int		var_start;
+// 	int		var_end;
+// 	char	*var_name;
+// 	char	*var_value;
+// 	char	*quote_type;
+// 	char	quote;
+// 	size_t	start;
+// 	int		temp_i;
+
+// 	if (exp->i > 0 && exp->str[exp->i - 1] == '"'
+// 		&& exp->str[exp->i] == '$' && exp->str[exp->i + 1] == '"')
+// 	{
+// 		exp->result[exp->j++] = '$';
+// 		exp->i++;
+// 		if (exp->str[exp->i] == '"')
+// 			exp->i++;
+// 		return (1);
+// 	}
+// 	if (exp->i > 0 && exp->str[exp->i - 1] == '"' && exp->str[exp->i] == '$')
+// 	{
+// 		temp_i = exp->i + 1;
+// 		while (exp->str[temp_i] && exp->str[temp_i] != ' '
+// 			&& exp->str[temp_i] != '"' && exp->str[temp_i] != '\'')
+// 			temp_i++;
+// 		if (exp->str[temp_i] == '"' && exp->str[temp_i + 1]
+// 			&& !is_space(exp->str[temp_i + 1]) && exp->str[temp_i + 1] != '\0')
+// 		{
+// 			exp->result[exp->j++] = exp->str[exp->i - 1];
+// 			exp->result[exp->j++] = exp->str[exp->i++];
+// 			return (1);
+// 		}
+// 	}
+// 	if (exp->str[exp->i] == '$' && exp->i + 1 < ft_strlen(exp->str)
+// 		&& (exp->str[exp->i + 1] == '"' || exp->str[exp->i + 1] == '\''))
+// 	{
+// 		quote = exp->str[exp->i + 1];
+// 		exp->i += 2;
+// 		start = exp->i;
+// 		while (exp->str[exp->i] && exp->str[exp->i] != quote)
+// 			exp->i++;
+// 		if (start < exp->i)
+// 			copy_str_to_result(exp, exp->str + start, exp->i - start);
+// 		if (exp->str[exp->i] == quote)
+// 			exp->i++;
+// 		return (1);
+// 	}
+// 	if (!exp->str[exp->i + 1])
+// 	{
+// 		exp->result[exp->j++] = '$';
+// 		exp->i++;
+// 		return (-1);
+// 	}
+// 	exp->i++;
+// 	if (exp->str[exp->i] != '{' && !isalnum(exp->str[exp->i])
+// 		&& exp->str[exp->i] != '_'
+// 		&& exp->str[exp->i] != '"' && exp->str[exp->i] != '\''
+// 		&& exp->str[exp->i] != '`')
+// 	{
+// 		exp->result[exp->j++] = '$';
+// 		return (-1);
+// 	}
+// 	if (isdigit(exp->str[exp->i]))
+// 	{
+// 		exp->i++;
+// 		return (-1);
+// 	}
+// 	if (exp->str[exp->i] == '"' || exp->str[exp->i] == '\''
+// 		|| exp->str[exp->i] == '`')
+// 	{
+// 		quote_type = &exp->str[exp->i];
+// 		exp->i++;
+// 		if (exp->str[exp->i] == *quote_type)
+// 		{
+// 			exp->i++;
+// 			return (-1);
+// 		}
+// 		var_start = exp->i;
+// 		while (exp->str[exp->i] && exp->str[exp->i] != *quote_type)
+// 			exp->i++;
+// 		if (exp->str[exp->i])
+// 			exp->i++;
+// 		copy_str_to_result(exp, exp->str + var_start, exp->i - var_start - 1);
+// 		return (-1);
+// 	}
+// 	var_start = exp->i;
+// 	if (exp->str[exp->i] == '{')
+// 	{
+// 		exp->i++;
+// 		var_start = exp->i;
+// 		while (exp->str[exp->i] && exp->str[exp->i] != '}')
+// 			exp->i++;
+// 		var_end = exp->i;
+// 		if (exp->str[exp->i] == '}')
+// 			exp->i++;
+// 	}
+// 	else
+// 	{
+// 		while (exp->str[exp->i] && (isalnum(exp->str[exp->i])
+// 				|| exp->str[exp->i] == '_'))
+// 			exp->i++;
+// 		var_end = exp->i;
+// 	}
+// 	var_name = ft_strndup(exp->str + var_start, var_end - var_start);
+// 	if (!var_name)
+// 		return (0);
+// 	var_value = get_env_value(exp->env_list, var_name);
+// 	free(var_name);
+// 	if (var_value)
+// 	{
+// 		if (!copy_str_to_result(exp, var_value, ft_strlen(var_value)))
+// 			return (0);
+// 	}
+// 	return (1);
+// }
