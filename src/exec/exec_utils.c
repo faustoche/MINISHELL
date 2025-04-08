@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 11:38:54 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/05 14:26:11 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/08 14:14:43 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,14 @@ pid_t	create_pipe_and_fork(int pipefd[2])
 	if (pipe(pipefd) == -1)
 	{
 		perror("Error : pipe creation failed\n");
+		close_all_fd(3);
 		return (-1);
 	}
 	pid = fork();
 	if (pid == -1)
 	{
 		perror("fork failed");
+		close_all_fd(3);
 		return (-1);
 	}
 	return (pid);
