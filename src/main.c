@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/09 21:04:56 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/09 21:09:08 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	main(int ac, char **av, char **envp)
 	t_env	*env_list;
 	t_env	*original_env;
 	char	*fixed_input;
-	t_cmd	*last_cmd;
+	//t_cmd	*last_cmd;
 
 	(void)ac;
 	(void)av;
@@ -93,7 +93,7 @@ int	main(int ac, char **av, char **envp)
 			input = NULL;
 			continue ;
 		}
-		last_cmd = NULL;
+		//last_cmd = NULL;
 		expand_tokens(token_list, env_list, commands);
 		commands = parse_commands(token_list, env_list);
 		free_token_list(token_list);
