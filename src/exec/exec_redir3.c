@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:47:52 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/09 08:59:14 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/09 09:22:04 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void	redir_execute(t_cmd *cmd, t_env *env_list)
 	char	*binary_path;
 
 	env = env_list_to_array(env_list);
-	binary_path = find_binary_path(cmd->args[0]);
+	binary_path = find_binary_path(cmd->args[0], env_list);
 	if (!binary_path)
 	{
 		printf(ERR_CMD, cmd->args[0]);

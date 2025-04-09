@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/09 09:12:07 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/09 09:21:04 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ t_env	*ft_unset(t_env *env_list, char *name);
 int		is_builtins(char *cmd);
 void	builtins_execution(t_cmd *cmd, t_env **env_list);
 char	*build_pathname(char *directory, char *arg);
-char	*find_binary_path(char *arg);
+char	*find_binary_path(char *arg, t_env *env_list);
 void	execute_commands(t_cmd *cmd, t_env *env_list);
 //void	execute_pipeline_cmd(t_cmd *cmd, t_env *env_list);
 void	execute_child(t_cmd *cmd, int pipefd[2], t_env *env_list);
