@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/09 09:11:03 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/09 09:21:13 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*build_pathname(char *directory, char *arg)
 
 /* Check each directory in PATH to find binary_path */
 
-char	*find_binary_path(char *arg)
+char	*find_binary_path(char *arg, t_env *env_list)
 {
 	char	*path_env;
 	char	**split_path;
@@ -53,7 +53,7 @@ char	*find_binary_path(char *arg)
 	char	*path_copy;
 	int		i;
 
-	path_env = getenv("PATH");
+	path_env = find_var_value(env_list, "PATH");
 	if (!path_env)
 		return (NULL);
 	split_path = ft_split(path_env, ':');
@@ -171,7 +171,7 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 				printf(ERR_DIR, current->args[0]);
 			else
 			{
-				binary_path = find_binary_path(current->args[0]);
+				binary_path = find_binary_path(current->args[0], env_list);
 				if (binary_path == NULL)
 					(printf(ERR_CMD, current->args[0]), close_all_fd(3));
 				else
