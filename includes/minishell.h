@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 23:24:33 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/09 09:12:07 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,6 +164,7 @@ int	process_variable_part2(t_expand *exp);
 int	process_variable_part3(t_expand *exp);
 int	process_variable_part4(t_expand *exp);
 int	process_variable_part5(t_expand *exp);
+int	process_variable_part6(t_expand *exp);
 char	*create_final_word(t_lexer *lexer, char *word, int start, int end);
 int	check_quote_errors(t_lexer *lexer, char *word, int end);
 int	handle_quote_case(char *input, char *result, int *index, int *quotes);
@@ -177,6 +178,15 @@ void    in_redirection(t_cmd *current, int input_fd);
 void    out_redirection(t_cmd *current, t_pipe *pipe_data);
 void    pipe_builtin(t_cmd *current, t_pipe *pipe_data);
 void    pipe_execve(t_cmd *current, t_pipe *pipe_data);
+void	free_pipe(t_cmd *cmd, t_env *env_list, char **env);
+void	redir_heredoc(int heredoc_fd);
+void	redir_input(char *input_file);
+void redir_output(char *output_file, int append_mode);
+void	redir_execute(t_cmd *cmd, t_env *env_list);
+void handle_pipe_redirection(t_cmd *cmd, t_env *env_list);
+void	execute_redirection(t_cmd *cmd, t_env *env_list);
+int	handle_input_redirection(t_cmd *cmd);
+int	handle_all_heredocs(t_cmd *cmd);
 
 /* BUILTINS */
 

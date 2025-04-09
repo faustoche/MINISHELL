@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_quotes2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:25:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 23:20:35 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/09 07:51:20 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,6 @@ char	*fix_dollar_quote(char *input)
 	}
 	return (result);
 }
-
 
 // char *fix_dollar_quote(char *input)
 // {

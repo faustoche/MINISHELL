@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/24 09:49:46 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/02 16:59:33 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/09 08:30:50 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ char	*ft_strndup(const char *s, size_t n);
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlcat(char *dst, const char *src, size_t size);
+char	*ft_strcat(char *dest, char *src);
 size_t	ft_strlcpy(char *dst, const char *src, size_t n);
 size_t	ft_strlen(const char *s);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));

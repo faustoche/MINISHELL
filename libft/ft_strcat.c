@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_check.c                                      :+:      :+:    :+:   */
+/*   ft_strcat.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/07 22:11:11 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/09 07:50:20 by fcrocq           ###   ########.fr       */
+/*   Created: 2025/04/09 08:28:34 by fcrocq            #+#    #+#             */
+/*   Updated: 2025/04/09 09:12:47 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	is_escaped_char(char c)
+char	*ft_strcat(char *dest, char *src)
 {
-	return (c == '"' || c == '\\' || c == '$');
-}
+	char	*ptr;
 
-int	has_pipes(t_cmd *cmd)
-{
-	if (cmd && cmd->next)
-		return (1);
-	return (0);
-}
-
-int	is_empty_command(t_cmd *cmd)
-{
-	return (!cmd->args || !cmd->args[0] || ft_strlen(cmd->args[0]) == 0);
+	ptr = dest;
+	while (*ptr != '\0')
+		ptr++;
+	while (*src != '\0')
+	{
+		*ptr = *src;
+		ptr++;
+		src++;
+	}
+	*ptr = '\0';
+	return (dest);
 }

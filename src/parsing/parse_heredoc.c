@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 21:32:02 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/09 09:12:01 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,5 +56,21 @@ int	handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head)
 	if (cmd->heredoc != -1)
 		close(cmd->heredoc);
 	cmd->heredoc = pipe_fd[0];
+	return (0);
+}
+
+int	handle_all_heredocs(t_cmd *cmd)
+{
+	while (cmd)
+	{
+		if (cmd->heredoc_eof)
+		{
+			if (handle_heredoc(cmd, cmd->heredoc_eof, cmd) == -1)
+				return (-1);
+			free(cmd->heredoc_eof);
+			cmd->heredoc_eof = NULL;
+		}
+		cmd = cmd->next;
+	}
 	return (0);
 }

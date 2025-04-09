@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 23:16:01 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/09 09:01:41 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,9 @@ int	process_redir_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env)
 
 int	handle_redirection(t_token *token, t_cmd *current, t_cmd *head)
 {
-	int	result = 0;
+	int	result;
 
+	result = 0;
 	if (!current || !token->next)
 	{
 		printf("Error: invalid redirection\n");
