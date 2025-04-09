@@ -68,6 +68,7 @@ static void	cleanup_and_wait(t_pipe *pipe_data, char **split_path)
 	int		status;
 	pid_t	wait_pid;
 
+	status= 0;
 	if (pipe_data->input_fd != STDIN_FILENO)
 		close(pipe_data->input_fd);
 	if (split_path) // inutile?
