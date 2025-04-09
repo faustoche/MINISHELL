@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/09 10:02:38 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/09 16:07:07 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,11 +46,11 @@
 /*--------------- DEFINES ERRORS --------------*/
 
 # define ERR_NONE "\n"
-# define ERR_SYNTAX "bash: syntax error near unexpected token\n"
-# define ERR_CMD "bash: %s: command not found\n"
-# define ERR_DIR "bash: %s: is a directory\n"
-# define ERR_ARG "bash: %s: too many arguments\n"
-# define ERR_EXP "bash: export: %s: not a valid identifier\n"
+# define ERR_SYNTAX "minislay: syntax error near unexpected token\n"
+# define ERR_CMD "minislay: %s: command not found\n"
+# define ERR_DIR "minislay: %s: No such file or directory\n"
+# define ERR_ARG "minislay: %s: too many arguments\n"
+# define ERR_EXP "minislay: export: %s: not a valid identifier\n"
 
 /*-------------- LIBRARIES --------------*/
 
@@ -196,7 +196,7 @@ void	ft_echo(t_cmd *cmd);
 void	ft_env(t_env *env_list);
 void	ft_exit(t_cmd *cmd);
 t_env	*ft_export(t_env *env_list, char *arg);
-void	ft_pwd();
+void	ft_pwd(t_cmd *cmd);
 t_env	*ft_unset(t_env *env_list, char *name);
 
 /* EXEC */
