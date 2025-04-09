@@ -17,11 +17,7 @@
 		(0 = reussite, 1 = erreur)
 		- variable globale qui renvoie comme variable d'enviro?
 */
-/* 
-// print "^C" et rend nouvelle ligne de prompt
- rl on new line //signifier qu'une nouvelle ligne va commencer
- rl display  // redessiner la ligne apres une modif par ex
-*/
+
 void	sigint_handler(int sig)
 {
 	g_received_signal = sig;
@@ -43,19 +39,24 @@ void	set_signal_handlers(void)
 	struct sigaction	sa_sigquit;
 	struct sigaction	sa_sigtstp;
 
-	sa_sigint.sa_handler = sigint_handler;//peut defini sur SIG_IGN ou SIG_DFL
-	sa_sigint.sa_flags = 0; // aucun flag particulier
-	sigemptyset(&sa_sigint.sa_mask);// aucun signal a bloquer au depart
+	sa_sigint.sa_handler = sigint_handler;
+	sa_sigint.sa_flags = 0;
+	sigemptyset(&sa_sigint.sa_mask);
+
 	sa_sigquit.sa_handler = SIG_IGN;
 	sa_sigquit.sa_flags = 0;
 	sigemptyset(&sa_sigquit.sa_mask);
+
 	sa_sigtstp.sa_handler = SIG_IGN;
 	sa_sigtstp.sa_flags = 0;
 	sigemptyset(&sa_sigtstp.sa_mask);
-	if (sigaction(SIGINT, &sa_sigint, NULL) == -1) //ctrl+Cnouvelle ligne de prompt
+
+	if (sigaction(SIGINT, &sa_sigint, NULL) == -1)
 		exit(EXIT_FAILURE);
-	if (sigaction(SIGQUIT, &sa_sigquit, NULL) == -1) //ctrl+/rien->parent, Quit->enfant
+
+	if (sigaction(SIGQUIT, &sa_sigquit, NULL) == -1)
 		exit(EXIT_FAILURE);
-	if (sigaction(SIGTSTP, &sa_sigtstp, NULL) == -1) //ctrl+Z a ignorer
+
+	if (sigaction(SIGTSTP, &sa_sigtstp, NULL) == -1)
 		exit(EXIT_FAILURE);
 }
