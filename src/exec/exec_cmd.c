@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/09 09:21:13 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/09 17:11:31 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*find_binary_path(char *arg, t_env *env_list)
 	int		i;
 
 	path_env = find_var_value(env_list, "PATH");
-	if (!path_env)
+	if (!path_env || path_env[0] == '\0')
 		return (NULL);
 	split_path = ft_split(path_env, ':');
 	if (!split_path)
@@ -163,8 +163,16 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 				binary_path = ft_strdup(current->args[0]);
 				if (!binary_path)
 					return ;
-				create_child_process(current->args, binary_path, env_list);
-				free(binary_path);
+				if (access(binary_path, F_OK) == -1)
+				{
+					printf(ERR_CMD, current->args[0]);
+					free(binary_path);
+				}
+				else
+				{
+					create_child_process(current->args, binary_path, env_list);
+					free(binary_path);
+				}
 			}
 			else if ((current->args[0][0] == '/' || current->args[0][0] == '.')
 				&& (current->args[0][1] == '/' || current->args[0][1] == '.'))

@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 14:58:50 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 11:24:41 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/09 15:38:02 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,6 @@ void	builtins_execution(t_cmd *cmd, t_env **env_list)
 		}
 	}
 	if (ft_strcmp(cmd->args[0], "pwd") == 0)
-		ft_pwd();
+		ft_pwd(cmd);
 	builtins_exec2(cmd, env_list);
 }
