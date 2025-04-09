@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/08 21:23:06 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/09 09:11:03 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,28 +82,29 @@ char	*find_binary_path(char *arg)
 	return (NULL);
 }
 
-static void	execute_child_process(char **args, char *binary_path, t_env *env_list)
+static void	execute_child_process(char **args, char *binary_path, t_env *env)
 {
-	char	**env = env_list_to_array(env_list); // rajout de env list en parametre et appel de env dans execve
-	
+	char	**env_arr;
+
+	env_arr = env_list_to_array(env);
 	if (access(binary_path, X_OK) == -1)
 		printf(ERR_CMD, args[0]);
-	else if (execve(binary_path, args, env) == -1) // sans ca, execve ne peut pas utiliser /bin/env
+	else if (execve(binary_path, args, env_arr) == -1)
 	{
 		close_all_fd(3);
-		free_env_array(env);
+		free_env_array(env_arr);
 		exit(EXIT_FAILURE);
 	}
-	free_env_array(env);
+	free_env_array(env_arr);
 	close_all_fd(3);
 }
 
 /* Create child process and execute */
 
-static void	create_child_process(char **args, char *binary_path, t_env *env_list)
+static void	create_child_process(char **args, char *binary_path, t_env *env)
 {
-	pid_t	pid;
-	int		status;
+	pid_t				pid;
+	int					status;
 	struct sigaction	sa_sigquit_child;
 	struct sigaction	sa_sigint_parent;
 
@@ -111,22 +112,19 @@ static void	create_child_process(char **args, char *binary_path, t_env *env_list
 	sa_sigint_parent.sa_handler = sigint_parent_handler;
 	sa_sigint_parent.sa_flags = 0;
 	sigemptyset(&sa_sigint_parent.sa_mask);
-
-	if(sigaction(SIGINT, &sa_sigint_parent, NULL) == -1)
+	if (sigaction(SIGINT, &sa_sigint_parent, NULL) == -1)
 		return ;
-
 	pid = fork();
 	if (pid == -1)
 		return ;
-	if (pid == 0) //enfant
+	if (pid == 0)
 	{
 		sa_sigquit_child.sa_handler = SIG_DFL;
 		sa_sigquit_child.sa_flags = 0;
 		sigemptyset(&sa_sigquit_child.sa_mask);
-
-		if(sigaction(SIGQUIT, &sa_sigquit_child, NULL) == -1)
+		if (sigaction(SIGQUIT, &sa_sigquit_child, NULL) == -1)
 			return ;
-		execute_child_process(args, binary_path, env_list);
+		execute_child_process(args, binary_path, env);
 		exit(EXIT_FAILURE);
 	}
 	else if (pid > 0)

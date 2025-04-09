@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_free_list.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:28:18 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/08 23:05:20 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/09 07:51:01 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,15 +60,15 @@ void	free_pipe_redir(t_cmd *cmd)
 	t_cmd	*tmp_cmd;
 	t_cmd	*next;
 	int		i;
-	
+
 	tmp_cmd = cmd;
-	while (tmp_cmd) 
+	while (tmp_cmd)
 	{
 		i = 0;
 		next = tmp_cmd->next;
-		if (tmp_cmd->args) 
+		if (tmp_cmd->args)
 		{
-			while(tmp_cmd->args[i])
+			while (tmp_cmd->args[i])
 			{
 				free(tmp_cmd->args[i]);
 				i++;

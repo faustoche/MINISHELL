@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 20:05:00 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/08 23:06:26 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/09 08:08:42 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_pipe  init_pipe_struct(t_cmd *cmd, t_env **env_list)
+static t_pipe	init_pipe_struct(t_cmd *cmd, t_env **env_list)
 {
-	t_pipe  pipe_data;
-	
+	t_pipe	pipe_data;
+
 	pipe_data.cmd = cmd;
 	pipe_data.env_list = env_list;
 	pipe_data.input_fd = STDIN_FILENO;
@@ -24,7 +24,7 @@ static t_pipe  init_pipe_struct(t_cmd *cmd, t_env **env_list)
 	return (pipe_data);
 }
 
-static void    pipe_child_process(t_cmd *current, t_pipe *pipe_data)
+static void	pipe_child_process(t_cmd *current, t_pipe *pipe_data)
 {
 	in_redirection(current, pipe_data->input_fd);
 	out_redirection(current, pipe_data);
@@ -35,7 +35,7 @@ static void    pipe_child_process(t_cmd *current, t_pipe *pipe_data)
 	exit(1);
 }
 
-static void    pipe_parent_process(t_cmd **current, t_pipe *pipe_data)
+static void	pipe_parent_process(t_cmd **current, t_pipe *pipe_data)
 {
 	if (pipe_data->input_fd != STDIN_FILENO)
 		close(pipe_data->input_fd);
@@ -49,11 +49,11 @@ static void    pipe_parent_process(t_cmd **current, t_pipe *pipe_data)
 	*current = (*current)->next;
 }
 
-static void    cleanup_and_wait(t_pipe *pipe_data, char **split_path)
+static void	cleanup_and_wait(t_pipe *pipe_data, char **split_path)
 {
-	int     status;
-	pid_t   wait_pid;
-	
+	int		status;
+	pid_t	wait_pid;
+
 	if (pipe_data->input_fd != STDIN_FILENO)
 		close(pipe_data->input_fd);
 	if (split_path)
@@ -63,13 +63,14 @@ static void    cleanup_and_wait(t_pipe *pipe_data, char **split_path)
 	set_signal_handlers();
 }
 
-void       execute_pipeline(t_cmd *cmd, t_env *env_list)
+void	execute_pipeline(t_cmd *cmd, t_env *env_list)
 {
-	t_cmd   *current;
-	pid_t   pid;
-	t_pipe  pipe_data;
-	char    **split_path = NULL;
+	t_cmd	*current;
+	pid_t	pid;
+	t_pipe	pipe_data;
+	char	**split_path;
 
+	split_path = NULL;
 	pipe_data = init_pipe_struct(cmd, &env_list);
 	current = cmd;
 	while (current)

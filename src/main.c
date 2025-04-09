@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 22:14:14 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/09 09:13:42 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,22 +38,6 @@ static char	*prompt(void)
 	return (line);
 }
 
-static int handle_all_heredocs(t_cmd *cmd)
-{
-	while (cmd)
-	{
-		if (cmd->heredoc_eof)
-		{
-			if (handle_heredoc(cmd, cmd->heredoc_eof, cmd) == -1)
-				return (-1);
-			free(cmd->heredoc_eof);
-			cmd->heredoc_eof = NULL;
-		}
-		cmd = cmd->next;
-	}
-	return (0);
-}
-
 int	main(int ac, char **av, char **envp)
 {
 	char	pwd[PATH_MAX];
@@ -62,12 +46,13 @@ int	main(int ac, char **av, char **envp)
 	t_cmd	*commands;
 	t_env	*env_list;
 	t_env	*original_env;
+	char	*fixed_input;
 
 	(void)ac;
 	(void)av;
 	commands = NULL;
 	token_list = NULL;
-	if(!(getcwd(pwd, sizeof(pwd))))
+	if (!(getcwd(pwd, sizeof(pwd))))
 		return (print_error_message("Error: can't get pwd\n"));
 	original_env = init_env(envp);
 	env_list = copy_env_list(original_env);
@@ -85,8 +70,8 @@ int	main(int ac, char **av, char **envp)
 		set_signal_handlers();
 		input = prompt();
 		if (!input)
-			break;
-		char *fixed_input = fix_dollar_quote(input);
+			break ;
+		fixed_input = fix_dollar_quote(input);
 		free(input);
 		if (!fixed_input)
 			continue ;

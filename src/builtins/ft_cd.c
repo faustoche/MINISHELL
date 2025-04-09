@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 08:47:18 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/07 11:58:30 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/09 09:06:25 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@
 	// recupérer le nouveau repertoire (PWD) et l'enregistrer
 	// nettoyer la mémoire (getcwd utilise malloc) et retourner le statut
 
-
 t_env	*ft_cd(t_cmd *cmd, t_env *env_list)
 {
 	char	*home;
@@ -29,9 +28,9 @@ t_env	*ft_cd(t_cmd *cmd, t_env *env_list)
 	char	new_dir[PATH_MAX];
 	t_env	*new_env_list;
 
-	ft_memset(new_dir, 0, sizeof(new_dir)); // on rempli de 0 pour etre sur de pas acceder a des trucs non initialises
+	ft_memset(new_dir, 0, sizeof(new_dir));
 	new_env_list = copy_env_list(env_list);
-	if (!new_env_list) // ajout de cette verification
+	if (!new_env_list)
 		return (env_list);
 	home = find_var_value(new_env_list, "HOME");
 	old_pwd = find_var_value(new_env_list, "PWD");
@@ -49,25 +48,26 @@ t_env	*ft_cd(t_cmd *cmd, t_env *env_list)
 	{
 		if (ft_strcmp(cmd->args[1], "-") == 0)
 			ft_strcpy(new_dir, find_var_value(new_env_list, "OLDPWD"));
-		else if (ft_strcmp(cmd->args[1], "~") == 0 || ft_strcmp(cmd->args[1], "~/") == 0)
+		else if (ft_strcmp(cmd->args[1], "~") == 0
+			|| ft_strcmp(cmd->args[1], "~/") == 0)
 			ft_strcpy(new_dir, home);
 		else
 			ft_strcpy(new_dir, cmd->args[1]);
 	}
 	else if (cmd->nb_arg > 2)
-		printf(ERR_ARG, cmd->args[0]); // autre chose ??
+		printf(ERR_ARG, cmd->args[0]);
 	if (access(new_dir, F_OK) == -1)
 	{
 		free_env_list(&new_env_list);
-		return (env_list); // retourner env list ici au lieu de null
+		return (env_list);
 	}
 	if (chdir(new_dir) == -1)
 	{
 		perror("cd");
 		free_env_list(&new_env_list);
-		return (env_list); // idem ici on retourne pas null
+		return (env_list);
 	}
-	if(!(getcwd(new_dir, sizeof(new_dir))))
+	if (!(getcwd(new_dir, sizeof(new_dir))))
 		perror("error retrieving current directory");
 	new_env_list = change_var_value(new_env_list, "OLDPWD", old_pwd);
 	new_env_list = change_var_value(new_env_list, "PWD", new_dir);
