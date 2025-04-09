@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/09 21:03:52 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/09 21:06:35 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ else if (WIFSIGNALED(status))
 last_executed_cmd = cmd;
 
 */
-
 
 /* Complete pathname by adding '/' and name of binary */
 
