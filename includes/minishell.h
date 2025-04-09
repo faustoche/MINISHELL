@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/09 16:07:07 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/09 20:59:01 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@
 /*-------------- LIBRARIES --------------*/
 
 # include <limits.h>
-# include <linux/limits.h>
+//# include <linux/limits.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <string.h>
@@ -81,16 +81,6 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
-typedef struct s_expand
-{
-	char	*result;
-	size_t	capacity;
-	size_t	i;
-	size_t	j;
-	t_env	*env_list;
-	char	*str;
-}	t_expand;
-
 typedef struct s_token
 {
 	char			*value;
@@ -111,8 +101,20 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 	t_env			*env_list;
 	int				processed;
-	int				exit_status;
+	int				*exit_status;
 }	t_cmd;
+
+typedef struct s_expand
+{
+	char	*result;
+	size_t	capacity;
+	size_t	i;
+	size_t	j;
+	t_env	*env_list;
+	char	*str;
+	t_cmd	*cmd;
+}	t_expand;
+
 
 typedef struct s_lexer
 {
@@ -237,12 +239,12 @@ int		copy_variable_value(t_expand *exp, char *value, char *name);
 int		process_variable(t_expand *exp);
 int		resize_result_buffer(t_expand *exp);
 int		check_buffer_size(t_expand *exp);
-char	*expand_variable(t_env *env_list, char *str, int quote_type);
-char	*init_expand_result(const char *str, t_expand *exp);
+char	*expand_variable(t_env *env_list, char *str, int quote_type, t_cmd *cmd);
+char	*init_expand_result(const char *str, t_expand *exp, t_cmd *cmd);
 int		expand_loop(t_expand *exp);
-void	expand_variable_in_token(t_token *token, t_env *env_list);
+void	expand_variable_in_token(t_token *token, t_env *env_list, t_cmd *cmd);
 int		copy_str_to_result(t_expand *exp, char *str, int len);
-void	expand_tokens(t_token *token_list, t_env *env_list);
+void	expand_tokens(t_token *token_list, t_env *env_list, t_cmd *cmd);
 
 
 /* LEXER - ok*/
