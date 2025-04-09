@@ -3,14 +3,28 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/09 17:11:31 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/09 21:03:52 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+
+/*
+
+if (WIFEXITED(status))
+    cmd->exit_status = WEXITSTATUS(status);
+else if (WIFSIGNALED(status))
+    cmd->exit_status = 128 + WTERMSIG(status);
+    
+// Mettre à jour la référence à la dernière commande exécutée
+last_executed_cmd = cmd;
+
+*/
+
 
 /* Complete pathname by adding '/' and name of binary */
 

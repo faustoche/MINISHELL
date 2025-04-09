@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expand_init.c                                      :+:      :+:    :+:   */
+/*   expand_variable.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 12:01:35 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/09 20:52:34 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/09 21:02:15 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ char	*expand_variable(t_env *env_list, char *str, int quote_type, t_cmd *cmd)
 	if (quote_type == SINGLE_QUOTE)
 		return (ft_strdup(str));
 	exp.env_list = env_list;
-	exp.cmd = cmd;
 	if (!init_expand_result(str, &exp, cmd))
 		return (NULL);
 	if (!expand_loop(&exp))
@@ -38,8 +37,8 @@ char	*init_expand_result(const char *str, t_expand *exp, t_cmd *cmd)
 	exp->i = 0;
 	exp->j = 0;
 	exp->str = (char *)str;
-	exp->result = malloc(exp->capacity);
 	exp->cmd = cmd;
+	exp->result = malloc(exp->capacity);
 	if (!exp->result)
 		return (NULL);
 	while (i < exp->capacity)
@@ -51,18 +50,6 @@ char	*init_expand_result(const char *str, t_expand *exp, t_cmd *cmd)
 }
 
 /* Main expansion loop */
-
-static int	expand_loop_part2(t_expand *exp)
-{
-	if (exp->str[exp->i] == '$')
-	{
-		if (!process_variable(exp))
-			return (0);
-	}
-	else
-		exp->result[exp->j++] = exp->str[exp->i++];
-	return (1);
-}
 
 int	expand_loop(t_expand *exp)
 {
@@ -83,43 +70,14 @@ int	expand_loop(t_expand *exp)
 			exp->result[exp->j++] = '$';
 			exp->i += 2;
 		}
-		else
+		else if (exp->str[exp->i] == '$')
 		{
-			if (!expand_loop_part2(exp))
+			if (!process_variable(exp))
 				return (0);
 		}
+		else
+			exp->result[exp->j++] = exp->str[exp->i++];
 	}
 	exp->result[exp->j] = '\0';
 	return (1);
 }
-
-// int	expand_loop(t_expand *exp)
-// {
-// 	while (exp->str[exp->i])
-// 	{
-// 		if (!check_buffer_size(exp))
-// 			return (0);
-// 		if (exp->str[exp->i] == '$' && exp->i > 0
-// 			&& exp->str[exp->i - 1] == '"' && exp->i + 1 < ft_strlen(exp->str)
-// 			&& exp->str[exp->i + 1] == '"')
-// 		{
-// 			exp->result[exp->j++] = '$';
-// 			exp->i += 2;
-// 			continue ;
-// 		}
-// 		if (exp->str[exp->i] == 1 && exp->str[exp->i + 1] == '$')
-// 		{
-// 			exp->result[exp->j++] = '$';
-// 			exp->i += 2;
-// 		}
-// 		else if (exp->str[exp->i] == '$')
-// 		{
-// 			if (!process_variable(exp))
-// 				return (0);
-// 		}
-// 		else
-// 			exp->result[exp->j++] = exp->str[exp->i++];
-// 	}
-// 	exp->result[exp->j] = '\0';
-// 	return (1);
-// }

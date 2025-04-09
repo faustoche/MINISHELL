@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 11:58:53 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 17:59:04 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/09 20:54:12 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /* Expand les variables dans un token */
 
-void	expand_variable_in_token(t_token *token, t_env *env_list)
+void	expand_variable_in_token(t_token *token, t_env *env_list, t_cmd *cmd)
 {
 	char	*expanded;
 
@@ -22,7 +22,7 @@ void	expand_variable_in_token(t_token *token, t_env *env_list)
 		return ;
 	if (token->value && ft_strchr(token->value, '$'))
 	{
-		expanded = expand_variable(env_list, token->value, token->type);
+		expanded = expand_variable(env_list, token->value, token->type, cmd);
 		if (expanded)
 		{
 			free(token->value);
@@ -33,7 +33,7 @@ void	expand_variable_in_token(t_token *token, t_env *env_list)
 
 /* Fonction principale pour l'expansion des tokens */
 
-void	expand_tokens(t_token *token_list, t_env *env_list)
+void	expand_tokens(t_token *token_list, t_env *env_list, t_cmd *cmd)
 {
 	t_token	*token;
 	t_lexer	temp_lexer;
@@ -42,7 +42,7 @@ void	expand_tokens(t_token *token_list, t_env *env_list)
 	temp_lexer.tokens = token_list;
 	while (token)
 	{
-		expand_variable_in_token(token, env_list);
+		expand_variable_in_token(token, env_list, cmd);
 		token = token->next;
 	}
 }
