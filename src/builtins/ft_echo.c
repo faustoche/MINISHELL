@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:52:28 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/06 20:59:02 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/09 09:31:54 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static size_t	is_newline(t_cmd *cmd, int *newline)
 			j++;
 		if (cmd->args[i][j] != '\0')
 			break ;
-		newline = 0;
+		*newline = 0;
 		i++;
 	}
 	return (i);

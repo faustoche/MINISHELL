@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 22:29:51 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/07 21:58:02 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/09 09:56:24 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,22 @@
 
 int	syntax_error(char *input)
 {
-	if (input[0] == '<')
-		return (0);
+	char	*var;
+
+	var = getenv("PATH");
 	if ((input[0] == '\\' && input[1] == '\\') || input[0] == '\\')
 	{
 		printf(ERR_CMD, input);
 		return (-1);
 	}
 	if (input[0] == ';')
+	{
+		if (var)
+			printf("%s\n", var);
+		else
+			printf("Error: variable not set\n");
 		return (print_error_message(ERR_SYNTAX));
+	}
 	if (input[0] == '-')
 	{
 		printf(ERR_CMD, input);
