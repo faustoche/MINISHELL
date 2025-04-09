@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/09 09:21:04 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/09 10:02:38 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,15 @@
 
 /*--------------- DEFINES COLORS --------------*/
 
-# define BLACKB "\033[1;30m"
-# define REDB "\033[1;31m"
-# define GREENB "\033[1;32m"
-# define YELLOWB "\033[1;33m"
-# define BLUEB "\033[1;34m"
-# define MAGENTAB "\033[1;35m"
-# define CYANB "\033[1;36m"
-# define WHITEB "\033[1;37m"
-# define RESET "\033[0m"
+# define BLACKB "\001\033[1;30m"
+# define REDB "\001\033[1;31m"
+# define GREENB "\001\033[1;32m"
+# define YELLOWB "\001\033[1;33m"
+# define BLUEB "\001\033[1;34m"
+# define MAGENTAB "\001\033[1;35m"
+# define CYANB "\001\033[1;36m"
+# define WHITEB "\001\033[1;37m"
+# define RESET "\001\033[0m"
 
 /*--------------- DEFINES ERRORS --------------*/
 
@@ -187,6 +187,7 @@ void handle_pipe_redirection(t_cmd *cmd, t_env *env_list);
 void	execute_redirection(t_cmd *cmd, t_env *env_list);
 int	handle_input_redirection(t_cmd *cmd);
 int	handle_all_heredocs(t_cmd *cmd);
+int	handle_direct_env_var(char *input, t_env *env_list);
 
 /* BUILTINS */
 

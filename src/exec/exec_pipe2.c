@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 22:31:37 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/09 09:21:53 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/09 10:12:48 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,10 @@ void	in_redirection(t_cmd *current, int input_fd)
 	int	fd;
 
 	if (input_fd != STDIN_FILENO)
+	{
 		dup2(input_fd, STDIN_FILENO);
-	close(input_fd);
+		close(input_fd);
+	}
 	if (current->in)
 	{
 		fd = open_file(current->in, REDIR_IN);

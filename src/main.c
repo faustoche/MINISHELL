@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/09 09:13:42 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/09 10:02:28 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,8 @@
 			pour etre sur que mise a jour bien effectuee
 			dans gestionnaire de signaux.
 	- sig_atomic_t : garantit que acces a la variable ne peuvent
-			etre interrompus ou modifies de facon incomplete. */
+			etre interrompus ou modifies de facon incomplete. 
+		line = readline("minislay> \033[1;34m~\033[0m ");*/
 
 volatile sig_atomic_t	g_received_signal = 0;
 
@@ -76,6 +77,14 @@ int	main(int ac, char **av, char **envp)
 		if (!fixed_input)
 			continue ;
 		input = fixed_input;
+		if (fixed_input)
+		{
+			if (handle_direct_env_var(fixed_input, env_list))
+			{
+				free(fixed_input);
+				continue;
+			}
+		}
 		token_list = parse_input(input);
 		if (!token_list)
 		{
