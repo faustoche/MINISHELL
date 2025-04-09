@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:50:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/09 14:24:13 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/09 14:37:56 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ static int	modify_env_var(t_env *env_list, char *name, char *value)
 {
 	t_env	*current;
 
-	if (!name || !*name )
+	if (!name || !*name || (value && !*value))
 		return (0);
 	current = env_list;
 	while (current)
@@ -52,10 +52,7 @@ static int	modify_env_var(t_env *env_list, char *name, char *value)
 		if (ft_strcmp(current->name, name) == 0)
 		{
 			free(current->value);
-			if (value)
-				current->value = ft_strdup(value);
-			else
-				current->value = ("");
+			current->value = ft_strdup(value);
 			return (1);
 		}
 		current = current->next;
@@ -72,9 +69,9 @@ static t_env	*create_env_var(t_env *env_list, char *name, char *value)
 		return (NULL);
 	new_var->name = ft_strdup(name);
 	if (value)
-		new_var->value = ft_strdup(value);
+	new_var->value = ft_strdup(value);
 	else
-		new_var->value = ("");
+	new_var->value = NULL;
 	new_var->next = NULL;
 	ft_lstadd_back(&env_list, new_var);
 	return (env_list);
@@ -84,7 +81,7 @@ static t_env	*update_env_var(t_env *env_list, char *name, char *value)
 {
 	t_env	*result;
 
-	if (!name || !*name)
+	if (!name || !*name || (value && !*value))
 		return (env_list);
 	if (modify_env_var(env_list, name, value))
 		return (env_list);
@@ -108,16 +105,16 @@ t_env	*ft_export(t_env *env_list, char *arg)
 	}
 	if (!extract_name_value(arg, &name, &value))
 	{
-		free_env_list(&new_env_list);
-		return (env_list);
+		free_env_list(&env_list);
+		return (new_env_list);
 	}
 	new_env_list = update_env_var(new_env_list, name, value);
 	if (!new_env_list)
 	{
 		free(name);
 		free(value);
-		//free_env_list(&env_list);
-		return (env_list);
+		free_env_list(&env_list);
+		return (NULL);
 	}
 	(free_env_list(&env_list), free(name), free(value));
 	return (new_env_list);
