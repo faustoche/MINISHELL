@@ -26,6 +26,13 @@ static t_pipe	init_pipe_struct(t_cmd *cmd, t_env **env_list)
 
 static void	pipe_child_process(t_cmd *current, t_pipe *pipe_data)
 {
+	struct sigaction	sa_sigquit_child;
+
+	sa_sigquit_child.sa_handler = SIG_DFL;
+	sa_sigquit_child.sa_flags = 0;
+	sigemptyset(&sa_sigquit_child.sa_mask);
+	if (sigaction(SIGQUIT, &sa_sigquit_child, NULL) == -1)
+		return ;
 	in_redirection(current, pipe_data->input_fd);
 	out_redirection(current, pipe_data);
 	if (is_builtins(current->args[0]))
@@ -37,6 +44,13 @@ static void	pipe_child_process(t_cmd *current, t_pipe *pipe_data)
 
 static void	pipe_parent_process(t_cmd **current, t_pipe *pipe_data)
 {
+	struct sigaction	sa_sigint_parent;
+
+	sa_sigint_parent.sa_handler = sigint_parent_handler;
+	sa_sigint_parent.sa_flags = 0;
+	sigemptyset(&sa_sigint_parent.sa_mask);
+	if (sigaction(SIGINT, &sa_sigint_parent, NULL) == -1)
+		return ;
 	if (pipe_data->input_fd != STDIN_FILENO)
 		close(pipe_data->input_fd);
 	if ((*current)->next)
@@ -56,11 +70,15 @@ static void	cleanup_and_wait(t_pipe *pipe_data, char **split_path)
 
 	if (pipe_data->input_fd != STDIN_FILENO)
 		close(pipe_data->input_fd);
-	if (split_path)
+	if (split_path) // inutile?
 		free_split(split_path);
 	while ((wait_pid = waitpid(-1, &status, 0)) > 0);
+	if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGQUIT)
+			printf("Quit (core dumped)\n");
+	}
 	close_all_fd(3);
-	set_signal_handlers();
 }
 
 void	execute_pipeline(t_cmd *cmd, t_env *env_list)
@@ -68,7 +86,8 @@ void	execute_pipeline(t_cmd *cmd, t_env *env_list)
 	t_cmd	*current;
 	pid_t	pid;
 	t_pipe	pipe_data;
-	char	**split_path;
+	char	**split_path; // inutile?
+
 
 	split_path = NULL;
 	pipe_data = init_pipe_struct(cmd, &env_list);

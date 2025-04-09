@@ -29,8 +29,6 @@
 # define TOKEN_CLOSE_PARENT 	11
 # define TOKEN_AND
 
-# define PATH_MAX				4096
-
 /*--------------- DEFINES COLORS --------------*/
 
 # define BLACKB "\001\033[1;30m"
@@ -55,6 +53,7 @@
 /*-------------- LIBRARIES --------------*/
 
 # include <limits.h>
+# include <linux/limits.h>
 # include <unistd.h>
 # include <stdio.h>
 # include <string.h>
@@ -134,7 +133,7 @@ typedef struct s_state
 typedef struct s_pipe
 {
 	t_cmd	*cmd; // liste des commands
-	t_env	**env_list; // variavles d'environnemt
+	t_env	**env_list; // variables d'environnemt
 	int		input_fd; // entree
 	int		pipe_fd[2]; // descripteur pipe
 }	t_pipe;

@@ -112,23 +112,26 @@ static void	create_child_process(char **args, char *binary_path, t_env *env)
 	sa_sigint_parent.sa_handler = sigint_parent_handler;
 	sa_sigint_parent.sa_flags = 0;
 	sigemptyset(&sa_sigint_parent.sa_mask);
-	if (sigaction(SIGINT, &sa_sigint_parent, NULL) == -1)
-		return ;
+
+	sa_sigquit_child.sa_handler = SIG_DFL;
+	sa_sigquit_child.sa_flags = 0;
+	sigemptyset(&sa_sigquit_child.sa_mask);
+
 	pid = fork();
 	if (pid == -1)
 		return ;
 	if (pid == 0)
 	{
-		sa_sigquit_child.sa_handler = SIG_DFL;
-		sa_sigquit_child.sa_flags = 0;
-		sigemptyset(&sa_sigquit_child.sa_mask);
 		if (sigaction(SIGQUIT, &sa_sigquit_child, NULL) == -1)
 			return ;
+
 		execute_child_process(args, binary_path, env);
 		exit(EXIT_FAILURE);
 	}
 	else if (pid > 0)
 	{
+		if (sigaction(SIGINT, &sa_sigint_parent, NULL) == -1)
+			return ;
 		waitpid(pid, &status, 0);
 		close_all_fd(3);
 		// else if (WIFEXITED(status))
@@ -140,7 +143,6 @@ static void	create_child_process(char **args, char *binary_path, t_env *env)
 			if (WTERMSIG(status) == SIGQUIT)
 				printf("Quit (core dumped)\n");
 		}
-		set_signal_handlers();
 	}
 	close_all_fd(3);
 }
@@ -154,7 +156,7 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 	while (current)
 	{
 		current->processed = 1;
-		if (current->args && current->args[0] && is_builtins(current->args[0]))
+		if (is_builtins(current->args[0]) && current->args && current->args[0])
 			builtins_execution(current, &env_list);
 		else if (current->args && current->args[0])
 		{
