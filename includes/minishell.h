@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/10 08:58:57 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/10 11:50:56 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,6 +190,7 @@ int	handle_input_redirection(t_cmd *cmd);
 int	handle_all_heredocs(t_cmd *cmd);
 int	handle_direct_env_var(char *input, t_env *env_list);
 int	check_output_directory(t_cmd *commands);
+t_env   *init_minimal_env(void);
 
 /* BUILTINS */
 

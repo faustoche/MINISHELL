@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 22:29:51 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/09 09:56:24 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/10 11:17:58 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,11 @@ int	delimiter_error(char *input)
 		return (-1);
 	}
 	if (input[0] == '&' && input[1] == '&' && input[2] == '&')
+	{
+		printf(ERR_SYNTAX);
+		return (-1);
+	}
+	if (input[0] == '|' && input[1] == '|')
 	{
 		printf(ERR_SYNTAX);
 		return (-1);
