@@ -30,7 +30,7 @@ void	sigint_handler(int sig)
 void	sigint_parent_handler(int sig)
 {
 	g_received_signal = sig;
-	printf("\n");
+	//printf("\n");
 }
 
 void	set_signal_handlers(void)

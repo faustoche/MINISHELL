@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 /*
 
 if (WIFEXITED(status))

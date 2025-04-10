@@ -14,6 +14,13 @@
 
 static void	handle_child_process(t_cmd *cmd, t_env *env, int pipefd[2], int fd)
 {
+	struct sigaction	sa_sigquit_child;
+
+	sa_sigquit_child.sa_handler = SIG_DFL;
+	sa_sigquit_child.sa_flags = 0;
+	sigemptyset(&sa_sigquit_child.sa_mask);
+	if (sigaction(SIGQUIT, &sa_sigquit_child, NULL) == -1)
+		return ;
 	if (fd != -1)
 		redir_heredoc(fd);
 	else if (cmd->in)
@@ -31,7 +38,11 @@ void	handle_pipe_redirection(t_cmd *cmd, t_env *env_list)
 	int		pipefd[2];
 	pid_t	pid;
 	int		heredoc_fd;
-
+	struct sigaction	sa_sigint_parent;
+	
+	sa_sigint_parent.sa_handler = sigint_parent_handler;
+	sa_sigint_parent.sa_flags = 0;
+	sigemptyset(&sa_sigint_parent.sa_mask);
 	heredoc_fd = -1;
 	if (cmd->heredoc != -1)
 		heredoc_fd = cmd->heredoc;
@@ -42,6 +53,8 @@ void	handle_pipe_redirection(t_cmd *cmd, t_env *env_list)
 		handle_child_process(cmd, env_list, pipefd, heredoc_fd);
 	else
 	{
+		if (sigaction(SIGINT, &sa_sigint_parent, NULL) == -1)
+			return ;
 		(close(pipefd[1]), waitpid(pid, NULL, 0));
 		if (heredoc_fd != -1)
 		{
