@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 18:14:36 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/10 10:17:38 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/10 16:05:50 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 void	ft_exit(t_cmd *cmd)
 {
-	int		exit_code;
+	long long int		exit_code;
 
 	exit_code = 0;
 	printf("Adieu 💀\n");
