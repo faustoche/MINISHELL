@@ -14,13 +14,6 @@
 
 static void	handle_child_process(t_cmd *cmd, t_env *env, int pipefd[2], int fd)
 {
-	struct sigaction	sa_sigquit_child;
-
-	sa_sigquit_child.sa_handler = SIG_DFL;
-	sa_sigquit_child.sa_flags = 0;
-	sigemptyset(&sa_sigquit_child.sa_mask);
-	if (sigaction(SIGQUIT, &sa_sigquit_child, NULL) == -1)
-		return ;
 	if (fd != -1)
 		redir_heredoc(fd);
 	else if (cmd->in)
