@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 11:38:54 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 19:13:38 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/10 19:01:11 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,30 +32,34 @@ pid_t	create_pipe_and_fork(int pipefd[2])
 	return (pid);
 }
 
-// void	execute_redir_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, t_env *env)
-// {
-// 	if (pid == 0)
-// 	{
-// 		handle_input_redirection(cmd);
-// 		handle_output_redirection(cmd);
-// 		close(pipefd[0]);
-// 		if (is_builtins(cmd->args[0]))
-// 			builtins_execution(cmd, &env);
-// 		else
-// 			execute_commands(cmd, env);
-// 		exit(0);
-// 	}
-// 	else
-// 	{
-// 		close(pipefd[1]);
-// 		waitpid(pid, NULL, 0);
-// 		if (cmd->heredoc != -1)
-// 		{
-// 			close(cmd->heredoc);
-// 			cmd->heredoc = -1;
-// 		}
-// 	}
-// }
+void	execute_redir_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, t_env *env)
+{
+	if (pid == 0)
+	{
+		handle_input_redirection(cmd);
+		handle_output_redirection(cmd);
+		close(pipefd[0]);
+		if (is_builtins(cmd->args[0]))
+		{
+			builtins_execution(cmd, &env);
+			free_commands(cmd);		// si leaks alors retirer ca // conflits	
+		}
+		else
+			execute_commands(cmd, env);
+		exit(0);
+	}
+	else
+	{
+		close(pipefd[1]);
+		waitpid(pid, NULL, 0);
+		if (cmd->heredoc != -1)
+		{
+			close(cmd->heredoc);
+			cmd->heredoc = -1;
+		}
+	}
+}
+
 
 void	handle_pipe_redirect(int pipefd[2], int mode, int *stdin_save)
 {

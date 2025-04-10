@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:50:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/09 17:16:09 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/10 16:15:36 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static t_env	*update_env_var(t_env *env_list, char *name, char *value)
 {
 	t_env	*result;
 
-	if (!name || !*name || (value && !*value))
+	if (!name || !*name)
 		return (env_list);
 	if (modify_env_var(env_list, name, value))
 		return (env_list);

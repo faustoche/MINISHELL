@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/09 21:06:35 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/10 19:02:09 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,7 +192,21 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 			}
 			else if ((current->args[0][0] == '/' || current->args[0][0] == '.')
 				&& (current->args[0][1] == '/' || current->args[0][1] == '.'))
-				printf(ERR_DIR, current->args[0]);
+			{
+				binary_path = ft_strdup(current->args[0]);
+				if (!binary_path)
+					return ;
+				if (access(binary_path, F_OK) == -1)
+				{
+					printf(ERR_DIR, current->args[0]);
+					free(binary_path);
+				}
+				else
+				{
+					create_child_process(current->args, binary_path, env_list);
+					free(binary_path);
+				}
+			}
 			else
 			{
 				binary_path = find_binary_path(current->args[0], env_list);
@@ -207,4 +221,5 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 		}
 		current = current->next;
 	}
+	free_commands(cmd);
 }

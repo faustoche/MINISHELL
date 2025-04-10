@@ -6,13 +6,19 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/10 11:01:50 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/10 18:58:03 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 /* Free the command */
+
+void ft_memdel(void *ptr)
+{
+	free(ptr);
+	ptr = NULL;
+}
 
 void	free_commands(t_cmd *cmd)
 {
@@ -29,15 +35,18 @@ void	free_commands(t_cmd *cmd)
 			i = 0;
 			while (cmd->args[i])
 			{
-				free(cmd->args[i]);
+				ft_memdel(cmd->args[i]);
 				i++;
 			}
-			free(cmd->args);
+			ft_memdel(cmd->args);
 		}
-		free(cmd->in);
-		free(cmd->out);
-		free(cmd->heredoc_eof);
-		free(cmd);
+		if (cmd->in)
+			ft_memdel(cmd->in);
+		if (cmd->out)
+			ft_memdel(cmd->out);
+		if (cmd->heredoc_eof)
+			ft_memdel(cmd->heredoc_eof);
+		ft_memdel(cmd);
 		cmd = tmp;
 	}
 }

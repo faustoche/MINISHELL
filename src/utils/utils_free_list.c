@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:28:18 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/09 07:51:01 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/10 19:44:54 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,24 @@ void	free_token_list(t_token *tokens)
 	}
 }
 
+void _ft_memdel(void *ptr)
+{
+	free(ptr);
+	ptr = NULL;
+}
+
+void free_files(t_cmd *cmd)
+{
+	if (!cmd)
+		return ;
+	if (cmd->in)
+		_ft_memdel(cmd->in);
+	if (cmd->out)
+		_ft_memdel(cmd->out);
+	if (cmd->heredoc_eof)
+		_ft_memdel(cmd->heredoc_eof);
+}
+
 void	free_pipe_redir(t_cmd *cmd)
 {
 	t_cmd	*tmp_cmd;
@@ -66,16 +84,17 @@ void	free_pipe_redir(t_cmd *cmd)
 	{
 		i = 0;
 		next = tmp_cmd->next;
+		free_files(tmp_cmd);
 		if (tmp_cmd->args)
 		{
 			while (tmp_cmd->args[i])
 			{
-				free(tmp_cmd->args[i]);
+				_ft_memdel(tmp_cmd->args[i]);
 				i++;
 			}
-			free(tmp_cmd->args);
+			_ft_memdel(tmp_cmd->args);
 		}
-		free(tmp_cmd);
+		_ft_memdel(tmp_cmd);
 		tmp_cmd = next;
 	}
 	close_all_fd(3);
