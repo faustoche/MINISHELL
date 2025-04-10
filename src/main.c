@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/09 21:09:08 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/10 09:13:22 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 			dans gestionnaire de signaux.
 	- sig_atomic_t : garantit que acces a la variable ne peuvent
 			etre interrompus ou modifies de facon incomplete. 
-		line = readline("minislay> \033[1;34m~\033[0m ");*/
+		*/
 
 volatile sig_atomic_t	g_received_signal = 0;
 
@@ -110,7 +110,12 @@ int	main(int ac, char **av, char **envp)
 			if (is_empty_command(commands))
 			{
 				if (is_redirection(commands))
+				{
 					execute_only_redirections(commands);
+					free_commands(commands);
+					commands = NULL;
+					continue ;
+				}
 			}
 			else if (is_builtins(commands->args[0]) && !has_pipes(commands))
 			{
@@ -121,6 +126,12 @@ int	main(int ac, char **av, char **envp)
 			}
 			else if (has_pipes(commands))
 				execute_pipeline(commands, env_list);
+			else if (is_redirection(commands) && commands->out && check_output_directory(commands))
+			{
+				free_commands(commands);
+				commands = NULL;
+				continue ;
+			}
 			else if (is_redirection(commands))
 				execute_redirection(commands, env_list);
 			else
@@ -136,4 +147,31 @@ int	main(int ac, char **av, char **envp)
 	clear_history();
 	close_all_fd(3);
 	return (EXIT_SUCCESS);
+}
+
+int	check_output_directory(t_cmd *commands)
+{
+	char	*dir;
+	char	*file;
+	
+	if (!commands->out)
+		return (0);
+		
+	dir = ft_strdup(commands->out);
+	if (!dir)
+		return (0);
+		
+	file = strrchr(dir, '/');
+	if (file)
+	{
+		*file = '\0';
+		if (access(dir, F_OK) == -1)
+		{
+			printf(ERR_DIR, commands->out);
+			free(dir);
+			return (1);
+		}
+	}
+	free(dir);
+	return (0);
 }

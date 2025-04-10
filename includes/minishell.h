@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/09 20:59:01 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/10 08:58:57 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -189,6 +189,7 @@ void	execute_redirection(t_cmd *cmd, t_env *env_list);
 int	handle_input_redirection(t_cmd *cmd);
 int	handle_all_heredocs(t_cmd *cmd);
 int	handle_direct_env_var(char *input, t_env *env_list);
+int	check_output_directory(t_cmd *commands);
 
 /* BUILTINS */
 
