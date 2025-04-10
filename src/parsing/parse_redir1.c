@@ -6,13 +6,13 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/10 13:45:15 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/10 18:43:14 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	redirection(t_cmd *cmd, char *file, int out, int append)
+static int	redirection(t_cmd **cmd, char *file, int out, int append)
 {
 	char	*tmp;
 
@@ -23,19 +23,19 @@ static int	redirection(t_cmd *cmd, char *file, int out, int append)
 		tmp = ft_strdup(file);
 		if (!tmp)
 			return (-1);
-		if (cmd->out)
-			free(cmd->out);
-		cmd->out = tmp;
-		cmd->append = append;
+		if ((*cmd)->out)
+			free((*cmd)->out);
+		(*cmd)->out = tmp;
+		(*cmd)->append = append;
 	}
 	else
 	{
 		tmp = ft_strdup(file);
 		if (!tmp)
 			return (-1);
-		if (cmd->in)
-			free(cmd->in);
-		cmd->in = tmp;
+		if ((*cmd)->in)
+			free((*cmd)->in);
+		(*cmd)->in = tmp;
 	}
 	return (0);
 }
@@ -87,17 +87,15 @@ int	handle_redirection(t_token *token, t_cmd *current, t_cmd *head)
 		return (-1);
 	}
 	if (token->type == REDIR_OUT)
-		result = redirection(current, token->next->value, 1, 0);
+		result = redirection(&current, token->next->value, 1, 0);
 	else if (token->type == REDIR_IN)
-		result = redirection(current, token->next->value, 0, 0);
+		result = redirection(&current, token->next->value, 0, 0);
 	else if (token->type == REDIR_APPEND)
-		result = redirection(current, token->next->value, 1, 1);
+		result = redirection(&current, token->next->value, 1, 1);
 	else if (token->type == HEREDOC)
 	{
 		if (!(*token).next)
 			return (print_error_message("Error: expected heredoc delimiter\n"));
-		if ((*current).heredoc_eof)
-			free((*current).heredoc_eof);
 		(*current).heredoc_eof = ft_strdup((*token).next->value);
 		if (!(*current).heredoc_eof)
 			return (print_error_message("Error: malloc heredoc_delim\n"));

@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:47:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/10 16:53:18 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/10 19:07:26 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,7 @@ int	handle_output_redirection(t_cmd *cmd)
 		else
 			fd_out = open_file(cmd->out, REDIR_OUT);
 		if (fd_out == -1)
-		{
-			close(original_stdout);
 			return (-1);
-		}
 		dup2(fd_out, STDOUT_FILENO);
 		close(fd_out);
 	}
@@ -106,4 +103,5 @@ void	handle_builtin_redirection(t_cmd *cmd, t_env **env_list)
 		close(heredoc_fd);
 		cmd->heredoc = -1;
 	}
+	// free_commands(cmd);
 }
