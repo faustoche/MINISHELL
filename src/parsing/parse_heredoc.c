@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/10 11:45:54 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/10 13:52:47 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ static int	read_heredoc_content(char *delimiter, int write_fd)
 
 	while (1)
 	{
-		printf("heredoc> ");
-		input = readline("");
+		input = readline("heredoc> ");
 		if (!input)
 		{
 			printf("minislay: warning: here-document delimited by eof\n");
@@ -51,7 +50,6 @@ int	handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head)
 	if (pipe(pipe_fd) == -1)
 		return (print_error_message("Error: pipe creation failed\n"));
 	read_heredoc_content(delimiter, pipe_fd[1]);
-	close(pipe_fd[0]);
 	close(pipe_fd[1]);
 	if (cmd->heredoc != -1)
 		close(cmd->heredoc);
