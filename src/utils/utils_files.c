@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:12:45 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/06 18:13:14 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/10 08:52:34 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	open_file(char *filename, int token)
 	if (fd < 0)
 	{
 		printf(ERR_DIR, filename);
+		close_all_fd(3);
 		return (-1);
 	}
 	return (fd);
