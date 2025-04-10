@@ -12,15 +12,24 @@
 
 #include "minishell.h"
 
+
 static int	read_heredoc_content(char *delimiter, int write_fd)
 {
 	char	*input;
+	struct sigaction	sa_sigint_parent;
+	
+	g_received_signal = 0;
+	sa_sigint_parent.sa_handler = sigint_heredoc_handler;
+	sa_sigint_parent.sa_flags = 0;
+	sigemptyset(&sa_sigint_parent.sa_mask);
 
 	while (1)
 	{
 		input = readline("heredoc> ");
 		if (!input)
 		{
+			if (g_received_signal == 130)
+				return (close(write_fd), -1);
 			printf("minislay: warning: here-document delimited by eof\n");
 			close(write_fd);
 			return (0);
@@ -30,6 +39,10 @@ static int	read_heredoc_content(char *delimiter, int write_fd)
 			free(input);
 			break ;
 		}
+		// if (sigaction(SIGINT, &sa_sigint_parent, NULL) == -1)
+		// 	return (-1);
+		// if (g_received_signal == SIGINT)
+		// 	return (-1);
 		write(write_fd, input, ft_strlen(input));
 		write(write_fd, "\n", 1);
 		free(input);
@@ -38,10 +51,23 @@ static int	read_heredoc_content(char *delimiter, int write_fd)
 	return (0);
 }
 
+
+// void    ft_heredoc_sigint(int signal)
+// {
+//     (void)signal;
+//     g_received_signal = 130;
+//     printf("\n");
+//     rl_replace_line("", 0);
+//     close(STDIN_FILENO); //<<<< là
+// }
+
 int	handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head)
 {
 	int	pipe_fd[2];
+	int	fd;
+	int stat = 0;
 
+	fd = dup(STDIN_FILENO); 
 	if (!cmd || !delimiter)
 	{
 		free_commands(head);
@@ -49,7 +75,11 @@ int	handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head)
 	}
 	if (pipe(pipe_fd) == -1)
 		return (print_error_message("Error: pipe creation failed\n"));
-	read_heredoc_content(delimiter, pipe_fd[1]);
+	handle_signals(SIGINT, CLOSE_IN);
+	//signal(SIGINT, &ft_heredoc_sigint); // <<<<<<< ici 
+	stat = read_heredoc_content(delimiter, pipe_fd[1]);
+	if (stat == -1)
+		return (dup2(fd, STDIN_FILENO), close(pipe_fd[1]), -1);
 	close(pipe_fd[1]);
 	if (cmd->heredoc != -1)
 		close(cmd->heredoc);

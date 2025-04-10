@@ -50,6 +50,14 @@
 # define ERR_ARG "minislay: %s: too many arguments\n"
 # define ERR_EXP "minislay: export: %s: not a valid identifier\n"
 
+/*--------------- DEFINES FOR SIGNALS --------------*/
+
+# define IGNORE 0
+# define DEFAULT 1
+# define PROMPT 2
+# define WESH 3
+# define CLOSE_IN 4
+
 /*-------------- LIBRARIES --------------*/
 
 # include <limits.h>
@@ -317,8 +325,11 @@ int		is_numeric(char *str);
 
 /* SIGNALS */
 
-void	sigint_handler(int sig);
+int		handle_signals(int sig, int param);
+void	new_prompt(int sig);
 void	sigint_parent_handler(int sig);
+void	close_stdin(int sig);
+void	sigint_heredoc_handler(int sig);
 void	set_signal_handlers(void);
 
 void check_open_fds(void);
