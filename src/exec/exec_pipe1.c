@@ -26,12 +26,9 @@ static t_pipe	init_pipe_struct(t_cmd *cmd, t_env **env_list)
 
 static void	pipe_child_process(t_cmd *current, t_pipe *pipe_data)
 {
-	struct sigaction	sa_sigquit_child;
-
-	sa_sigquit_child.sa_handler = SIG_DFL;
-	sa_sigquit_child.sa_flags = 0;
-	sigemptyset(&sa_sigquit_child.sa_mask);
-	if (sigaction(SIGQUIT, &sa_sigquit_child, NULL) == -1)
+	if (handle_signals(SIGINT, DEFAULT) == -1)
+		return ;
+	if (handle_signals(SIGQUIT, DEFAULT) == -1)
 		return ;
 	in_redirection(current, pipe_data->input_fd);
 	out_redirection(current, pipe_data);
@@ -52,12 +49,7 @@ static void	pipe_child_process(t_cmd *current, t_pipe *pipe_data)
 
 static void	pipe_parent_process(t_cmd **current, t_pipe *pipe_data)
 {
-	struct sigaction	sa_sigint_parent;
-
-	sa_sigint_parent.sa_handler = sigint_parent_handler;
-	sa_sigint_parent.sa_flags = 0;
-	sigemptyset(&sa_sigint_parent.sa_mask);
-	if (sigaction(SIGINT, &sa_sigint_parent, NULL) == -1)
+	if (handle_signals(SIGINT, WESH) == -1)
 		return ;
 	if (pipe_data->input_fd != STDIN_FILENO)
 		close(pipe_data->input_fd);

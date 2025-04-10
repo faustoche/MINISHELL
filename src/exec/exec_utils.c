@@ -42,7 +42,7 @@ void	execute_redir_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, t_env *env)
 		if (is_builtins(cmd->args[0]))
 		{
 			builtins_execution(cmd, &env);
-			free_commands(cmd);			
+			free_commands(cmd);		// si leaks alors retirer ca // conflits	
 		}
 		else
 			execute_commands(cmd, env);
@@ -59,6 +59,7 @@ void	execute_redir_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, t_env *env)
 		}
 	}
 }
+
 
 void	handle_pipe_redirect(int pipefd[2], int mode, int *stdin_save)
 {

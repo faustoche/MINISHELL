@@ -12,7 +12,6 @@
 
 #include "minishell.h"
 
-
 /*
 
 if (WIFEXITED(status))
@@ -118,32 +117,34 @@ static void	create_child_process(char **args, char *binary_path, t_env *env)
 {
 	pid_t				pid;
 	int					status;
-	struct sigaction	sa_sigquit_child;
-	struct sigaction	sa_sigint_parent;
+	// struct sigaction	sa_sigquit_child;
+	// struct sigaction	sa_sigint_parent;
 
+	g_received_signal = 0;
 	status = 0;
-	sa_sigint_parent.sa_handler = sigint_parent_handler;
-	sa_sigint_parent.sa_flags = 0;
-	sigemptyset(&sa_sigint_parent.sa_mask);
+	// sa_sigint_parent.sa_handler = sigint_parent_handler;
+	// sa_sigint_parent.sa_flags = 0;
+	// sigemptyset(&sa_sigint_parent.sa_mask);
 
-	sa_sigquit_child.sa_handler = SIG_DFL;
-	sa_sigquit_child.sa_flags = 0;
-	sigemptyset(&sa_sigquit_child.sa_mask);
+	// sa_sigquit_child.sa_handler = SIG_DFL;
+	// sa_sigquit_child.sa_flags = 0;
+	// sigemptyset(&sa_sigquit_child.sa_mask);
 
 	pid = fork();
 	if (pid == -1)
 		return ;
-	if (pid == 0)
+	else if (pid == 0)
 	{
-		if (sigaction(SIGQUIT, &sa_sigquit_child, NULL) == -1)
+		if (handle_signals(SIGINT, DEFAULT) == -1)
 			return ;
-
+		if (handle_signals(SIGQUIT, DEFAULT) == -1)
+			return ;
 		execute_child_process(args, binary_path, env);
 		exit(EXIT_FAILURE);
 	}
 	else if (pid > 0)
 	{
-		if (sigaction(SIGINT, &sa_sigint_parent, NULL) == -1)
+		if (handle_signals(SIGINT, WESH) == -1)
 			return ;
 		waitpid(pid, &status, 0);
 		close_all_fd(3);
