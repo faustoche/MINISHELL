@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 22:31:37 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/09 10:12:48 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/10 20:00:53 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,28 @@ void	pipe_builtin(t_cmd *current, t_pipe *pipe_data)
 	exit(0);
 }
 
+void	free_redir_execve(t_cmd *cmd)
+{
+	t_cmd	*tmp_cmd;
+	t_cmd	*next;
+	int		i;
+
+	tmp_cmd = cmd;
+	while (tmp_cmd)
+	{
+		i = 0;
+		next = tmp_cmd->next;
+		if (cmd->in)
+			free(cmd->in);
+		if (cmd->out)
+			free(cmd->out);
+		if (cmd->heredoc_eof)
+			free(cmd->heredoc_eof);
+		tmp_cmd = next;
+	}
+	// close_all_fd(3);
+}
+
 void	pipe_execve(t_cmd *current, t_pipe *pipe_data)
 {
 	char	**env;
@@ -89,6 +111,7 @@ void	pipe_execve(t_cmd *current, t_pipe *pipe_data)
 
 	binary_path = find_binary_path(current->args[0], *(pipe_data->env_list));
 	env = env_list_to_array(*(pipe_data->env_list));
+	// free_redir_execve(pipe_data->cmd);
 	if (!binary_path)
 	{
 		printf(ERR_CMD, current->args[0]);
