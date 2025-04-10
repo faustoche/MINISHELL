@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 16:19:39 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/10 11:01:50 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	free_commands(t_cmd *cmd)
 		}
 		free(cmd->in);
 		free(cmd->out);
+		free(cmd->heredoc_eof);
 		free(cmd);
 		cmd = tmp;
 	}

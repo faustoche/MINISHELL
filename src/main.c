@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/10 09:13:22 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/10 11:53:25 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,9 +57,18 @@ int	main(int ac, char **av, char **envp)
 	if (!(getcwd(pwd, sizeof(pwd))))
 		return (print_error_message("Error: can't get pwd\n"));
 	original_env = init_env(envp);
+	if (!original_env)
+	{
+		original_env = init_minimal_env();
+		if (!original_env)
+			return (print_error_message("Error: couldn't create minimal env\n"));
+	}
 	env_list = copy_env_list(original_env);
 	if (!env_list)
+	{
+		//free_env_list(env_list);
 		return (print_error_message("Error: invalid env variable\n"));
+	}
 	free_env_list(&original_env);
 	if (!env_list)
 	{
@@ -107,7 +116,7 @@ int	main(int ac, char **av, char **envp)
 				free_commands(commands);
 				continue ;
 			}
-			if (is_empty_command(commands))
+			if (is_empty_command(commands)) // pour gerer si <> en premier
 			{
 				if (is_redirection(commands))
 				{
@@ -128,6 +137,13 @@ int	main(int ac, char **av, char **envp)
 				execute_pipeline(commands, env_list);
 			else if (is_redirection(commands) && commands->out && check_output_directory(commands))
 			{
+				free_commands(commands);
+				commands = NULL;
+				continue ;
+			}
+			else if (is_redirection(commands) && commands->in && access(commands->in, F_OK) == -1)
+			{
+				printf(ERR_DIR, commands->in);
 				free_commands(commands);
 				commands = NULL;
 				continue ;
