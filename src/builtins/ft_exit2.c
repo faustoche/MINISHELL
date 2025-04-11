@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/11 10:59:17 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 14:47:07 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 21:55:00 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,14 +29,27 @@ long long	ft_atoll(const char *str, int *error)
 	if (str[i] == '-' || str[i] == '+')
 		i++;
 	if (ft_isdigit(str[i] == 1))
+	{
 		*error = 1;
+		return (0);
+	}
 	while (str[i] >= '0' && str[i] <= '9')
 	{
-		result = result * 10 + sign * (str[i++] - '0');
-		if ((sign == 1 && result < 0) || (sign == -1 && result > 0))
+		if ((result > LLONG_MAX / 10) || (result == LLONG_MAX / 10
+			&& (str[i] - '0') > LLONG_MAX % 10))
+		{
 			*error = 1;
+			if (sign == 1)
+				return (LLONG_MAX);
+			else
+				return (LLONG_MIN);
+		}
+		result = result * 10 + (str[i++] - '0');
 	}
 	if (str[i] != '\0')
+	{
 		*error = 1;
-	return (result);
+		return (0);
+	}
+	return (result * sign);
 }

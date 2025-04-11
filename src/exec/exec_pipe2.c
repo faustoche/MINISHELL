@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 22:31:37 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/11 18:48:14 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 21:33:29 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,27 +71,28 @@ void	out_redirection(t_cmd *current, t_pipe *pipe_data)
 
 void	pipe_builtin(t_cmd *current, t_pipe *pipe_data)
 {
+	int	exit_code;
+
 	if (current->next)
 	{
 		dup2(pipe_data->pipe_fd[1], STDOUT_FILENO);
 		close(pipe_data->pipe_fd[1]);
 	}
 	builtins_execution(current, pipe_data->env_list);
+	exit_code = *(current->exit_status); // verificer si ok
 	free_env_list(pipe_data->env_list);
 	free_pipe_redir(pipe_data->cmd);
-	exit(0);
+	exit(exit_code); // on retourne ce que les builtins nous ont retourne 
 }
 
 void	free_redir_execve(t_cmd *cmd)
 {
 	t_cmd	*tmp_cmd;
 	t_cmd	*next;
-	int		i;
 
 	tmp_cmd = cmd;
 	while (tmp_cmd)
 	{
-		i = 0;
 		next = tmp_cmd->next;
 		if (cmd->in)
 			free(cmd->in);
@@ -125,6 +126,6 @@ void	pipe_execve(t_cmd *current, t_pipe *pipe_data)
 		free_env_array(env);
 		free_env_list(pipe_data->env_list);
 		free_commands(pipe_data->cmd);
-		exit(126);
+		exit(126); // est-ce que j'en ai besoin ici ? execve gere comme un grand ?
 	}
 }

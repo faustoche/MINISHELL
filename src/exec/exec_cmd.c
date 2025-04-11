@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/11 18:53:50 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 21:34:56 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 	current = cmd;
 	while (current)
 	{
-		current->processed = 1;
+		current->processed = 1; // idem ici ?
 		if (is_builtins(current->args[0]) && current->args && current->args[0])
 			builtins_execution(current, &env_list);
 		else if (current->args && current->args[0])
@@ -168,7 +168,7 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 					return ;
 				if (access(binary_path, F_OK) == -1)
 				{
-					*current->exit_status = 127;
+					*current->exit_status = 127; // ici 
 					printf(ERR_CMD, current->args[0]);
 					free(binary_path);
 				}
@@ -186,7 +186,7 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 					return ;
 				if (access(binary_path, F_OK) == -1)
 				{
-					*current->exit_status = 127;
+					*current->exit_status = 127; // ici ?
 					printf(ERR_DIR, current->args[0]);
 					free(binary_path);
 				}
@@ -203,7 +203,7 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 				{
 					printf(ERR_CMD, current->args[0]);
 					if (current->exit_status)
-						*(current->exit_status) = 127;
+						*(current->exit_status) = 127; // ici ??
 					close_all_fd(3);
 				}
 				else
@@ -215,5 +215,5 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 		}
 		current = current->next;
 	}
-	cmd->processed = 2;
+	cmd->processed = 2; // est-ce que ca c'est vraiment utile ?
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redir2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:47:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/10 19:07:26 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 21:38:31 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,14 @@ void	handle_builtin_redirection(t_cmd *cmd, t_env **env_list)
 		heredoc_fd = cmd->heredoc;
 	original_stdin = handle_input_redirection(cmd);
 	if (original_stdin == -1)
+	{
+		*(cmd->exit_status) = 1; // TBC
 		return ;
+	}
 	original_stdout = handle_output_redirection(cmd);
 	if (original_stdout == -1)
 	{
+		*(cmd->exit_status) = 1; // TBC
 		dup2(original_stdin, STDIN_FILENO);
 		close(original_stdin);
 		return ;

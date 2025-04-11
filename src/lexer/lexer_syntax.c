@@ -6,31 +6,18 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 22:29:51 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/10 11:17:58 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 19:34:03 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	syntax_error(char *input, t_env *env_list)
+int	syntax_error(char *input)
 {
-	char	*var;
-
-	var = find_var_value(env_list, "PATH");
-	//var = getenv("PATH");
-	// Ancienne condition >>>>> if ((input[0] == '\\' && input[1] == '\\') || input[0] == '\\')
 	if (input[0] == '\\')
 	{
 		printf(ERR_CMD, input);
 		return (-1);
-	}
-	if (input[0] == ';')
-	{
-		if (var)
-			printf("%s\n", var);
-		else
-			printf("Error: variable not set\n");
-		return (print_error_message(ERR_SYNTAX));
 	}
 	if (input[0] == '-')
 	{
@@ -73,19 +60,19 @@ int	delimiter_error(char *input)
 	return (0);
 }
 
-int	character_error(char *input, t_env *env_list)
+int	character_error(char *input)
 {
 	// if (input[0] == '~')
 	// {
 	// 	printf(ERR_DIR, getenv("HOME"));
 	// 	return (-1);
 	// }
-	char	*var;
+	// char	*var;
 
-	var = find_var_value(env_list, "HOME");
+	// var = find_var_value(env_list, "HOME");
 	if (input[0] == '~')
 	{
-		printf(ERR_DIR, var);
+		printf("minislay: No such file or directory\n");
 		return (-1);
 	}
 	if (input[0] == '*')

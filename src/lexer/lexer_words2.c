@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/07 21:46:17 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/08 15:43:02 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 19:32:12 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 /* Check syntaxe error and handle specific char and separator */
 
-int	handle_special_char(t_lexer *lexer, t_env *env_list)
+int	handle_special_char(t_lexer *lexer)
 {
 	char	c;
 
@@ -25,7 +25,7 @@ int	handle_special_char(t_lexer *lexer, t_env *env_list)
 		if (lexer->pos == -1)
 			return (-1);
 	}
-	else if (syntax_error(lexer->input, env_list) == -1
+	else if (syntax_error(lexer->input) == -1
 		|| input_check(lexer->input) == -1)
 		return (-1);
 	else if (is_separator(c))

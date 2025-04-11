@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 18:14:36 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/11 14:46:32 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 21:56:34 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,28 +28,35 @@
 void	ft_exit(t_cmd *cmd)
 {
 	long long		exit_code;
+	int				error;
 	
 	exit_code = 0;
 	printf("Adieu 💀\n");
 	if (cmd->args[1])
 	{
-		if (!is_numeric(cmd->args[1]))
+		exit_code = ft_atoll(cmd->args[1], &error);
+		if (error)
 		{
 			printf("minislay : exit: %s: numeric argument required\n", cmd->args[1]);
+			*(cmd->exit_status) = 2; // verifier si 2
 			exit(2);
 		}
 		else if (cmd->args[2])
 		{
 			printf("minislay : exit: too many arguments\n");
+			*(cmd->exit_status) = 1; // verifier 1
 			return ;
 		}
 		else
-			exit_code = atoll(cmd->args[1]) % 256;
-		if (exit_code < 0)
-			exit_code += 256;
+		{
+			exit_code = exit_code % 256;
+			if (exit_code < 0)
+				exit_code += 256;
+		}
 	}
-	// else
-	// 	exit_code = cmd->exit_status;
+	else
+		exit_code = *(cmd->exit_status); // ici necessaire ?
+	*(cmd->exit_status) = exit_code;
 	quit_minislay(NULL, cmd, NULL, NULL);
 	exit(exit_code);
 }

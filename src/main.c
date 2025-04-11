@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 19:06:42 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 22:15:04 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	main(int ac, char **av, char **envp)
 				continue;
 			}
 		}
-		token_list = parse_input(input, env_list);
+		token_list = parse_input(input, env_list, &last_cmd_code);
 		if (!token_list)
 		{
 			free(input);
@@ -105,7 +105,7 @@ int	main(int ac, char **av, char **envp)
 			continue ;
 		}
 		expand_tokens(token_list, env_list, &last_cmd_code);
-		cmd = parse_commands(token_list, env_list);
+		cmd = parse_commands(token_list, env_list, &last_cmd_code);
 		free_token_list(token_list);
 		free(input);
 		input = NULL;
@@ -113,7 +113,7 @@ int	main(int ac, char **av, char **envp)
 		if (cmd)
 		{
 			handle_signals(SIGINT, IGNORE);
-			if (cmd && handle_all_heredocs(cmd) == -1)
+			if (cmd && handle_all_heredocs(cmd, env_list, &last_cmd_code) == -1)
 			{
 				free_commands(cmd);
 				continue ;

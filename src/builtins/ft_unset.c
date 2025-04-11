@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:04:05 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 11:46:42 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 19:37:20 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,11 @@
 
 static t_env *unset_utils(t_env *env_list, t_env *new_env_list, char *name)
 {
-	// Vérifier si le nom est NULL ou une chaîne vide
 	if (name == NULL || *name == '\0')
 	{
 		free_env_list(&env_list);
 		return (new_env_list);
 	}
-
 	if (!is_valid_identifier(name))
 	{
 		free_env_list(&env_list);
@@ -60,7 +58,7 @@ t_env *ft_unset(t_env *env_list, char *name)
 		prev = current;
 		current = current->next;
 	}
-	env_list->cmd->exit_status = 0; // qu'importe ce qui se passe, unset renvois forcement 0
+	env_list->cmd->exit_status = 0;
 	free_env_list(&env_list);
 	return (new_env_list);
 }
