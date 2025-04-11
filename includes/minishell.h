@@ -55,7 +55,7 @@
 # define IGNORE 0
 # define DEFAULT 1
 # define PROMPT 2
-# define WESH 3
+# define CHILD_PROMPT 3
 # define CLOSE_IN 4
 
 /*-------------- LIBRARIES --------------*/
@@ -247,7 +247,6 @@ void	handle_pipe_redirect(int pipefd[2], int mode, int *stdin_save);
 /* EXPAND */
 
 t_env	*create_env_element(char *env);
-char	*get_env_value(t_env *env_list, char *name);
 t_env	*init_env(char **envp);
 t_env	*copy_env_list(t_env *original_env);
 char	*extract_variable_name(t_expand *exp, size_t *len);
@@ -265,8 +264,8 @@ void	expand_tokens(t_token *token_list, t_env *env_list, t_cmd *cmd);
 
 /* LEXER - ok*/
 
-t_token	*parse_input(char *input);
-t_token	*lexing(char *input);
+t_token	*parse_input(char *input, t_env *env_list);
+t_token	*lexing(char *input, t_env *env_list);
 int		handle_mixed_quotes(t_lexer *lexer, int start);
 char	*fix_dollar_quote(char *input);
 int		is_dollar_quote(char *input, int i);
@@ -279,12 +278,12 @@ int		handle_quote_case(char *input, char *result, int *index, int *quotes);
 int		handle_edge_quotes(char *input, char *result, int *index);
 int		handle_delimiter(t_lexer *lexer, int i);
 char	*handle_escape_char(char *input);
-int		syntax_error(char *input);
+int		syntax_error(char *input, t_env *env_list);
 int		delimiter_error(char *input);
-int		character_error(char *input);
+int		character_error(char *input, t_env *env_list);
 int		input_check(char *input);
 int		handle_word(t_lexer *lexer, int start);
-int		handle_special_char(t_lexer *lexer);
+int		handle_special_char(t_lexer *lexer, t_env *env_list);
 void	add_token(t_lexer *lexer, char *word, int length, int type);
 char	*handle_char(char *merged, char current, int *quotes, char *quote_char);
 int		check_quote_errors(t_lexer *lexer, char *word, int end);
@@ -333,10 +332,8 @@ int		is_numeric(char *str);
 
 int		handle_signals(int sig, int param);
 void	new_prompt(int sig);
-void	sigint_parent_handler(int sig);
+void	child_new_prompt(int sig);
 void	close_stdin(int sig);
-void	sigint_heredoc_handler(int sig);
-void	set_signal_handlers(void);
 
 void check_open_fds(void);
 

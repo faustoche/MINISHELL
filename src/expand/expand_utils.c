@@ -217,7 +217,7 @@ int	copy_str_to_result(t_expand *exp, char *str, int len)
 // 	var_name = ft_strndup(exp->str + var_start, var_end - var_start);
 // 	if (!var_name)
 // 		return (0);
-// 	var_value = get_env_value(exp->env_list, var_name);
+// 	var_value = find_var_value(exp->env_list, var_name);
 // 	free(var_name);
 // 	if (var_value)
 // 	{

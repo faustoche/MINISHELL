@@ -20,14 +20,14 @@ static void	init_lexer(t_lexer *lexer, char *input)
 	lexer->command = 1;
 }
 
-static t_token	*tokenize_input(char *input)
+static t_token	*tokenize_input(char *input, t_env *env_list)
 {
 	t_lexer	lexer;
 	int		result;
 
 	if (!input || !*input)
 		return (NULL);
-	if (character_error(input) == -1)
+	if (character_error(input, env_list) == -1)
 		return (NULL);
 	init_lexer(&lexer, input);
 	while (lexer.input[lexer.pos])
@@ -35,7 +35,7 @@ static t_token	*tokenize_input(char *input)
 		skip_space(&lexer);
 		if (!lexer.input[lexer.pos])
 			break ;
-		result = handle_special_char(&lexer);
+		result = handle_special_char(&lexer, env_list);
 		if (result == -1)
 		{
 			free_token_list(lexer.tokens);
@@ -76,19 +76,19 @@ static t_token	*validate_tokens(t_token *tokens)
 	return (tokens);
 }
 
-t_token	*parse_input(char *input)
+t_token	*parse_input(char *input, t_env *env_list)
 {
 	t_token	*token_list;
 
 	if (!input)
 		return (NULL);
-	token_list = lexing(input);
+	token_list = lexing(input, env_list);
 	if (!token_list)
 		return (NULL);
 	return (token_list);
 }
 
-t_token	*lexing(char *input)
+t_token	*lexing(char *input, t_env *env_list)
 {
 	t_token	*tokens;
 	char	*processed_input;
@@ -98,7 +98,7 @@ t_token	*lexing(char *input)
 	processed_input = handle_escape_char(input);
 	if (!processed_input)
 		return (NULL);
-	tokens = tokenize_input(processed_input);
+	tokens = tokenize_input(processed_input, env_list);
 	free(processed_input);
 	if (!tokens)
 		return (NULL);

@@ -12,12 +12,14 @@
 
 #include "minishell.h"
 
-int	syntax_error(char *input)
+int	syntax_error(char *input, t_env *env_list)
 {
 	char	*var;
 
-	var = getenv("PATH");
-	if ((input[0] == '\\' && input[1] == '\\') || input[0] == '\\')
+	var = find_var_value(env_list, "PATH");
+	//var = getenv("PATH");
+	// Ancienne condition >>>>> if ((input[0] == '\\' && input[1] == '\\') || input[0] == '\\')
+	if (input[0] == '\\')
 	{
 		printf(ERR_CMD, input);
 		return (-1);
@@ -71,11 +73,19 @@ int	delimiter_error(char *input)
 	return (0);
 }
 
-int	character_error(char *input)
+int	character_error(char *input, t_env *env_list)
 {
+	// if (input[0] == '~')
+	// {
+	// 	printf(ERR_DIR, getenv("HOME"));
+	// 	return (-1);
+	// }
+	char	*var;
+
+	var = find_var_value(env_list, "HOME");
 	if (input[0] == '~')
 	{
-		printf(ERR_DIR, getenv("HOME"));
+		printf(ERR_DIR, var);
 		return (-1);
 	}
 	if (input[0] == '*')

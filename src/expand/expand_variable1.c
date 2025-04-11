@@ -69,7 +69,7 @@ static int	process_variable_part9(t_expand *exp, int var_start, int var_end)
 	var_name = ft_strndup(exp->str + var_start, var_end - var_start);
 	if (!var_name)
 		return (0);
-	var_value = get_env_value(exp->env_list, var_name);
+	var_value = find_var_value(exp->env_list, var_name);
 	free(var_name);
 	if (var_value)
 	{

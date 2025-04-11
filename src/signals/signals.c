@@ -15,7 +15,7 @@
 int	handle_signals(int sig, int param)
 {
 	struct sigaction	sa;
-	
+
 	ft_bzero(&sa, sizeof(sa));
 	if (param == IGNORE)
 		sa.sa_handler = SIG_IGN;
@@ -23,8 +23,8 @@ int	handle_signals(int sig, int param)
 		sa.sa_handler = SIG_DFL;
 	else if (param == PROMPT)
 		sa.sa_handler = new_prompt;
-	else if (param == WESH)
-		sa.sa_handler = sigint_parent_handler;
+	else if (param == CHILD_PROMPT)
+		sa.sa_handler = child_new_prompt;
 	else if (param == CLOSE_IN)
 		sa.sa_handler = close_stdin;
 	else
@@ -36,6 +36,7 @@ int	handle_signals(int sig, int param)
 		return (-1);
 	return (0);
 }
+
 void	new_prompt(int sig)
 {
 	if (g_received_signal != 1)
@@ -48,7 +49,7 @@ void	new_prompt(int sig)
 	rl_redisplay();
 }
 
-void	sigint_parent_handler(int sig)
+void	child_new_prompt(int sig)
 {
 	g_received_signal = sig;
 	printf("\n");
@@ -63,17 +64,4 @@ void	close_stdin(int sig)
 		rl_replace_line("", 0);
 		close(STDIN_FILENO);
 	}
-}
-
-void	sigint_heredoc_handler(int sig)
-{
-	g_received_signal = sig;
-	printf("\n");
-}
-
-void	set_signal_handlers(void)
-{
-	handle_signals(SIGINT, PROMPT);
-	handle_signals(SIGQUIT, IGNORE);
-	handle_signals(SIGTSTP, IGNORE);
 }

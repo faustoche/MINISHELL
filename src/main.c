@@ -78,7 +78,8 @@ int	main(int ac, char **av, char **envp)
 	env_list = change_var_value(env_list, "OLDPWD", pwd);
 	while (1)
 	{
-		set_signal_handlers();
+		handle_signals(SIGINT, PROMPT);
+		handle_signals(SIGQUIT, IGNORE);
 		input = prompt();
 		if (!input)
 			break ;
@@ -95,7 +96,7 @@ int	main(int ac, char **av, char **envp)
 				continue;
 			}
 		}
-		token_list = parse_input(input);
+		token_list = parse_input(input, env_list);
 		if (!token_list)
 		{
 			free(input);

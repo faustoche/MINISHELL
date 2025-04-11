@@ -53,7 +53,7 @@ static void	pipe_child_process(t_cmd *current, t_pipe *pipe_data)
 
 static void	pipe_parent_process(t_cmd **current, t_pipe *pipe_data)
 {
-	if (handle_signals(SIGINT, WESH) == -1)
+	if (handle_signals(SIGINT, CHILD_PROMPT) == -1)
 		return ;
 	if (pipe_data->input_fd != STDIN_FILENO)
 		close(pipe_data->input_fd);
@@ -127,11 +127,9 @@ void	execute_pipeline(t_cmd *cmd, t_env *env_list)
 		else
 		{
 			current->pid = pid;
-			printf("execute pipeline avant: pid : %d\n", pid);
 			pipe_parent_process(&current, &pipe_data);
 		}
 	}
-	printf("execute pipeline apres: pid : %d\n", pid);
 	cleanup_and_wait(&pipe_data, split_path);
 }
 
