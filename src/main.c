@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 19:06:42 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 19:35:34 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	main(int ac, char **av, char **envp)
 				continue;
 			}
 		}
-		token_list = parse_input(input, env_list);
+		token_list = parse_input(input);
 		if (!token_list)
 		{
 			free(input);

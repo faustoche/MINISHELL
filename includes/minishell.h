@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 19:12:31 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 19:35:15 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -268,8 +268,8 @@ void	expand_tokens(t_token *token_list, t_env *env_list, int *code);
 
 /* LEXER - ok*/
 
-t_token	*parse_input(char *input, t_env *env_list);
-t_token	*lexing(char *input, t_env *env_list);
+t_token	*parse_input(char *input);
+t_token	*lexing(char *input);
 int		handle_mixed_quotes(t_lexer *lexer, int start);
 char	*fix_dollar_quote(char *input);
 int		is_dollar_quote(char *input, int i);
@@ -282,12 +282,12 @@ int		handle_quote_case(char *input, char *result, int *index, int *quotes);
 int		handle_edge_quotes(char *input, char *result, int *index);
 int		handle_delimiter(t_lexer *lexer, int i);
 char	*handle_escape_char(char *input);
-int		syntax_error(char *input, t_env *env_list);
+int		syntax_error(char *input);
 int		delimiter_error(char *input);
-int		character_error(char *input, t_env *env_list);
+int		character_error(char *input);
 int		input_check(char *input);
 int		handle_word(t_lexer *lexer, int start);
-int		handle_special_char(t_lexer *lexer, t_env *env_list);
+int		handle_special_char(t_lexer *lexer);
 void	add_token(t_lexer *lexer, char *word, int length, int type);
 char	*handle_char(char *merged, char current, int *quotes, char *quote_char);
 int		check_quote_errors(t_lexer *lexer, char *word, int end);

@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:52:28 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/09 09:31:54 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 19:37:41 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,5 @@ void	ft_echo(t_cmd *cmd)
 	}
 	if (newline)
 		printf("\n");
+	cmd->exit_status = 0;
 }
