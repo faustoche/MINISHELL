@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 14:27:35 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 19:12:31 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,7 @@ typedef struct s_token
 {
 	char			*value;
 	int				type;
+	t_cmd			*exit_status;
 	struct s_token	*next;
 }	t_token;
 
@@ -133,6 +134,7 @@ typedef struct s_lexer
 {
 	int				pos;
 	int				command;
+	t_cmd			*cmd;
 	char			*input;
 	t_token			*tokens;
 }	t_lexer;
@@ -155,10 +157,12 @@ typedef struct s_pipe
 
 /*-------------- FUNCTIONS --------------*/
 void close_all_fd(int fd);
+t_cmd	*get_last_cmd(t_cmd *cmd);
 int size_list(t_token *token);
 void	free_split(char **split);
 int is_empty_command(t_cmd *cmd);
 void execute_only_redirections(t_cmd *cmd);
+void debug_exit_status(t_cmd *cmd);
 int	handle_output_redirection(t_cmd *cmd);
 void execute_with_heredoc(t_cmd *cmd, t_env *env_list);
 int has_heredoc(t_cmd *cmd);
@@ -177,7 +181,7 @@ int	process_variable_part1(t_expand *exp);
 int	process_variable_part2(t_expand *exp);
 int	process_variable_part3(t_expand *exp);
 int	process_variable_part4(t_expand *exp);
-int	process_variable_part5(t_expand *exp);
+int	process_variable_part5(t_expand *exp, int *code);
 int	process_variable_part6(t_expand *exp);
 char	*create_final_word(t_lexer *lexer, char *word, int start, int end);
 int	check_quote_errors(t_lexer *lexer, char *word, int end);
@@ -252,15 +256,15 @@ t_env	*init_env(char **envp);
 t_env	*copy_env_list(t_env *original_env);
 char	*extract_variable_name(t_expand *exp, size_t *len);
 int		copy_variable_value(t_expand *exp, char *value, char *name);
-int		process_variable(t_expand *exp);
+int		process_variable(t_expand *exp, int *code);
 int		resize_result_buffer(t_expand *exp);
 int		check_buffer_size(t_expand *exp);
-char	*expand_variable(t_env *env_list, char *str, int quote_type, t_cmd *cmd);
-char	*init_expand_result(const char *str, t_expand *exp, t_cmd *cmd);
-int		expand_loop(t_expand *exp);
-void	expand_variable_in_token(t_token *token, t_env *env_list, t_cmd *cmd);
+char	*expand_variable(t_env *env_list, char *str, int quote_type, int *code);
+char	*init_expand_result(const char *str, t_expand *exp);
+int		expand_loop(t_expand *exp, int *code);
+void	expand_variable_in_token(t_token *token, t_env *env_list, int *code);
 int		copy_str_to_result(t_expand *exp, char *str, int len);
-void	expand_tokens(t_token *token_list, t_env *env_list, t_cmd *cmd);
+void	expand_tokens(t_token *token_list, t_env *env_list, int *code);
 
 
 /* LEXER - ok*/

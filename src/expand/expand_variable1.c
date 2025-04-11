@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 17:53:37 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 18:51:47 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 18:40:34 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static int	process_variable_part9(t_expand *exp, int var_start, int var_end)
 	return (1);
 }
 
-static int	process_variable_begin(t_expand *exp, int *ret)
+static int	process_variable_begin(t_expand *exp, int *ret, int *code)
 {
 	if (process_variable_part1(exp))
 		return (1);
@@ -89,7 +89,7 @@ static int	process_variable_begin(t_expand *exp, int *ret)
 		return (1);
 	if (process_variable_part4(exp))
 		return (1);
-	*ret = process_variable_part5(exp);
+	*ret = process_variable_part5(exp, code);
 	if (*ret)
 		return (-1);
 	*ret = process_variable_part6(exp);
@@ -98,14 +98,14 @@ static int	process_variable_begin(t_expand *exp, int *ret)
 	return (0);
 }
 
-int	process_variable(t_expand *exp)
+int	process_variable(t_expand *exp, int *code)
 {
 	int	var_start;
 	int	var_end;
 	int	ret;
 	int	result;
 
-	result = process_variable_begin(exp, &ret);
+	result = process_variable_begin(exp, &ret, code);
 	if (result != 0)
 		return (result);
 	ret = process_variable_part7(exp);

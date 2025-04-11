@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 17:54:53 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 14:48:50 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 18:55:33 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	process_variable_part4(t_expand *exp)
 	return (0);
 }
 
-int	process_variable_part5(t_expand *exp)
+int	process_variable_part5(t_expand *exp, int *code)
 {
 	char	exit_status_str[16];
 	int		exit_code;
@@ -88,37 +88,36 @@ int	process_variable_part5(t_expand *exp)
 	int		len;
 
 	exp->i++;
-	// debut
-	if (exp->str[exp->i] == '?') // je checke deja $ avant
-	{
-		exit_code = 0; // 0 par defualt
-		if (exp->cmd && exp->cmd->exit_status) // si le status est superieur a 0 (est=ce qu'il y q une limite?)
-			exit_code = *(exp->cmd->exit_status);
+	exit_code = 0;
+	if (exp->str[exp->i] == '?')
+	{	
+		if (code)
+			exit_code = *code;
 		if (exit_code == 0)
-			ft_strcpy(exit_status_str, "0"); // si je recois 0 alors je defini 0
+			ft_strcpy(exit_status_str, "0");
 		else
 		{
 			tmp = exit_code;
 			len = 0;
-			while (tmp > 0) // calcul de la longue de la chaine (genre 2 5 6 )
+			while (tmp > 0)
 			{
 				tmp /= 10;
 				len++;
 			}
-			exit_status_str[len] = '\0'; // nul a la fin
+			exit_status_str[len] = '\0';
 			tmp = exit_code;
 			while (len > 0)
 			{
-				exit_status_str[--len] = (tmp % 10) + '0'; // ti atoi des mif
+				exit_status_str[--len] = (tmp % 10) + '0';
 				tmp /= 10;
 			}
 		}
-		if (!copy_str_to_result(exp, exit_status_str, ft_strlen(exit_status_str))) // je copie le resultat final
+		if (!copy_str_to_result(exp, exit_status_str, ft_strlen(exit_status_str)))
 			return (0);
-		exp->i++; // j'incremonte
+		exp->i++;
 		return (1);
-		// fin
 	}
+
 	if (exp->str[exp->i] != '{' && !isalnum(exp->str[exp->i])
 		&& exp->str[exp->i] != '_'
 		&& exp->str[exp->i] != '"' && exp->str[exp->i] != '\''

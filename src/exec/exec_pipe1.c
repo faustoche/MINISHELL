@@ -6,13 +6,13 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 20:05:00 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/11 14:45:17 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 18:49:12 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_cmd	*get_last_cmd(t_cmd *cmd)
+t_cmd	*get_last_cmd(t_cmd *cmd)
 {
 	while (cmd && cmd->next)
 		cmd = cmd->next;
@@ -72,29 +72,30 @@ static void	cleanup_and_wait(t_pipe *pipe_data, char **split_path)
 	int		status;
 	pid_t	wait_pid;
 	t_cmd	*last_cmd;
+	int		last_status = 0;
 
 	last_cmd = get_last_cmd(pipe_data->cmd);
 	pid_t	last_pid = (last_cmd) ? last_cmd->pid : -1;
-	status= 0;
+	status = 0;
 	if (pipe_data->input_fd != STDIN_FILENO)
 		close(pipe_data->input_fd);
 	if (split_path) // inutile?
 		free_split(split_path);
 	while ((wait_pid = waitpid(-1, &status, 0)) > 0)
 	{
-		printf("PID terminé: %d\n", wait_pid);
+		if (WIFEXITED(status))
+			last_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			last_status = 128 + WTERMSIG(status);
 		if (wait_pid == last_pid && last_cmd && last_cmd->exit_status)
-		{
-			if (WIFEXITED(status))
-				*(last_cmd->exit_status) = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
-				*(last_cmd->exit_status) = 128 + WTERMSIG(status);
-		}
-	}		
+			*(last_cmd->exit_status) = last_status;
+	}
+	if (last_cmd && last_cmd->exit_status && *(last_cmd->exit_status) == 0)
+		*(last_cmd->exit_status) = last_status;
 	if (WIFSIGNALED(status))
 	{
 		if (WTERMSIG(status) == SIGQUIT)
-			printf("Quit (core dumped)\n");
+		printf("Quit (core dumped)\n");
 	}
 	close_all_fd(3);
 }
@@ -127,11 +128,9 @@ void	execute_pipeline(t_cmd *cmd, t_env *env_list)
 		else
 		{
 			current->pid = pid;
-			printf("execute pipeline avant: pid : %d\n", pid);
 			pipe_parent_process(&current, &pipe_data);
 		}
 	}
-	printf("execute pipeline apres: pid : %d\n", pid);
 	cleanup_and_wait(&pipe_data, split_path);
 }
 

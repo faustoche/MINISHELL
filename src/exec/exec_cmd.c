@@ -6,23 +6,11 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/11 14:53:18 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 18:53:50 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/*
-
-if (WIFEXITED(status))
-    cmd->exit_status = WEXITSTATUS(status);
-else if (WIFSIGNALED(status))
-    cmd->exit_status = 128 + WTERMSIG(status);
-    
-// Mettre à jour la référence à la dernière commande exécutée
-last_executed_cmd = cmd;
-
-*/
 
 /* Complete pathname by adding '/' and name of binary */
 
@@ -117,8 +105,13 @@ static void	create_child_process(char **args, char *binary_path, t_env *env)
 {
 	pid_t				pid;
 	int					status;
+	t_cmd	*last_cmd;
+	int		last_status = 0;
+	pid_t	wait_pid;
 
-	//g_received_signal = 0;
+	last_cmd = get_last_cmd(env->cmd);
+	pid_t	last_pid = (last_cmd) ? last_cmd->pid : -1;
+	g_received_signal = 0;
 	status = 0;
 	pid = fork();
 	if (pid == -1)
@@ -130,18 +123,26 @@ static void	create_child_process(char **args, char *binary_path, t_env *env)
 		if (handle_signals(SIGQUIT, DEFAULT) == -1)
 			return ;
 		execute_child_process(args, binary_path, env);
-		exit(127);
 	}
 	else if (pid > 0)
 	{
 		if (handle_signals(SIGINT, WESH) == -1)
 			return ;
-		waitpid(pid, &status, 0);
-		close_all_fd(3);
+		while ((wait_pid = waitpid(pid, &status, 0)) > 0)
+		{
+			if (WIFEXITED(status))
+				last_status = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				last_status = 128 + WTERMSIG(status);
+			if (wait_pid == last_pid && last_cmd && last_cmd->exit_status)
+			{
+				*(last_cmd->exit_status) = last_status;
+			}
+		}
 		if (WIFSIGNALED(status))
 		{
 			if (WTERMSIG(status) == SIGQUIT)
-				printf("Quit (core dumped)\n");
+			printf("Quit (core dumped)\n");
 		}
 	}
 	close_all_fd(3);
@@ -167,6 +168,7 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 					return ;
 				if (access(binary_path, F_OK) == -1)
 				{
+					*current->exit_status = 127;
 					printf(ERR_CMD, current->args[0]);
 					free(binary_path);
 				}
@@ -184,6 +186,7 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 					return ;
 				if (access(binary_path, F_OK) == -1)
 				{
+					*current->exit_status = 127;
 					printf(ERR_DIR, current->args[0]);
 					free(binary_path);
 				}
@@ -197,7 +200,12 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 			{
 				binary_path = find_binary_path(current->args[0], env_list);
 				if (binary_path == NULL)
-					(printf(ERR_CMD, current->args[0]), close_all_fd(3));
+				{
+					printf(ERR_CMD, current->args[0]);
+					if (current->exit_status)
+						*(current->exit_status) = 127;
+					close_all_fd(3);
+				}
 				else
 				{
 					create_child_process(current->args, binary_path, env_list);
