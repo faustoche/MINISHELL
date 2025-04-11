@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/10 19:02:09 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 09:52:34 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,5 +221,5 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 		}
 		current = current->next;
 	}
-	free_commands(cmd);
+	cmd->processed = 2;
 }
