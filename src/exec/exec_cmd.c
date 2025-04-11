@@ -113,7 +113,6 @@ static void	create_child_process(char **args, char *binary_path, t_env *env)
 	pid_t	last_pid = (last_cmd) ? last_cmd->pid : -1;
 	g_received_signal = 0;
 	status = 0;
-
 	pid = fork();
 	if (pid == -1)
 		return ;
