@@ -53,7 +53,7 @@ static void	pipe_child_process(t_cmd *current, t_pipe *pipe_data)
 
 static void	pipe_parent_process(t_cmd **current, t_pipe *pipe_data)
 {
-	if (handle_signals(SIGINT, WESH) == -1)
+	if (handle_signals(SIGINT, CHILD_PROMPT) == -1)
 		return ;
 	if (pipe_data->input_fd != STDIN_FILENO)
 		close(pipe_data->input_fd);

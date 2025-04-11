@@ -126,7 +126,7 @@ static void	create_child_process(char **args, char *binary_path, t_env *env)
 	}
 	else if (pid > 0)
 	{
-		if (handle_signals(SIGINT, WESH) == -1)
+		if (handle_signals(SIGINT, CHILD_PROMPT) == -1)
 			return ;
 		while ((wait_pid = waitpid(pid, &status, 0)) > 0)
 		{

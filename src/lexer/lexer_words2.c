@@ -14,7 +14,7 @@
 
 /* Check syntaxe error and handle specific char and separator */
 
-int	handle_special_char(t_lexer *lexer)
+int	handle_special_char(t_lexer *lexer, t_env *env_list)
 {
 	char	c;
 
@@ -25,7 +25,7 @@ int	handle_special_char(t_lexer *lexer)
 		if (lexer->pos == -1)
 			return (-1);
 	}
-	else if (syntax_error(lexer->input) == -1
+	else if (syntax_error(lexer->input, env_list) == -1
 		|| input_check(lexer->input) == -1)
 		return (-1);
 	else if (is_separator(c))

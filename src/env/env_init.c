@@ -40,20 +40,6 @@ t_env	*create_env_element(char *env)
 	return (element);
 }
 
-char	*get_env_value(t_env *env_list, char *name)
-{
-	t_env	*current;
-
-	current = env_list;
-	while (current)
-	{
-		if (ft_strcmp(current->name, name) == 0)
-			return (current->value);
-		current = current->next;
-	}	
-	return (NULL);
-}
-
 t_env	*init_env(char **envp)
 {
 	t_env	*env_list;
