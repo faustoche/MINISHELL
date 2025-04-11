@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/10 18:36:29 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 12:05:27 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,13 @@ t_cmd	*init_command(void)
 	cmd->heredoc_eof = NULL;
 	cmd->processed = 0;
 	cmd->env_list = NULL;
+	cmd->exit_status = malloc(sizeof(int));
+	if (!cmd->exit_status)
+	{
+		free(cmd);
+		return (NULL);
+	}
+	*(cmd->exit_status) = 0;
 	return (cmd);
 }
 

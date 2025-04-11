@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/11 09:52:34 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 14:53:18 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,7 @@ static void	execute_child_process(char **args, char *binary_path, t_env *env)
 	{
 		close_all_fd(3);
 		free_env_array(env_arr);
-		exit(EXIT_FAILURE);
+		exit(127);
 	}
 	free_env_array(env_arr);
 	close_all_fd(3);
@@ -130,7 +130,7 @@ static void	create_child_process(char **args, char *binary_path, t_env *env)
 		if (handle_signals(SIGQUIT, DEFAULT) == -1)
 			return ;
 		execute_child_process(args, binary_path, env);
-		exit(EXIT_FAILURE);
+		exit(127);
 	}
 	else if (pid > 0)
 	{
@@ -138,10 +138,6 @@ static void	create_child_process(char **args, char *binary_path, t_env *env)
 			return ;
 		waitpid(pid, &status, 0);
 		close_all_fd(3);
-		// else if (WIFEXITED(status))
-		// {
-		// 	//changement exit code
-		// }
 		if (WIFSIGNALED(status))
 		{
 			if (WTERMSIG(status) == SIGQUIT)
