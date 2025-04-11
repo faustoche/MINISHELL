@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 22:31:37 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/11 09:32:47 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 12:52:36 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,7 @@ void	pipe_execve(t_cmd *current, t_pipe *pipe_data)
 	// free_redir_execve(pipe_data->cmd);
 	if (!binary_path)
 	{
+		printf("binary path\n");
 		printf(ERR_CMD, current->args[0]);
 		free_env_array(env);
 		free_env_list(pipe_data->env_list);
@@ -126,6 +127,6 @@ void	pipe_execve(t_cmd *current, t_pipe *pipe_data)
 		free_env_array(env);
 		free_env_list(pipe_data->env_list);
 		free_commands(pipe_data->cmd);
-		exit(1);
+		exit(126);
 	}
 }

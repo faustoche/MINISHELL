@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_exit.c                                          :+:      :+:    :+:   */
+/*   ft_exit1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 18:14:36 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/10 16:05:50 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 14:46:32 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,24 @@
 - 1000 % 256 = 232 thus exit 1000 = exit 232
 */
 
+/* exit -> quitte avec le dernier code connu */
+/* exit 42 -> quitte avec le code 42 */
+/* exit fff -> quitte avec le code 2 car ce n'est pas un nombre */
+/* exit 1 2 -> trop d'arguments */
+/* exit -9223372036854775807 (LONG LONG INT MAX) -> quitte avec le code 2 car ce n'est pas un nombre*/
+
 void	ft_exit(t_cmd *cmd)
 {
-	long long int		exit_code;
-
+	long long		exit_code;
+	
 	exit_code = 0;
 	printf("Adieu 💀\n");
 	if (cmd->args[1])
 	{
 		if (!is_numeric(cmd->args[1]))
 		{
-			printf("minislay : exit: %s: numbers required\n", cmd->args[1]);
-			exit(255);
+			printf("minislay : exit: %s: numeric argument required\n", cmd->args[1]);
+			exit(2);
 		}
 		else if (cmd->args[2])
 		{
@@ -38,8 +44,12 @@ void	ft_exit(t_cmd *cmd)
 			return ;
 		}
 		else
-		exit_code = ft_atoi(cmd->args[1]) % 256;
+			exit_code = atoll(cmd->args[1]) % 256;
+		if (exit_code < 0)
+			exit_code += 256;
 	}
+	// else
+	// 	exit_code = cmd->exit_status;
 	quit_minislay(NULL, cmd, NULL, NULL);
 	exit(exit_code);
 }
