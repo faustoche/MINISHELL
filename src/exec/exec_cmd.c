@@ -118,9 +118,8 @@ static void	create_child_process(char **args, char *binary_path, t_env *env)
 	pid_t				pid;
 	int					status;
 
-	g_received_signal = 0;
+	//g_received_signal = 0;
 	status = 0;
-
 	pid = fork();
 	if (pid == -1)
 		return ;
