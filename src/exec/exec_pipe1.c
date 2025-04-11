@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 20:05:00 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/10 20:01:28 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/10 20:10:43 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,7 @@ static void	pipe_child_process(t_cmd *current, t_pipe *pipe_data)
 			pipe_execve(current, pipe_data);
 	}
 	else
-	{
-		// ft_putstr_fd("ICI?\n", 2);
 		free_pipe(pipe_data->cmd, *(pipe_data->env_list), NULL);
-	}
 	exit(1);
 }
 
