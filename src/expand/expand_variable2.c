@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variable2.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 17:54:53 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/09 20:59:10 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/11 14:48:50 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,8 +92,8 @@ int	process_variable_part5(t_expand *exp)
 	if (exp->str[exp->i] == '?') // je checke deja $ avant
 	{
 		exit_code = 0; // 0 par defualt
-		if (exp->cmd && exp->cmd->exit_status >= 0) // si le status est superieur a 0 (est=ce qu'il y q une limite?)
-			exit_code = *exp->cmd->exit_status;
+		if (exp->cmd && exp->cmd->exit_status) // si le status est superieur a 0 (est=ce qu'il y q une limite?)
+			exit_code = *(exp->cmd->exit_status);
 		if (exit_code == 0)
 			ft_strcpy(exit_status_str, "0"); // si je recois 0 alors je defini 0
 		else

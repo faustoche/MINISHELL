@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 09:57:15 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 14:47:56 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	main(int ac, char **av, char **envp)
 	t_env	*env_list;
 	t_env	*original_env;
 	char	*fixed_input;
-	//t_cmd	*last_cmd;
+	int		last_cmd_code;
 
 	(void)ac;
 	(void)av;
@@ -102,13 +102,16 @@ int	main(int ac, char **av, char **envp)
 			input = NULL;
 			continue ;
 		}
-		//last_cmd = NULL;
 		expand_tokens(token_list, env_list, commands);
 		commands = parse_commands(token_list, env_list);
 		free_token_list(token_list);
 		free(input);
 		input = NULL;
 		close_all_fd(3);
+		if (commands && commands->exit_status)
+		{
+			*(commands->exit_status) = last_cmd_code;
+		}
 		if (commands)
 		{
 			handle_signals(SIGINT, IGNORE);
@@ -154,8 +157,12 @@ int	main(int ac, char **av, char **envp)
 			else
 				execute_commands(commands, env_list);
 		}
+		if (commands && commands->exit_status)
+		{
+			last_cmd_code = *(commands->exit_status);
+		}
 		close_all_fd(3);
-		if (commands && commands->processed != 2)
+		if (commands)
 		{
 			free_commands(commands);
 			commands = NULL;

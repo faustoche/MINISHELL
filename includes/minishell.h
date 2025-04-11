@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/10 14:41:21 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 14:27:35 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,11 +82,15 @@ extern volatile sig_atomic_t	g_received_signal;
 
 /*------------- STRUCTURES --------------*/
 
+struct s_cmd;
+typedef struct s_cmd t_cmd;
+
 typedef struct s_env
 {
 	char			*name;
 	char			*value;
 	struct s_env	*next;
+	t_cmd			*cmd;
 }	t_env;
 
 typedef struct s_token
@@ -110,6 +114,7 @@ typedef struct s_cmd
 	t_env			*env_list;
 	int				processed;
 	int				*exit_status;
+	pid_t			pid;
 }	t_cmd;
 
 typedef struct s_expand
@@ -199,6 +204,7 @@ int	handle_all_heredocs(t_cmd *cmd);
 int	handle_direct_env_var(char *input, t_env *env_list);
 int	check_output_directory(t_cmd *commands);
 t_env   *init_minimal_env(void);
+long long	ft_atoll(const char *str, int *error);
 
 /* BUILTINS */
 
