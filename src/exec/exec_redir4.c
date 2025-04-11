@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:48:26 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/10 19:06:51 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 18:54:30 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,7 @@ void	handle_pipe_redirection(t_cmd *cmd, t_env *env_list)
 	int		pipefd[2];
 	pid_t	pid;
 	int		heredoc_fd;
-	// struct sigaction	sa_sigint_parent;
-	
-	// sa_sigint_parent.sa_handler = sigint_parent_handler;
-	// sa_sigint_parent.sa_flags = 0;
-	// sigemptyset(&sa_sigint_parent.sa_mask);
+
 	heredoc_fd = -1;
 	if (cmd->heredoc != -1)
 		heredoc_fd = cmd->heredoc;

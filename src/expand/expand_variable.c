@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variable.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 12:01:35 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/09 21:02:15 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/11 18:41:14 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,21 @@
 
 /* Main function to expand variables */
 
-char	*expand_variable(t_env *env_list, char *str, int quote_type, t_cmd *cmd)
+char	*expand_variable(t_env *env_list, char *str, int quote_type, int *code)
 {
 	t_expand	exp;
 
 	if (quote_type == SINGLE_QUOTE)
 		return (ft_strdup(str));
 	exp.env_list = env_list;
-	if (!init_expand_result(str, &exp, cmd))
+	if (!init_expand_result(str, &exp))
 		return (NULL);
-	if (!expand_loop(&exp))
+	if (!expand_loop(&exp, code))
 		return (NULL);
 	return (exp.result);
 }
 
-char	*init_expand_result(const char *str, t_expand *exp, t_cmd *cmd)
+char	*init_expand_result(const char *str, t_expand *exp)
 {
 	size_t	i;
 
@@ -37,7 +37,6 @@ char	*init_expand_result(const char *str, t_expand *exp, t_cmd *cmd)
 	exp->i = 0;
 	exp->j = 0;
 	exp->str = (char *)str;
-	exp->cmd = cmd;
 	exp->result = malloc(exp->capacity);
 	if (!exp->result)
 		return (NULL);
@@ -51,7 +50,7 @@ char	*init_expand_result(const char *str, t_expand *exp, t_cmd *cmd)
 
 /* Main expansion loop */
 
-int	expand_loop(t_expand *exp)
+int	expand_loop(t_expand *exp, int *code)
 {
 	while (exp->str[exp->i])
 	{
@@ -72,7 +71,7 @@ int	expand_loop(t_expand *exp)
 		}
 		else if (exp->str[exp->i] == '$')
 		{
-			if (!process_variable(exp))
+			if (!process_variable(exp, code))
 				return (0);
 		}
 		else

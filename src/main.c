@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 14:47:56 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 19:06:42 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ int	main(int ac, char **av, char **envp)
 	char	pwd[PATH_MAX];
 	char	*input;
 	t_token	*token_list;
-	t_cmd	*commands;
+	t_cmd	*cmd;
 	t_env	*env_list;
 	t_env	*original_env;
 	char	*fixed_input;
@@ -52,7 +52,7 @@ int	main(int ac, char **av, char **envp)
 
 	(void)ac;
 	(void)av;
-	commands = NULL;
+	cmd = NULL;
 	token_list = NULL;
 	if (!(getcwd(pwd, sizeof(pwd))))
 		return (print_error_message("Error: can't get pwd\n"));
@@ -76,6 +76,7 @@ int	main(int ac, char **av, char **envp)
 		return (print_error_message("Error: env variable init\n"));
 	}
 	env_list = change_var_value(env_list, "OLDPWD", pwd);
+	last_cmd_code = 0;
 	while (1)
 	{
 		set_signal_handlers();
@@ -102,70 +103,67 @@ int	main(int ac, char **av, char **envp)
 			input = NULL;
 			continue ;
 		}
-		expand_tokens(token_list, env_list, commands);
-		commands = parse_commands(token_list, env_list);
+		expand_tokens(token_list, env_list, &last_cmd_code);
+		cmd = parse_commands(token_list, env_list);
 		free_token_list(token_list);
 		free(input);
 		input = NULL;
 		close_all_fd(3);
-		if (commands && commands->exit_status)
-		{
-			*(commands->exit_status) = last_cmd_code;
-		}
-		if (commands)
+		if (cmd)
 		{
 			handle_signals(SIGINT, IGNORE);
-			if (commands && handle_all_heredocs(commands) == -1)
+			if (cmd && handle_all_heredocs(cmd) == -1)
 			{
-				free_commands(commands);
+				free_commands(cmd);
 				continue ;
 			}
-			if (is_empty_command(commands)) // pour gerer si <> en premier
+			if (is_empty_command(cmd))
 			{
-				if (is_redirection(commands))
+				if (is_redirection(cmd))
 				{
-					execute_only_redirections(commands);
-					free_commands(commands);
-					commands = NULL;
+					execute_only_redirections(cmd);
+					free_commands(cmd);
+					cmd = NULL;
 					continue ;
 				}
 			}
-			else if (is_builtins(commands->args[0]) && !has_pipes(commands))
+			else if (is_builtins(cmd->args[0]) && !has_pipes(cmd))
 			{
-				if (is_redirection(commands))
-					handle_builtin_redirection(commands, &env_list);
+				if (is_redirection(cmd))
+					handle_builtin_redirection(cmd, &env_list);
 				else
-					builtins_execution(commands, &env_list);
+					builtins_execution(cmd, &env_list);
 			}
-			else if (has_pipes(commands))
-				execute_pipeline(commands, env_list);
-			else if (is_redirection(commands) && commands->out && check_output_directory(commands))
+			else if (has_pipes(cmd))
+				execute_pipeline(cmd, env_list);
+			else if (is_redirection(cmd) && cmd->out && check_output_directory(cmd))
 			{
-				free_commands(commands);
-				commands = NULL;
+				free_commands(cmd);
+				cmd = NULL;
 				continue ;
 			}
-			else if (is_redirection(commands) && commands->in && access(commands->in, F_OK) == -1)
+			else if (is_redirection(cmd) && cmd->in && access(cmd->in, F_OK) == -1)
 			{
-				printf(ERR_DIR, commands->in);
-				free_commands(commands);
-				commands = NULL;
+				printf(ERR_DIR, cmd->in);
+				free_commands(cmd);
+				cmd = NULL;
 				continue ;
 			}
-			else if (is_redirection(commands))
-				execute_redirection(commands, env_list);
+			else if (is_redirection(cmd))
+				execute_redirection(cmd, env_list);
 			else
-				execute_commands(commands, env_list);
+				execute_commands(cmd, env_list);
+
 		}
-		if (commands && commands->exit_status)
+		if (cmd && cmd->exit_status)
 		{
-			last_cmd_code = *(commands->exit_status);
+			last_cmd_code = *(cmd->exit_status);
 		}
 		close_all_fd(3);
-		if (commands)
+		if (cmd)
 		{
-			free_commands(commands);
-			commands = NULL;
+			free_commands(cmd);
+			cmd = NULL;
 		}
 	}
 	if (input)
@@ -174,31 +172,4 @@ int	main(int ac, char **av, char **envp)
 	clear_history();
 	close_all_fd(3);
 	return (EXIT_SUCCESS);
-}
-
-int	check_output_directory(t_cmd *commands)
-{
-	char	*dir;
-	char	*file;
-	
-	if (!commands->out)
-		return (0);
-		
-	dir = ft_strdup(commands->out);
-	if (!dir)
-		return (0);
-		
-	file = strrchr(dir, '/');
-	if (file)
-	{
-		*file = '\0';
-		if (access(dir, F_OK) == -1)
-		{
-			printf(ERR_DIR, commands->out);
-			free(dir);
-			return (1);
-		}
-	}
-	free(dir);
-	return (0);
 }

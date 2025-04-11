@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:18:42 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/07 08:53:56 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 18:51:39 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ t_env	*create_env_element(char *env)
 	if (!element->name || !element->value)
 		free_elements(element);
 	element->next = NULL;
+	element->cmd = NULL;
 	return (element);
 }
 
@@ -119,6 +120,7 @@ t_env	*copy_env_list(t_env *original_env)
 			return (NULL);
 		}
 		new_element->next = NULL;
+		new_element->cmd = original_current->cmd;
 		if (!copy_head)
 		{
 			copy_head = new_element;

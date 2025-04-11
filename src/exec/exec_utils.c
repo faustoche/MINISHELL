@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 11:38:54 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/10 19:01:11 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 18:58:28 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void	execute_redir_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, t_env *env)
 	}
 }
 
-
 void	handle_pipe_redirect(int pipefd[2], int mode, int *stdin_save)
 {
 	if (mode == 0)
@@ -86,4 +85,31 @@ void	handle_pipe_redirect(int pipefd[2], int mode, int *stdin_save)
 			perror("dup2 failed (stdin)\n");
 		close(*stdin_save);
 	}
+}
+
+int	check_output_directory(t_cmd *cmd)
+{
+	char	*dir;
+	char	*file;
+	
+	if (!cmd->out)
+		return (0);
+		
+	dir = ft_strdup(cmd->out);
+	if (!dir)
+		return (0);
+		
+	file = strrchr(dir, '/');
+	if (file)
+	{
+		*file = '\0';
+		if (access(dir, F_OK) == -1)
+		{
+			printf(ERR_DIR, cmd->out);
+			free(dir);
+			return (1);
+		}
+	}
+	free(dir);
+	return (0);
 }

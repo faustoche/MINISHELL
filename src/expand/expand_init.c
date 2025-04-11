@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 12:01:35 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/09 20:52:34 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/11 18:44:42 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,21 @@
 
 /* Main function to expand variables */
 
-char	*expand_variable(t_env *env_list, char *str, int quote_type, t_cmd *cmd)
+char	*expand_variable(t_env *env_list, char *str, int quote_type, int *code)
 {
 	t_expand	exp;
 
 	if (quote_type == SINGLE_QUOTE)
 		return (ft_strdup(str));
 	exp.env_list = env_list;
-	exp.cmd = cmd;
-	if (!init_expand_result(str, &exp, cmd))
+	if (!init_expand_result(str, &exp))
 		return (NULL);
-	if (!expand_loop(&exp))
+	if (!expand_loop(&exp, code))
 		return (NULL);
 	return (exp.result);
 }
 
-char	*init_expand_result(const char *str, t_expand *exp, t_cmd *cmd)
+char	*init_expand_result(const char *str, t_expand *exp)
 {
 	size_t	i;
 
@@ -39,7 +38,6 @@ char	*init_expand_result(const char *str, t_expand *exp, t_cmd *cmd)
 	exp->j = 0;
 	exp->str = (char *)str;
 	exp->result = malloc(exp->capacity);
-	exp->cmd = cmd;
 	if (!exp->result)
 		return (NULL);
 	while (i < exp->capacity)
@@ -52,11 +50,11 @@ char	*init_expand_result(const char *str, t_expand *exp, t_cmd *cmd)
 
 /* Main expansion loop */
 
-static int	expand_loop_part2(t_expand *exp)
+static int	expand_loop_part2(t_expand *exp, int *code)
 {
 	if (exp->str[exp->i] == '$')
 	{
-		if (!process_variable(exp))
+		if (!process_variable(exp, code))
 			return (0);
 	}
 	else
@@ -64,7 +62,7 @@ static int	expand_loop_part2(t_expand *exp)
 	return (1);
 }
 
-int	expand_loop(t_expand *exp)
+int	expand_loop(t_expand *exp, int *code)
 {
 	while (exp->str[exp->i])
 	{
@@ -85,7 +83,7 @@ int	expand_loop(t_expand *exp)
 		}
 		else
 		{
-			if (!expand_loop_part2(exp))
+			if (!expand_loop_part2(exp, code))
 				return (0);
 		}
 	}
