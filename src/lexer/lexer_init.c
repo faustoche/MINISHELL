@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:54:08 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 22:14:36 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/11 22:17:24 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ t_token	*parse_input(char *input, t_env *env_list, int *code)
 		*code = 2; // TBC // 1 ou 2 ? 
 		return (NULL);
 	}
-	token_list = lexing(input, env_list);
+	token_list = lexing(input);
 	if (!token_list)
 	{
 		*code = 2;
