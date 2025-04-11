@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 19:35:15 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 22:13:49 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,6 +137,7 @@ typedef struct s_lexer
 	t_cmd			*cmd;
 	char			*input;
 	t_token			*tokens;
+	int				*exit_code;
 }	t_lexer;
 
 typedef struct s_state
@@ -204,7 +205,7 @@ void	redir_execute(t_cmd *cmd, t_env *env_list);
 void handle_pipe_redirection(t_cmd *cmd, t_env *env_list);
 void	execute_redirection(t_cmd *cmd, t_env *env_list);
 int	handle_input_redirection(t_cmd *cmd);
-int	handle_all_heredocs(t_cmd *cmd);
+int	handle_all_heredocs(t_cmd *cmd, t_env *env_list, int *code);
 int	handle_direct_env_var(char *input, t_env *env_list);
 int	check_output_directory(t_cmd *commands);
 t_env   *init_minimal_env(void);
@@ -268,8 +269,8 @@ void	expand_tokens(t_token *token_list, t_env *env_list, int *code);
 
 /* LEXER - ok*/
 
-t_token	*parse_input(char *input);
-t_token	*lexing(char *input);
+t_token	*parse_input(char *input, t_env *env_list, int *code);
+t_token	*lexing(char *input, t_env *env_list);
 int		handle_mixed_quotes(t_lexer *lexer, int start);
 char	*fix_dollar_quote(char *input);
 int		is_dollar_quote(char *input, int i);
@@ -295,11 +296,11 @@ char	*create_final_word(t_lexer *lexer, char *word, int start, int end);
 
 /* PARSING - OK */
 
-int		handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head);
+int		handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head, t_env *env_list, int *code);
 int		init_args(t_cmd *cmd);
 int		add_args(t_token *token, t_cmd *cmd);
 t_cmd	*init_command(void);
-t_cmd	*parse_commands(t_token *token_lis, t_env *env_list);
+t_cmd	*parse_commands(t_token *token_lis, t_env *env_list, int *code);
 int		handle_redirection(t_token *token, t_cmd *current, t_cmd *head);
 int		process_redir_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env);
 int		get_token_type(char *token, int *command);

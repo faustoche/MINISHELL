@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 12:05:27 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 21:43:31 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ t_cmd	*init_command(void)
 	return (cmd);
 }
 
-t_cmd	*parse_commands(t_token *token_list, t_env *env_list)
+t_cmd	*parse_commands(t_token *token_list, t_env *env_list, int *code)
 {
 	t_cmd	*head;
 	t_cmd	*current ;
@@ -114,6 +114,7 @@ t_cmd	*parse_commands(t_token *token_list, t_env *env_list)
 	{
 		if (process_token(&token, &current, &head, env_list))
 		{
+			*code = 2; // TBC
 			if (head)
 				free_commands(head);
 			return (NULL);
@@ -122,6 +123,7 @@ t_cmd	*parse_commands(t_token *token_list, t_env *env_list)
 	if (head == NULL)
 	{
 		printf(ERR_SYNTAX);
+		*code = 2; // TBC
 		if (current != NULL && current != head)
 			free_commands(current);
 	}

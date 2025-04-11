@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:54:08 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 19:34:37 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 22:14:36 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,15 +76,21 @@ static t_token	*validate_tokens(t_token *tokens)
 	return (tokens);
 }
 
-t_token	*parse_input(char *input)
+t_token	*parse_input(char *input, t_env *env_list, int *code)
 {
 	t_token	*token_list;
 
 	if (!input)
+	{
+		*code = 2; // TBC // 1 ou 2 ? 
 		return (NULL);
-	token_list = lexing(input);
+	}
+	token_list = lexing(input, env_list);
 	if (!token_list)
+	{
+		*code = 2;
 		return (NULL);
+	}
 	return (token_list);
 }
 

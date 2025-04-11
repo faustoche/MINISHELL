@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redir4.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:48:26 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 18:54:30 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/11 21:37:32 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ void	handle_pipe_redirection(t_cmd *cmd, t_env *env_list)
 	int		pipefd[2];
 	pid_t	pid;
 	int		heredoc_fd;
+	int		status;
 
 	heredoc_fd = -1;
 	if (cmd->heredoc != -1)
@@ -45,6 +46,11 @@ void	handle_pipe_redirection(t_cmd *cmd, t_env *env_list)
 		if (handle_signals(SIGINT, CLOSE_IN) == -1)
 			return ;
 		(close(pipefd[1]), waitpid(pid, NULL, 0));
+		waitpid(pid, &status, 0); // status est maj ici ?
+		if (WIFEXITED(status))
+			*(cmd->exit_status) = 128 + WTERMSIG(status); // a confirmer
+		else if (WIFSIGNALED(status))
+			*(cmd->exit_status) = 128 + WTERMSIG(status); // jai copie coller
 		if (heredoc_fd != -1)
 		{
 			close(heredoc_fd);
