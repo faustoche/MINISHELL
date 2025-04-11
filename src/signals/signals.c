@@ -15,10 +15,8 @@
 int	handle_signals(int sig, int param)
 {
 	struct sigaction	sa;
-
-	sa.sa_flags = 0;
-	sigemptyset(&sa.sa_mask);
-
+	
+	ft_bzero(&sa, sizeof(sa));
 	if (param == IGNORE)
 		sa.sa_handler = SIG_IGN;
 	else if (param == DEFAULT)
@@ -40,7 +38,6 @@ int	handle_signals(int sig, int param)
 }
 void	new_prompt(int sig)
 {
-	//if (sig == SIGINT)
 	if (g_received_signal != 1)
 	{
 		printf("\n");
@@ -79,29 +76,4 @@ void	set_signal_handlers(void)
 	handle_signals(SIGINT, PROMPT);
 	handle_signals(SIGQUIT, IGNORE);
 	handle_signals(SIGTSTP, IGNORE);
-
-	// struct sigaction	sa_sigint;
-	// struct sigaction	sa_sigquit;
-	// struct sigaction	sa_sigtstp;
-
-	// sa_sigint.sa_handler = new_prompt;
-	// sa_sigint.sa_flags = 0;
-	// sigemptyset(&sa_sigint.sa_mask);
-
-	// sa_sigquit.sa_handler = SIG_IGN;
-	// sa_sigquit.sa_flags = 0;
-	// sigemptyset(&sa_sigquit.sa_mask);
-
-	// sa_sigtstp.sa_handler = SIG_IGN;
-	// sa_sigtstp.sa_flags = 0;
-	// sigemptyset(&sa_sigtstp.sa_mask);
-
-	// if (sigaction(SIGINT, &sa_sigint, NULL) == -1)
-	// 	exit(EXIT_FAILURE);
-
-	// if (sigaction(SIGQUIT, &sa_sigquit, NULL) == -1)
-	// 	exit(EXIT_FAILURE);
-
-	// if (sigaction(SIGTSTP, &sa_sigtstp, NULL) == -1)
-	// 	exit(EXIT_FAILURE);
 }

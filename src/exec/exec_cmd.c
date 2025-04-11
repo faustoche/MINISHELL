@@ -117,19 +117,9 @@ static void	create_child_process(char **args, char *binary_path, t_env *env)
 {
 	pid_t				pid;
 	int					status;
-	// struct sigaction	sa_sigquit_child;
-	// struct sigaction	sa_sigint_parent;
 
-	g_received_signal = 0;
+	//g_received_signal = 0;
 	status = 0;
-	// sa_sigint_parent.sa_handler = sigint_parent_handler;
-	// sa_sigint_parent.sa_flags = 0;
-	// sigemptyset(&sa_sigint_parent.sa_mask);
-
-	// sa_sigquit_child.sa_handler = SIG_DFL;
-	// sa_sigquit_child.sa_flags = 0;
-	// sigemptyset(&sa_sigquit_child.sa_mask);
-
 	pid = fork();
 	if (pid == -1)
 		return ;
