@@ -18,7 +18,7 @@
 			dans gestionnaire de signaux.
 	- sig_atomic_t : garantit que acces a la variable ne peuvent
 			etre interrompus ou modifies de facon incomplete. 
-		*/
+*/
 
 volatile sig_atomic_t	g_received_signal = 0;
 
@@ -111,6 +111,7 @@ int	main(int ac, char **av, char **envp)
 		close_all_fd(3);
 		if (commands)
 		{
+			handle_signals(SIGINT, IGNORE);
 			if (commands && handle_all_heredocs(commands) == -1)
 			{
 				free_commands(commands);
