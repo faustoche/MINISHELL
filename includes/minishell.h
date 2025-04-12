@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/12 09:37:39 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/12 14:49:08 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -217,7 +217,7 @@ t_env	*ft_cd(t_cmd *cmd, t_env *env_list);
 void	ft_echo(t_cmd *cmd);
 void	ft_env(t_env *env_list);
 void	ft_exit(t_cmd *cmd);
-t_env	*ft_export(t_env *env_list, char *arg);
+t_env	*ft_export(t_env *env_list, char *arg, int *code);
 void	ft_pwd(t_cmd *cmd);
 t_env	*ft_unset(t_env *env_list, char *name);
 
