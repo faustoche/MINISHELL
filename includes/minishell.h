@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 22:13:49 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/12 09:37:39 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -269,8 +269,8 @@ void	expand_tokens(t_token *token_list, t_env *env_list, int *code);
 
 /* LEXER - ok*/
 
-t_token	*parse_input(char *input, t_env *env_list, int *code);
-t_token	*lexing(char *input, t_env *env_list);
+t_token	*parse_input(char *input, int *code);
+t_token	*lexing(char *input);
 int		handle_mixed_quotes(t_lexer *lexer, int start);
 char	*fix_dollar_quote(char *input);
 int		is_dollar_quote(char *input, int i);

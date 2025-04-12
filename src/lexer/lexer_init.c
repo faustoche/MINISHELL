@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:54:08 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 22:17:24 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/12 09:37:52 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static t_token	*validate_tokens(t_token *tokens)
 	return (tokens);
 }
 
-t_token	*parse_input(char *input, t_env *env_list, int *code)
+t_token	*parse_input(char *input, int *code)
 {
 	t_token	*token_list;
 
