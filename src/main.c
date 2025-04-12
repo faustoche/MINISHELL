@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/12 15:57:33 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/12 22:25:22 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,8 @@ int	main(int ac, char **av, char **envp)
 				if (is_redirection(cmd))
 				{
 					execute_only_redirections(cmd);
+					if (cmd && cmd->exit_status)
+						last_cmd_code = *(cmd->exit_status);
 					free_commands(cmd);
 					cmd = NULL;
 					continue ;
@@ -156,7 +158,7 @@ int	main(int ac, char **av, char **envp)
 				execute_commands(cmd, env_list);
 
 		}
-		if (cmd && cmd->exit_status)
+		if (cmd && cmd->exit_status && *(cmd->exit_status) != 0)
 			last_cmd_code = *(cmd->exit_status);
 		close_all_fd(3);
 		if (cmd)

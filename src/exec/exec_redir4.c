@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:48:26 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 21:37:32 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/12 22:17:48 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ void	handle_pipe_redirection(t_cmd *cmd, t_env *env_list)
 		(close(pipefd[1]), waitpid(pid, NULL, 0));
 		waitpid(pid, &status, 0); // status est maj ici ?
 		if (WIFEXITED(status))
-			*(cmd->exit_status) = 128 + WTERMSIG(status); // a confirmer
+			*(cmd->exit_status) = WEXITSTATUS(status); // a confirmer
 		else if (WIFSIGNALED(status))
 			*(cmd->exit_status) = 128 + WTERMSIG(status); // jai copie coller
 		if (heredoc_fd != -1)
@@ -87,6 +87,7 @@ void	execute_only_redirections(t_cmd *cmd)
 		original_stdout = handle_output_redirection(cmd);
 	if (original_stdin == -1 || original_stdout == -1)
 	{
+		*(cmd->exit_status) = 1;
 		if (original_stdin != -1)
 			(dup2(original_stdin, STDIN_FILENO), close(original_stdin));
 		if (original_stdout != -1)
