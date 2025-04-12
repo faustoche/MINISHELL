@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 22:31:37 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/11 21:33:29 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/12 15:50:30 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,13 +73,15 @@ void	pipe_builtin(t_cmd *current, t_pipe *pipe_data)
 {
 	int	exit_code;
 
+	exit_code = 0;
 	if (current->next)
 	{
 		dup2(pipe_data->pipe_fd[1], STDOUT_FILENO);
 		close(pipe_data->pipe_fd[1]);
 	}
 	builtins_execution(current, pipe_data->env_list);
-	exit_code = *(current->exit_status); // verificer si ok
+	if (current->exit_status)
+		exit_code = *(current->exit_status); // verificer si ok
 	free_env_list(pipe_data->env_list);
 	free_pipe_redir(pipe_data->cmd);
 	exit(exit_code); // on retourne ce que les builtins nous ont retourne 
@@ -109,7 +111,9 @@ void	pipe_execve(t_cmd *current, t_pipe *pipe_data)
 {
 	char	**env;
 	char	*binary_path;
+	int		exit_code;
 
+	exit_code = 127;
 	binary_path = find_binary_path(current->args[0], *(pipe_data->env_list));
 	env = env_list_to_array(*(pipe_data->env_list));
 	if (!binary_path)
@@ -118,7 +122,17 @@ void	pipe_execve(t_cmd *current, t_pipe *pipe_data)
 		free_env_array(env);
 		free_env_list(pipe_data->env_list);
 		free_commands(pipe_data->cmd);
-		exit(127);
+		exit(exit_code);
+	}
+	if (access(binary_path, X_OK) == -1)
+	{
+		exit_code = 126; // permission denied code d'erreur
+		printf("minislay: %s: Permission denied\n", current->args[0]);
+		free(binary_path);
+		free_env_array(env);
+		free_env_list(pipe_data->env_list);
+		free_commands(pipe_data->cmd);
+		exit(exit_code);
 	}
 	if (execve(binary_path, current->args, env) == -1)
 	{
@@ -126,6 +140,7 @@ void	pipe_execve(t_cmd *current, t_pipe *pipe_data)
 		free_env_array(env);
 		free_env_list(pipe_data->env_list);
 		free_commands(pipe_data->cmd);
-		exit(126); // est-ce que j'en ai besoin ici ? execve gere comme un grand ?
+		exit(exit_code); // est-ce que j'en ai besoin ici ? execve gere comme un grand ?
 	}
+	exit(1);
 }

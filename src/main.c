@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 22:15:04 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/12 15:41:43 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	main(int ac, char **av, char **envp)
 				continue;
 			}
 		}
-		token_list = parse_input(input, env_list, &last_cmd_code);
+		token_list = parse_input(input, &last_cmd_code);
 		if (!token_list)
 		{
 			free(input);
@@ -158,8 +158,11 @@ int	main(int ac, char **av, char **envp)
 		}
 		if (cmd && cmd->exit_status)
 		{
+			printf("DEBUG MAIN: Récupération du code de sortie: %d\n", *(cmd->exit_status));
 			last_cmd_code = *(cmd->exit_status);
 		}
+		else
+			printf("DEBUG MAIN: Impossible de récupérer le code de sortie (pointeur NULL)\n");
 		close_all_fd(3);
 		if (cmd)
 		{

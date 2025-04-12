@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:50:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 19:37:04 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/12 14:48:21 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ static t_env	*update_env_var(t_env *env_list, char *name, char *value)
 	return (result);
 }
 
-t_env	*ft_export(t_env *env_list, char *arg)
+t_env	*ft_export(t_env *env_list, char *arg, int *code)
 {
 	t_env	*new_env_list;
 	char	*name;
@@ -108,6 +108,8 @@ t_env	*ft_export(t_env *env_list, char *arg)
 	}
 	if (!extract_name_value(arg, &name, &value))
 	{
+		if (code)
+			*code = 1;
 		free_env_list(&env_list);
 		return (new_env_list);
 	}

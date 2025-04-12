@@ -6,13 +6,13 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 14:58:50 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/09 15:38:02 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/12 14:49:20 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_builtins(char *cmd)
+int		is_builtins(char *cmd)
 {
 	if (ft_strcmp(cmd, "echo") == 0)
 		return (1);
@@ -68,13 +68,13 @@ void	builtins_execution(t_cmd *cmd, t_env **env_list)
 	if (ft_strcmp(cmd->args[0], "export") == 0)
 	{
 		if (cmd->nb_arg == 1)
-			*env_list = ft_export(*env_list, NULL);
+			*env_list = ft_export(*env_list, NULL, cmd->exit_status);
 		else
 		{
 			i = 1;
 			while (i < cmd->nb_arg)
 			{
-				*env_list = ft_export(*env_list, cmd->args[i]);
+				*env_list = ft_export(*env_list, cmd->args[i], cmd->exit_status);
 				i++;
 			}
 		}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit1.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 18:14:36 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/11 21:56:34 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/12 14:13:04 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	ft_exit(t_cmd *cmd)
 	int				error;
 	
 	exit_code = 0;
-	printf("Adieu 💀\n");
+	printf("exit\n");
 	if (cmd->args[1])
 	{
 		exit_code = ft_atoll(cmd->args[1], &error);
