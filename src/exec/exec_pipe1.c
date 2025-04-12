@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 20:05:00 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/12 15:50:04 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/12 16:04:34 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,12 +87,11 @@ static void cleanup_and_wait(t_pipe *pipe_data)
 			last_status = 128 + WTERMSIG(status);
 		if (wait_pid == last_pid)
 		{
-			if (last_cmd && last_cmd->exit_status)
-				*(last_cmd->exit_status) = last_status;
+			*(last_cmd->exit_status) = last_status;
+			if (pipe_data->cmd && pipe_data->cmd->exit_status)
+				*(pipe_data->cmd->exit_status) = last_status;
 		}
 	}
-	if (last_cmd && last_cmd->exit_status)
-		printf("DEBUG: Code de sortie final: %d\n", *(last_cmd->exit_status));
 	if (WIFSIGNALED(status))
 	{
 		if (WTERMSIG(status) == SIGQUIT)
