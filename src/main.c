@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/12 22:25:22 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/12 23:12:58 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,12 +141,15 @@ int	main(int ac, char **av, char **envp)
 				execute_pipeline(cmd, env_list);
 			else if (is_redirection(cmd) && cmd->out && check_output_directory(cmd))
 			{
+				last_cmd_code = 1;
+				printf("ici\n");
 				free_commands(cmd);
 				cmd = NULL;
 				continue ;
 			}
 			else if (is_redirection(cmd) && cmd->in && access(cmd->in, F_OK) == -1)
 			{
+				last_cmd_code = 1;
 				printf(ERR_DIR, cmd->in);
 				free_commands(cmd);
 				cmd = NULL;

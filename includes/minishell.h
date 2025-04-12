@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/12 14:49:08 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/12 23:04:57 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,7 +162,7 @@ t_cmd	*get_last_cmd(t_cmd *cmd);
 int size_list(t_token *token);
 void	free_split(char **split);
 int is_empty_command(t_cmd *cmd);
-void execute_only_redirections(t_cmd *cmd);
+int execute_only_redirections(t_cmd *cmd);
 void debug_exit_status(t_cmd *cmd);
 int	handle_output_redirection(t_cmd *cmd);
 void execute_with_heredoc(t_cmd *cmd, t_env *env_list);
@@ -201,7 +201,7 @@ void	free_pipe(t_cmd *cmd, t_env *env_list, char **env);
 void	redir_heredoc(int heredoc_fd);
 void	redir_input(char *input_file);
 void redir_output(char *output_file, int append_mode);
-void	redir_execute(t_cmd *cmd, t_env *env_list);
+int	redir_execute(t_cmd *cmd, t_env *env_list);
 void handle_pipe_redirection(t_cmd *cmd, t_env *env_list);
 void	execute_redirection(t_cmd *cmd, t_env *env_list);
 int	handle_input_redirection(t_cmd *cmd);

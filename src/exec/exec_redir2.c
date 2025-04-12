@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:47:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/12 22:16:18 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/12 22:45:36 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static int	handle_file_input_redirection(t_cmd *cmd, int original_stdin)
 	if (fd_in == -1)
 	{
 		close(original_stdin);
+		*(cmd->exit_status) = 1;
 		return (-1);
 	}
 	if (dup2(fd_in, STDIN_FILENO) == -1)

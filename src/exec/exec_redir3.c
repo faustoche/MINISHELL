@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redir3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:47:52 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/10 08:47:52 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/12 23:11:39 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	redir_heredoc(int heredoc_fd)
 	if (dup2(heredoc_fd, STDIN_FILENO) == -1)
 	{
 		perror("dup2 failed for heredoc");
-		exit(EXIT_FAILURE);
+		exit(1);
 	}
 	close(heredoc_fd);
 }
@@ -36,12 +36,12 @@ void	redir_input(char *input_file)
 
 	fd = open_file(input_file, REDIR_IN);
 	if (fd == -1)
-		exit(EXIT_FAILURE);
+		exit(1);
 	if (dup2(fd, STDIN_FILENO) == -1)
 	{
 		perror("dup2 failed");
 		close(fd);
-		exit(EXIT_FAILURE);
+		exit(1);
 	}
 	close(fd);
 }
@@ -50,6 +50,7 @@ void	redir_output(char *output_file, int append_mode)
 {
 	int	fd;
 
+	printf(">> redir_output called with: %s\n", output_file);
 	if (append_mode)
 		fd = open_file(output_file, REDIR_APPEND);
 	else
@@ -57,18 +58,18 @@ void	redir_output(char *output_file, int append_mode)
 	if (fd == -1)
 	{
 		printf("fd == -1\n");
-		exit(EXIT_FAILURE);
+		exit(1);
 	}
 	if (dup2(fd, STDOUT_FILENO) == -1)
 	{
 		perror("dup2 failed");
 		close(fd);
-		exit(EXIT_FAILURE);
+		exit(1);
 	}
 	close(fd);
 }
 
-void	redir_execute(t_cmd *cmd, t_env *env_list)
+int	redir_execute(t_cmd *cmd, t_env *env_list)
 {
 	char	**env;
 	char	*binary_path;
@@ -77,10 +78,16 @@ void	redir_execute(t_cmd *cmd, t_env *env_list)
 	binary_path = find_binary_path(cmd->args[0], env_list);
 	if (!binary_path)
 	{
-		printf(ERR_CMD, cmd->args[0]);
+		*(cmd->exit_status) = 127; // convention POSIX : "command not found"
+		fprintf(stderr, ERR_CMD, cmd->args[0]);
 		free_pipe(cmd, env_list, env);
+		exit(127); // on quitte ici
 	}
 	execve(binary_path, cmd->args, env);
+
+	// Si execve échoue, on arrive ici :
+	perror("execve");
 	free(binary_path);
 	free_pipe(cmd, env_list, env);
+	exit(126); // autre erreur : "command found but not executable", par ex
 }
