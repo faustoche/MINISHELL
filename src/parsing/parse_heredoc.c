@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 22:09:45 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/12 19:01:06 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static int	read_heredoc_content(char *delimiter, int write_fd, t_env *env_list, 
 			free(input);
 			break ;
 		}
-		input_expand = expand_variable(env_list, input, 0, code);
+		input_expand = expand_variable(env_list, input, 0, code); // POURQUOI CA EXPAND PAS HAAAAAAA
 		if (input_expand)
 		{
 			write(write_fd, input_expand, ft_strlen(input_expand));
