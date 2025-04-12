@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 14:39:47 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/12 15:56:54 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	free_commands(t_cmd *cmd)
 		if (cmd->heredoc_eof)
 			ft_memdel(cmd->heredoc_eof);
 		if (cmd->exit_status)
-			free(cmd->exit_status);
+			ft_memdel(cmd->exit_status);
 		ft_memdel(cmd);
 		cmd = tmp;
 	}

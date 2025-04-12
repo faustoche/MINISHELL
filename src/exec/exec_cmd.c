@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/11 21:34:56 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/12 16:44:40 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,10 @@ static void	execute_child_process(char **args, char *binary_path, t_env *env)
 
 	env_arr = env_list_to_array(env);
 	if (access(binary_path, X_OK) == -1)
+	{
 		printf(ERR_CMD, args[0]);
+		exit(127);
+	}
 	else if (execve(binary_path, args, env_arr) == -1)
 	{
 		close_all_fd(3);
