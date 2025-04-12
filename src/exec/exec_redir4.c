@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:48:26 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/12 22:17:48 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/12 23:11:57 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,26 @@
 
 static void	handle_child_process(t_cmd *cmd, t_env *env, int pipefd[2], int fd)
 {
+	int code;
+
+	printf(">> [CHILD] handle_child_process called\n");
 	if (fd != -1)
 		redir_heredoc(fd);
 	else if (cmd->in)
 		redir_input(cmd->in);
+	printf(">> entering redir_output with out: %s\n", cmd->out);
 	if (cmd->out)
+	{
 		redir_output(cmd->out, cmd->append);
+		printf(">> redir_output failed\n");
+	}
 	(close(pipefd[0]), close(pipefd[1]));
 	if (cmd->args && cmd->args[0])
-		redir_execute(cmd, env);
-	exit(EXIT_FAILURE);
+	{
+		code = redir_execute(cmd, env);
+		exit (code);
+	}
+	exit(EXIT_FAILURE); // ici failure ou code ?
 }
 
 void	handle_pipe_redirection(t_cmd *cmd, t_env *env_list)
@@ -75,7 +85,7 @@ static void	init_original_std(int *og_stdin, int *og_stdout)
 	*og_stdout = -1;
 }
 
-void	execute_only_redirections(t_cmd *cmd)
+int	execute_only_redirections(t_cmd *cmd)
 {
 	int	original_stdin;
 	int	original_stdout;
@@ -92,7 +102,7 @@ void	execute_only_redirections(t_cmd *cmd)
 			(dup2(original_stdin, STDIN_FILENO), close(original_stdin));
 		if (original_stdout != -1)
 			(dup2(original_stdout, STDOUT_FILENO), close(original_stdout));
-		return ;
+		return (1);
 	}
 	if (original_stdin != -1)
 		(dup2(original_stdin, STDIN_FILENO), close(original_stdin));
@@ -103,4 +113,6 @@ void	execute_only_redirections(t_cmd *cmd)
 		close(cmd->heredoc);
 		cmd->heredoc = -1;
 	}
+	*(cmd->exit_status) = 0;
+	return (0);
 }
