@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/12 16:44:40 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/12 21:14:28 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ static void	execute_child_process(char **args, char *binary_path, t_env *env)
 
 /* Create child process and execute */
 
-static void	create_child_process(char **args, char *binary_path, t_env *env)
+static void	create_child_process(char **args, char *binary_path, t_env *env, int *code)
 {
 	pid_t				pid;
 	int					status;
@@ -137,6 +137,8 @@ static void	create_child_process(char **args, char *binary_path, t_env *env)
 				last_status = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
 				last_status = 128 + WTERMSIG(status);
+			if (code)
+				*code = last_status;
 			if (wait_pid == last_pid && last_cmd && last_cmd->exit_status)
 			{
 				*(last_cmd->exit_status) = last_status;
@@ -177,7 +179,7 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 				}
 				else
 				{
-					create_child_process(current->args, binary_path, env_list);
+					create_child_process(current->args, binary_path, env_list, current->exit_status);
 					free(binary_path);
 				}
 			}
@@ -195,7 +197,7 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 				}
 				else
 				{
-					create_child_process(current->args, binary_path, env_list);
+					create_child_process(current->args, binary_path, env_list, current->exit_status);
 					free(binary_path);
 				}
 			}
@@ -211,7 +213,7 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 				}
 				else
 				{
-					create_child_process(current->args, binary_path, env_list);
+					create_child_process(current->args, binary_path, env_list, current->exit_status);
 					free(binary_path);
 				}
 			}

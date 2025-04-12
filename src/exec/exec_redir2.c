@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:47:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 21:38:31 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/12 22:16:18 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,19 +38,26 @@ int	handle_input_redirection(t_cmd *cmd)
 
 	original_stdin = dup(STDIN_FILENO);
 	if (original_stdin == -1)
+	{
+		*(cmd->exit_status) = 1;
 		return (-1);
+	}
 	if (cmd->heredoc != -1)
 	{
 		if (dup2(cmd->heredoc, STDIN_FILENO) == -1)
 		{
 			close(original_stdin);
+			*(cmd->exit_status) = 1;
 			return (-1);
 		}
 	}
 	else if (cmd->in)
 	{
 		if (handle_file_input_redirection(cmd, original_stdin) == -1)
+		{
+			*(cmd->exit_status) = 1;
 			return (-1);
+		}
 	}
 	return (original_stdin);
 }
@@ -69,7 +76,10 @@ int	handle_output_redirection(t_cmd *cmd)
 		else
 			fd_out = open_file(cmd->out, REDIR_OUT);
 		if (fd_out == -1)
+		{
+			*(cmd->exit_status) = 1;
 			return (-1);
+		}
 		dup2(fd_out, STDOUT_FILENO);
 		close(fd_out);
 	}
