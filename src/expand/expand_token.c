@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 11:58:53 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 18:33:48 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/13 12:20:35 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ void	expand_variable_in_token(t_token *token, t_env *env_list, int *code)
 {
 	char	*expanded;
 
+	printf("DEBUG: token->value = [%s], token->type = %d\n", token->value, token->type);
 	if (token->type == SINGLE_QUOTE)
 		return ;
 	if (token->value && ft_strchr(token->value, '$'))

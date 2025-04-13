@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_variable.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 12:01:35 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 18:41:14 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/13 12:09:00 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ char	*expand_variable(t_env *env_list, char *str, int quote_type, int *code)
 	if (quote_type == SINGLE_QUOTE)
 		return (ft_strdup(str));
 	exp.env_list = env_list;
+	exp.quote_type = quote_type;
 	if (!init_expand_result(str, &exp))
 		return (NULL);
 	if (!expand_loop(&exp, code))
@@ -69,7 +70,7 @@ int	expand_loop(t_expand *exp, int *code)
 			exp->result[exp->j++] = '$';
 			exp->i += 2;
 		}
-		else if (exp->str[exp->i] == '$')
+		else if (exp->str[exp->i] == '$' && exp->quote_type != SINGLE_QUOTE)
 		{
 			if (!process_variable(exp, code))
 				return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_separator.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 10:08:09 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/08 18:50:38 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/13 12:29:22 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,75 +98,3 @@ char	*handle_escape_char(char *input)
 	processed[state.j] = '\0';
 	return (processed);
 }
-
-// char    *handle_escape_char(char *input)
-// {
-// 	char	*processed;
-// 	int		i;
-// 	int		j;
-// 	int		len;
-// 	int		singles;
-// 	int		doubles;
-
-// 	len = ft_strlen(input);
-// 	singles = 0;
-// 	doubles = 0;
-// 	i = 0;
-// 	j = 0;
-// 	processed = malloc(sizeof(char) * (len + 1));
-// 	if (!processed)
-// 		return (NULL);
-// 	while (i < len)
-// 	{
-// 		if (input[i] == '\'' && !doubles)
-// 		{
-// 			if (singles == 0)
-// 				singles = 1;
-// 			else
-// 				singles = 0;
-// 			processed[j++] = input[i++];
-// 		}
-// 		else if (input[i] == '"' && !singles)
-// 		{
-// 			if (doubles == 0)
-// 				doubles = 1;
-// 			else
-// 				doubles = 0;
-// 			processed[j++] = input[i++];
-// 		}
-// 		else if (input[i] == '\\' && (i + 1) < len)
-// 		{
-// 			if (singles)
-// 				processed[j++] = input[i++];
-// 			else if (doubles)
-// 			{
-// 				if (input[i + 1] == '"' || input[i + 1] == '\\' 
-// 					|| input[i + 1] == '$')
-// 				{
-// 					processed[j++] = input[i++];
-// 					processed[j++] = input[i++];
-// 				}
-// 				else
-// 					processed[j++] = input[i++];
-// 			}
-// 			else
-// 			{
-// 				if (input[i + 1] == '$')
-// 				{
-// 					i++;
-// 					processed[j++] = 1;
-// 					processed[j++] = input[i++];
-// 				}
-// 				else
-// 				{
-// 					i++;
-// 					processed[j++] = input[i++];
-// 				}
-// 			}
-// 		}
-// 		else
-// 			processed[j++] = input[i++];
-// 	}
-// 	processed[j] = '\0';
-// 	return (processed);
-// }
