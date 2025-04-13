@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:47:52 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/12 23:11:39 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/13 20:06:36 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,16 +78,14 @@ int	redir_execute(t_cmd *cmd, t_env *env_list)
 	binary_path = find_binary_path(cmd->args[0], env_list);
 	if (!binary_path)
 	{
-		*(cmd->exit_status) = 127; // convention POSIX : "command not found"
+		*(cmd->exit_status) = 127;
 		fprintf(stderr, ERR_CMD, cmd->args[0]);
 		free_pipe(cmd, env_list, env);
-		exit(127); // on quitte ici
+		exit(127);
 	}
 	execve(binary_path, cmd->args, env);
-
-	// Si execve échoue, on arrive ici :
 	perror("execve");
 	free(binary_path);
 	free_pipe(cmd, env_list, env);
-	exit(126); // autre erreur : "command found but not executable", par ex
+	exit(126);
 }

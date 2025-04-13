@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:47:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/12 22:45:36 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/13 20:04:48 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,13 +99,13 @@ void	handle_builtin_redirection(t_cmd *cmd, t_env **env_list)
 	original_stdin = handle_input_redirection(cmd);
 	if (original_stdin == -1)
 	{
-		*(cmd->exit_status) = 1; // TBC
+		*(cmd->exit_status) = 1;
 		return ;
 	}
 	original_stdout = handle_output_redirection(cmd);
 	if (original_stdout == -1)
 	{
-		*(cmd->exit_status) = 1; // TBC
+		*(cmd->exit_status) = 1;
 		dup2(original_stdin, STDIN_FILENO);
 		close(original_stdin);
 		return ;
@@ -113,6 +113,7 @@ void	handle_builtin_redirection(t_cmd *cmd, t_env **env_list)
 	builtins_execution(cmd, env_list);
 	(dup2(original_stdin, STDIN_FILENO), dup2(original_stdout, STDOUT_FILENO));
 	(close(original_stdin), close(original_stdout));
+	*(cmd->exit_status) = 0;
 	if (heredoc_fd != -1)
 	{
 		close(heredoc_fd);

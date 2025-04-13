@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/12 19:01:06 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/13 20:18:11 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,37 @@
 // si expand pas null (donc $)
 // alors je write avec expanded imput
 // sinon entree originale
+
+static int	read_heredoc_content(char *delimiter, int write_fd, t_env *env_list, int *code)
+{
+	char	*input;
+
+	while (1)
+	{
+		input = readline("heredoc> ");
+		if (!input)
+		{
+			if (g_received_signal == 130)
+				return (close(write_fd), -1);
+			printf("minislay: warning: here-document delimited by eof\n");
+			close(write_fd);
+			return (0);
+		}
+		if (ft_strcmp(input, delimiter) == 0)
+		{
+			free(input);
+			break ;
+		}
+		if (input)
+		{
+			write(write_fd, input, ft_strlen(input));
+			write(write_fd, "\n", 1);
+			free(input);
+		}
+	}
+	close(write_fd);
+	return (0);
+}
 
 static int	read_heredoc_content(char *delimiter, int write_fd, t_env *env_list, int *code)
 {

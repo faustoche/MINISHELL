@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 10:08:09 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/13 12:29:22 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/13 19:50:22 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	handle_delimiter(t_lexer *lexer, int i)
 	type = get_token_type(delim, &lexer->command);
 	add_token(lexer, delim, len, type);
 	free(delim);
-	if (type == TOKEN_PIPE || type == TOKEN_SEPARATOR)
+	if (type == TOKEN_PIPE || type == TOKEN_SEP)
 		lexer->command = 1;
 	return (i + len);
 }

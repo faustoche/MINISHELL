@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:50:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/12 14:48:21 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/13 19:41:01 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,9 +116,7 @@ t_env	*ft_export(t_env *env_list, char *arg, int *code)
 	new_env_list = update_env_var(new_env_list, name, value);
 	if (!new_env_list)
 	{
-		free(name);
-		free(value);
-		free_env_list(&env_list);
+		(free(name), free(value),free_env_list(&env_list));
 		return (NULL);
 	}
 	(free_env_list(&env_list), free(name), free(value));

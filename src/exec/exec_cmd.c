@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/12 21:14:28 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/13 18:15:54 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,7 @@ static void	create_child_process(char **args, char *binary_path, t_env *env, int
 		return ;
 	else if (pid == 0)
 	{
+		dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
 		if (handle_signals(SIGINT, DEFAULT) == -1)
 			return ;
 		if (handle_signals(SIGQUIT, DEFAULT) == -1)
@@ -129,6 +130,7 @@ static void	create_child_process(char **args, char *binary_path, t_env *env, int
 	}
 	else if (pid > 0)
 	{
+		dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
 		if (handle_signals(SIGINT, CHILD_PROMPT) == -1)
 			return ;
 		while ((wait_pid = waitpid(pid, &status, 0)) > 0)
@@ -166,19 +168,23 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 			builtins_execution(current, &env_list);
 		else if (current->args && current->args[0])
 		{
+			dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
 			if (current->args[0][0] == '/')
 			{
+				dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
 				binary_path = ft_strdup(current->args[0]);
 				if (!binary_path)
 					return ;
 				if (access(binary_path, F_OK) == -1)
 				{
+					dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
 					*current->exit_status = 127; // ici 
 					printf(ERR_CMD, current->args[0]);
 					free(binary_path);
 				}
 				else
 				{
+					dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
 					create_child_process(current->args, binary_path, env_list, current->exit_status);
 					free(binary_path);
 				}
@@ -186,17 +192,20 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 			else if ((current->args[0][0] == '/' || current->args[0][0] == '.')
 				&& (current->args[0][1] == '/' || current->args[0][1] == '.'))
 			{
+				dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
 				binary_path = ft_strdup(current->args[0]);
 				if (!binary_path)
 					return ;
 				if (access(binary_path, F_OK) == -1)
 				{
+					dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
 					*current->exit_status = 127; // ici ?
 					printf(ERR_DIR, current->args[0]);
 					free(binary_path);
 				}
 				else
 				{
+					dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
 					create_child_process(current->args, binary_path, env_list, current->exit_status);
 					free(binary_path);
 				}
@@ -206,6 +215,7 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 				binary_path = find_binary_path(current->args[0], env_list);
 				if (binary_path == NULL)
 				{
+					dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
 					printf(ERR_CMD, current->args[0]);
 					if (current->exit_status)
 						*(current->exit_status) = 127; // ici ??
@@ -213,6 +223,7 @@ void	execute_commands(t_cmd *cmd, t_env *env_list)
 				}
 				else
 				{
+					dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
 					create_child_process(current->args, binary_path, env_list, current->exit_status);
 					free(binary_path);
 				}
