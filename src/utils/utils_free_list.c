@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_free_list.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:28:18 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/10 19:44:54 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/13 20:26:36 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,22 +55,16 @@ void	free_token_list(t_token *tokens)
 	}
 }
 
-void _ft_memdel(void *ptr)
-{
-	free(ptr);
-	ptr = NULL;
-}
-
-void free_files(t_cmd *cmd)
+static void free_files(t_cmd *cmd)
 {
 	if (!cmd)
 		return ;
 	if (cmd->in)
-		_ft_memdel(cmd->in);
+		ft_memdel(cmd->in);
 	if (cmd->out)
-		_ft_memdel(cmd->out);
+		ft_memdel(cmd->out);
 	if (cmd->heredoc_eof)
-		_ft_memdel(cmd->heredoc_eof);
+		ft_memdel(cmd->heredoc_eof);
 }
 
 void	free_pipe_redir(t_cmd *cmd)
@@ -89,12 +83,12 @@ void	free_pipe_redir(t_cmd *cmd)
 		{
 			while (tmp_cmd->args[i])
 			{
-				_ft_memdel(tmp_cmd->args[i]);
+				ft_memdel(tmp_cmd->args[i]);
 				i++;
 			}
-			_ft_memdel(tmp_cmd->args);
+			ft_memdel(tmp_cmd->args);
 		}
-		_ft_memdel(tmp_cmd);
+		ft_memdel(tmp_cmd);
 		tmp_cmd = next;
 	}
 	close_all_fd(3);

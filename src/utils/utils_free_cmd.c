@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_free_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/12 15:56:54 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/13 20:23:48 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,21 +51,6 @@ void	free_commands(t_cmd *cmd)
 		ft_memdel(cmd);
 		cmd = tmp;
 	}
-}
-
-void	free_tab(char **input)
-{
-	int	i;
-
-	i = 0;
-	if (!input)
-		return ;
-	while (input[i])
-	{
-		free(input[i]);
-		i++;
-	}
-	free(input);
 }
 
 char	*ft_realloc(char *str, size_t size)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/10 18:36:20 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/13 19:49:56 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,13 +25,9 @@ int	get_token_type(char *token, int *command)
 	if (ft_strcmp(token, "<") == 0)
 		return (REDIR_IN);
 	if (ft_strcmp(token, ";") == 0)
-		return (TOKEN_SEPARATOR);
+		return (TOKEN_SEP);
 	if (ft_strcmp(token, "<<") == 0)
 		return (HEREDOC);
-	if (ft_strcmp(token, "(") == 0)
-		return (TOKEN_OPEN_PARENT);
-	if (ft_strcmp(token, ")") == 0)
-		return (TOKEN_CLOSE_PARENT);
 	if (*command)
 	{
 		*command = 0;
@@ -72,7 +68,7 @@ int	handle_std_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env)
 
 int	process_other_token(t_token **token, t_cmd **curr, t_cmd **head, t_env *env)
 {
-	if ((*token)->type == TOKEN_SEPARATOR)
+	if ((*token)->type == TOKEN_SEP)
 		*curr = NULL;
 	else
 	{

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 22:31:37 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/12 15:50:30 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/13 20:12:33 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,26 +85,6 @@ void	pipe_builtin(t_cmd *current, t_pipe *pipe_data)
 	free_env_list(pipe_data->env_list);
 	free_pipe_redir(pipe_data->cmd);
 	exit(exit_code); // on retourne ce que les builtins nous ont retourne 
-}
-
-void	free_redir_execve(t_cmd *cmd)
-{
-	t_cmd	*tmp_cmd;
-	t_cmd	*next;
-
-	tmp_cmd = cmd;
-	while (tmp_cmd)
-	{
-		next = tmp_cmd->next;
-		if (cmd->in)
-			free(cmd->in);
-		if (cmd->out)
-			free(cmd->out);
-		if (cmd->heredoc_eof)
-			free(cmd->heredoc_eof);
-		tmp_cmd = next;
-	}
-	// close_all_fd(3);
 }
 
 void	pipe_execve(t_cmd *current, t_pipe *pipe_data)

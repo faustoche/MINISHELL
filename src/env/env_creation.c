@@ -3,16 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   env_creation.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 11:32:49 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 19:52:07 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/13 19:56:35 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_env   *init_pwd(void)
+/* Pour env -i */
+
+static t_env   *init_pwd(void)
 {
 	t_env   *new_var;
 	char    pwd[PATH_MAX];
@@ -28,7 +30,7 @@ t_env   *init_pwd(void)
 	return (new_var);
 }
 
-t_env   *init_shlvl(t_env *env_list)
+static t_env   *init_shlvl(t_env *env_list)
 {
 	t_env   *new_var;
 	
@@ -42,7 +44,7 @@ t_env   *init_shlvl(t_env *env_list)
 	return (env_list);
 }
 
-t_env   *init_user(t_env *env_list)
+static t_env   *init_user(t_env *env_list)
 {
 	t_env   *new_var;
 	

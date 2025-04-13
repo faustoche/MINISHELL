@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:54:08 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/13 12:56:44 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/13 20:14:55 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,26 +20,6 @@ static void	init_lexer(t_lexer *lexer, char *input)
 	lexer->command = 1;
 }
 
-// int	check_unclosed_quotes(const char *input)
-// {
-// 	int	sq = 0; // single quotes
-// 	int	dq = 0; // double quotes
-
-// 	for (int i = 0; input[i]; i++)
-// 	{
-// 		if (input[i] == '\'' && dq == 0)
-// 			sq = !sq;
-// 		else if (input[i] == '"' && sq == 0)
-// 			dq = !dq;
-// 	}
-// 	if (sq || dq)
-// 	{
-// 		printf(ERR_SYNTAX);
-// 		return (-1);
-// 	}
-// 	return (0);
-// }
-
 static t_token	*tokenize_input(char *input)
 {
 	t_lexer	lexer;
@@ -47,8 +27,6 @@ static t_token	*tokenize_input(char *input)
 
 	if (!input || !*input)
 		return (NULL);
-	// if (check_unclosed_quotes(input) == -1)
-	// 	return (NULL);
 	if (character_error(input) == -1)
 		return (NULL);
 	init_lexer(&lexer, input);
