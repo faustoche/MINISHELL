@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/12 23:04:57 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/13 12:08:16 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,6 +127,7 @@ typedef struct s_expand
 	t_env	*env_list;
 	char	*str;
 	t_cmd	*cmd;
+	int		quote_type;
 }	t_expand;
 
 

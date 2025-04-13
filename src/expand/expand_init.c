@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_init.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 12:01:35 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 18:44:42 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/13 12:59:59 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*expand_variable(t_env *env_list, char *str, int quote_type, int *code)
 {
 	t_expand	exp;
 
-	if (quote_type == SINGLE_QUOTE)
+	if (quote_type == SINGLE_QUOTE || (str && str[0] == '\'' && str[ft_strlen(str) - 1] == '\''))
 		return (ft_strdup(str));
 	exp.env_list = env_list;
 	if (!init_expand_result(str, &exp))
@@ -90,34 +90,3 @@ int	expand_loop(t_expand *exp, int *code)
 	exp->result[exp->j] = '\0';
 	return (1);
 }
-
-// int	expand_loop(t_expand *exp)
-// {
-// 	while (exp->str[exp->i])
-// 	{
-// 		if (!check_buffer_size(exp))
-// 			return (0);
-// 		if (exp->str[exp->i] == '$' && exp->i > 0
-// 			&& exp->str[exp->i - 1] == '"' && exp->i + 1 < ft_strlen(exp->str)
-// 			&& exp->str[exp->i + 1] == '"')
-// 		{
-// 			exp->result[exp->j++] = '$';
-// 			exp->i += 2;
-// 			continue ;
-// 		}
-// 		if (exp->str[exp->i] == 1 && exp->str[exp->i + 1] == '$')
-// 		{
-// 			exp->result[exp->j++] = '$';
-// 			exp->i += 2;
-// 		}
-// 		else if (exp->str[exp->i] == '$')
-// 		{
-// 			if (!process_variable(exp))
-// 				return (0);
-// 		}
-// 		else
-// 			exp->result[exp->j++] = exp->str[exp->i++];
-// 	}
-// 	exp->result[exp->j] = '\0';
-// 	return (1);
-// }
