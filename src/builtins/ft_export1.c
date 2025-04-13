@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:50:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/13 19:41:01 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/13 20:47:07 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,44 +40,44 @@ static int	extract_name_value(char *arg, char **name, char **value)
 	return (1);
 }
 
-static int modify_env_var(t_env *env_list, char *name, char *value)
+static int	modify_env_var(t_env *env_list, char *name, char *value)
 {
-    t_env *current;
+	t_env	*current;
 
-    if (!name || !*name)
-        return (0);
-    current = env_list;
-    while (current)
-    {
-        if (ft_strcmp(current->name, name) == 0)
-        {
-            free(current->value);
-            if (value)
-                current->value = ft_strdup(value);
-            else
-                current->value = ft_strdup("");
-            return (1);
-        }
-        current = current->next;
-    }
-    return (0);
+	if (!name || !*name)
+		return (0);
+	current = env_list;
+	while (current)
+	{
+		if (ft_strcmp(current->name, name) == 0)
+		{
+			free(current->value);
+			if (value)
+				current->value = ft_strdup(value);
+			else
+				current->value = ft_strdup("");
+			return (1);
+		}
+		current = current->next;
+	}
+	return (0);
 }
 
-static t_env *create_env_var(t_env *env_list, char *name, char *value)
+static t_env	*create_env_var(t_env *env_list, char *name, char *value)
 {
-    t_env *new_var;
+	t_env	*new_var;
 
-    new_var = malloc(sizeof(t_env));
-    if (!new_var)
-        return (NULL);
-    new_var->name = ft_strdup(name);
-    if (value)
-        new_var->value = ft_strdup(value);
-    else
-        new_var->value = ft_strdup("");
-    new_var->next = NULL;
-    ft_lstadd_back(&env_list, new_var);
-    return (env_list);
+	new_var = malloc(sizeof(t_env));
+	if (!new_var)
+		return (NULL);
+	new_var->name = ft_strdup(name);
+	if (value)
+		new_var->value = ft_strdup(value);
+	else
+		new_var->value = ft_strdup("");
+	new_var->next = NULL;
+	ft_lstadd_back(&env_list, new_var);
+	return (env_list);
 }
 
 static t_env	*update_env_var(t_env *env_list, char *name, char *value)

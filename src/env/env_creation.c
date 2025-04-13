@@ -6,19 +6,17 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/10 11:32:49 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/13 19:56:35 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/13 20:50:10 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Pour env -i */
-
-static t_env   *init_pwd(void)
+static t_env	*init_pwd(void)
 {
-	t_env   *new_var;
-	char    pwd[PATH_MAX];
-	
+	t_env	*new_var;
+	char	pwd[PATH_MAX];
+
 	if (!getcwd(pwd, sizeof(pwd)))
 		return (NULL);
 	new_var = malloc(sizeof(t_env));
@@ -30,10 +28,10 @@ static t_env   *init_pwd(void)
 	return (new_var);
 }
 
-static t_env   *init_shlvl(t_env *env_list)
+static t_env	*init_shlvl(t_env *env_list)
 {
-	t_env   *new_var;
-	
+	t_env	*new_var;
+
 	new_var = malloc(sizeof(t_env));
 	if (!new_var)
 		return (NULL);
@@ -44,10 +42,10 @@ static t_env   *init_shlvl(t_env *env_list)
 	return (env_list);
 }
 
-static t_env   *init_user(t_env *env_list)
+static t_env	*init_user(t_env *env_list)
 {
-	t_env   *new_var;
-	
+	t_env	*new_var;
+
 	new_var = malloc(sizeof(t_env));
 	if (!new_var)
 		return (NULL);
@@ -58,10 +56,10 @@ static t_env   *init_user(t_env *env_list)
 	return (env_list);
 }
 
-t_env   *init_minimal_env(void)
+t_env	*init_minimal_env(void)
 {
-	t_env   *env_list;
- 
+	t_env	*env_list;
+
 	env_list = init_pwd();
 	env_list = init_shlvl(env_list);
 	env_list = init_user(env_list);
