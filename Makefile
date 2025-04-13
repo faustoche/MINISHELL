@@ -22,6 +22,18 @@ OBJS_DIR		= obj
 MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				get_next_line/get_next_line.c\
 				get_next_line/get_next_line_utils.c\
+				builtins/ft_cd1.c\
+				builtins/ft_cd2.c\
+				builtins/ft_echo.c\
+				builtins/ft_env.c\
+				builtins/ft_exit.c\
+				builtins/ft_export1.c\
+				builtins/ft_export2.c\
+				builtins/ft_pwd.c\
+				builtins/ft_unset.c\
+				env/env_copy.c\
+				env/env_init.c\
+				env/env_creation.c\
 				exec/exec_cmd.c\
 				exec/exec_pipe1.c\
 				exec/exec_pipe2.c\
@@ -45,22 +57,11 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				lexer/lexer_words1.c\
 				lexer/lexer_words2.c\
 				lexer/lexer_words3.c\
-				env/env_init.c\
-				env/env_creation.c\
 				expand/expand_init.c\
 				expand/expand_token.c\
 				expand/expand_utils.c\
 				expand/expand_variable1.c\
 				expand/expand_variable2.c\
-				builtins/ft_cd1.c\
-				builtins/ft_cd2.c\
-				builtins/ft_echo.c\
-				builtins/ft_exit.c\
-				builtins/ft_env.c\
-				builtins/ft_export1.c\
-				builtins/ft_export2.c\
-				builtins/ft_pwd.c\
-				builtins/ft_unset.c\
 				utils/utils_clean.c\
 				utils/utils_files.c\
 				utils/utils_free_cmd.c\

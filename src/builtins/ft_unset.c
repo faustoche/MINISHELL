@@ -6,13 +6,13 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:04:05 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/13 19:44:33 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/13 20:49:11 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static t_env *unset_utils(t_env *env_list, t_env *new_env_list, char *name)
+static t_env	*unset_utils(t_env *env_list, t_env *new_env_list, char *name)
 {
 	if (name == NULL || *name == '\0')
 	{

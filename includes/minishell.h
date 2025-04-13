@@ -6,7 +6,7 @@
 /*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/13 20:36:33 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/13 21:09:18 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -174,11 +174,11 @@ t_env	*ft_unset(t_env *env_list, char *name);
 
 /* ENV */
 
+char	*find_var_value(t_env *env_list, char *name);
+t_env	*copy_env_list(t_env *original_env);
 t_env   *init_minimal_env(void);
 t_env	*create_env_element(char *env);
 t_env	*init_env(char **envp);
-t_env	*copy_env_list(t_env *original_env);
-char	*find_var_value(t_env *env_list, char *name);
 t_env	*change_var_value(t_env *env_list, char *name, char *value);
 
 /* EXEC */
