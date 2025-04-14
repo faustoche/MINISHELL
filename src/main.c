@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 13:02:24 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 13:21:32 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,6 @@ static char	*prompt(void)
 		add_history(line);
 	return (line);
 }
-
-
 
 int	main(int ac, char **av, char **envp)
 {

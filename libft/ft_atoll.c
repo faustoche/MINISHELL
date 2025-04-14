@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoll.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 19:25:51 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/13 19:27:44 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/14 13:21:08 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	check_and_skip(const char *str, int *error)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
@@ -39,10 +39,10 @@ static long long	parse_sign(const char *str, int *index)
 	return (sign);
 }
 
-static long long	handle_overflow(long long result, char digit, int sign, int *error)
+static long long	handle_over(long long res, char digit, int sign, int *error)
 {
-	if ((result > LLONG_MAX / 10) || 
-		(result == LLONG_MAX / 10 && (digit - '0') > LLONG_MAX % 10))
+	if ((res > LLONG_MAX / 10)
+		|| (res == LLONG_MAX / 10 && (digit - '0') > LLONG_MAX % 10))
 	{
 		*error = 1;
 		if (sign == 1)
@@ -57,11 +57,11 @@ long long	parse_digits(const char *str, int *i, int sign, int *error)
 {
 	long long	result;
 	int			check;
-	
+
 	result = 0;
 	while (str[*i] >= '0' && str[*i] <= '9')
 	{
-		check = handle_overflow(result, str[*i], sign, error);
+		check = handle_over(result, str[*i], sign, error);
 		if (*error == 1)
 			return ((long long)check);
 		result = result * 10 + (str[(*i)++] - '0');
@@ -71,11 +71,12 @@ long long	parse_digits(const char *str, int *i, int sign, int *error)
 
 long long	ft_atoll(const char *str, int *error)
 {
-	long long	result = 0;
-	int			i = 0;
+	long long	result;
+	int			i;
 	int			sign;
 
 	*error = 0;
+	result = 0;
 	i = check_and_skip(str, error);
 	if (*error == 1)
 		return (0);
@@ -87,7 +88,7 @@ long long	ft_atoll(const char *str, int *error)
 	}
 	result = parse_digits(str, &i, sign, error);
 	if (*error == 1)
-		return result;
+		return (result);
 	if (str[i] != '\0')
 	{
 		*error = 1;

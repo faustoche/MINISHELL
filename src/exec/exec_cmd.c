@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/14 11:15:47 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 14:03:45 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	*build_pathname(char *directory, char *arg)
 
 /* Check each directory in PATH to find binary_path */
 
-char	*find_binary_path(char *arg, t_env *env_list)
+char	*find_bin_path(char *arg, t_env *env_list)
 {
 	char	*path_env;
 	char	**split_path;
@@ -208,73 +208,70 @@ static void	create_child_process(char **args, char *binary_path, t_env *env, int
 // 	close_all_fd(3);
 // }
 
-void	execute_commands(t_cmd *cmd, t_env *env_list)
+void	execute_commands(t_cmd *cmd, t_env *env)
 {
-	t_cmd	*current;
+	t_cmd	*cur;
 	char	*binary_path;
 
-	current = cmd;
-	while (current)
+	cur = cmd;
+	while (cur)
 	{
-		if (is_builtins(current->args[0]) && current->args && current->args[0])
-			builtins_execution(current, &env_list);
-		else if (current->args && current->args[0])
+		if (is_builtins(cur->args[0]) && cur->args && cur->args[0])
+			builtins_execution(cur, &env);
+		else if (cur->args && cur->args[0])
 		{
-			if (current->args[0][0] == '/')
+			if (cur->args[0][0] == '/')
 			{
-				binary_path = ft_strdup(current->args[0]);
+				binary_path = ft_strdup(cur->args[0]);
 				if (!binary_path)
 					return ;
 				if (access(binary_path, F_OK) == -1)
 				{
-					*current->exit_status = 127; // ici 
-					printf(ERR_CMD, current->args[0]);
+					*cur->exit_status = 127; // ici 
+					printf(ERR_CMD, cur->args[0]);
 					free(binary_path);
 				}
 				else
 				{
-					create_child_process(current->args, binary_path, env_list, current->exit_status);
+					create_child_process(cur->args, binary_path, env, cur->exit_status);
 					free(binary_path);
 				}
 			}
-			else if ((current->args[0][0] == '/' || current->args[0][0] == '.')
-				&& (current->args[0][1] == '/' || current->args[0][1] == '.'))
+			else if ((cur->args[0][0] == '/' || cur->args[0][0] == '.')
+				&& (cur->args[0][1] == '/' || cur->args[0][1] == '.'))
 			{
-				binary_path = ft_strdup(current->args[0]);
+				binary_path = ft_strdup(cur->args[0]);
 				if (!binary_path)
 					return ;
 				if (access(binary_path, F_OK) == -1)
 				{
-					*current->exit_status = 127; // ici ?
-					printf(ERR_DIR, current->args[0]);
+					*cur->exit_status = 127; // ici ?
+					printf(ERR_DIR, cur->args[0]);
 					free(binary_path);
 				}
 				else
 				{
-					dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
-					create_child_process(current->args, binary_path, env_list, current->exit_status);
+					create_child_process(cur->args, binary_path, env, cur->exit_status);
 					free(binary_path);
 				}
 			}
 			else
 			{
-				binary_path = find_binary_path(current->args[0], env_list);
+				binary_path = find_bin_path(cur->args[0], env);
 				if (binary_path == NULL)
 				{
-					dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
-					printf(ERR_CMD, current->args[0]);
-					if (current->exit_status)
-						*(current->exit_status) = 127; // ici ??
+					printf(ERR_CMD, cur->args[0]);
+					if (cur->exit_status)
+						*(cur->exit_status) = 127; // ici ??
 					close_all_fd(3);
 				}
 				else
 				{
-					dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
-					create_child_process(current->args, binary_path, env_list, current->exit_status);
+					create_child_process(cur->args, binary_path, env, cur->exit_status);
 					free(binary_path);
 				}
 			}
 		}
-		current = current->next;
+		cur = cur->next;
 	}
 }

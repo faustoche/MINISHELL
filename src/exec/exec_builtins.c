@@ -6,13 +6,13 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 14:58:50 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/12 14:49:20 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 13:22:13 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int		is_builtins(char *cmd)
+int	is_builtins(char *cmd)
 {
 	if (ft_strcmp(cmd, "echo") == 0)
 		return (1);
@@ -59,7 +59,7 @@ static void	builtins_exec2(t_cmd *cmd, t_env **env_list)
 	}
 }
 
-void	builtins_execution(t_cmd *cmd, t_env **env_list)
+void	builtins_execution(t_cmd *cmd, t_env **env)
 {
 	size_t	i;
 
@@ -68,18 +68,18 @@ void	builtins_execution(t_cmd *cmd, t_env **env_list)
 	if (ft_strcmp(cmd->args[0], "export") == 0)
 	{
 		if (cmd->nb_arg == 1)
-			*env_list = ft_export(*env_list, NULL, cmd->exit_status);
+			*env = ft_export(*env, NULL, cmd->exit_status);
 		else
 		{
 			i = 1;
 			while (i < cmd->nb_arg)
 			{
-				*env_list = ft_export(*env_list, cmd->args[i], cmd->exit_status);
+				*env = ft_export(*env, cmd->args[i], cmd->exit_status);
 				i++;
 			}
 		}
 	}
 	if (ft_strcmp(cmd->args[0], "pwd") == 0)
 		ft_pwd(cmd);
-	builtins_exec2(cmd, env_list);
+	builtins_exec2(cmd, env);
 }
