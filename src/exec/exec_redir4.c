@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:48:26 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 09:34:53 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 15:14:17 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,17 +16,12 @@ void	handle_child_process(t_cmd *cmd, t_env *env, int pipefd[2], int fd)
 {
 	int	code;
 
-	printf(">> [CHILD] handle_child_process called\n");
 	if (fd != -1)
 		redir_heredoc(fd);
 	else if (cmd->in)
 		redir_input(cmd->in);
-	printf(">> entering redir_output with out: %s\n", cmd->out);
 	if (cmd->out)
-	{
 		redir_output(cmd->out, cmd->append);
-		printf(">> redir_output failed\n");
-	}
 	(close(pipefd[0]), close(pipefd[1]));
 	if (cmd->args && cmd->args[0])
 	{
