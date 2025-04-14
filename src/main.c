@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 16:21:33 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 19:02:24 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,8 @@ int	main(int ac, char **av, char **envp)
 			handle_signals(SIGINT, IGNORE);
 			if (cmd && handle_all_heredocs(cmd) == -1)
 			{
+				if (cmd && cmd->exit_status)
+					last_cmd_code = *(cmd->exit_status);
 				free_commands(cmd);
 				continue ;
 			}
