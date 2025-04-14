@@ -81,9 +81,19 @@ int	main(int ac, char **av, char **envp)
 	{
 		handle_signals(SIGINT, PROMPT);
 		handle_signals(SIGQUIT, IGNORE);
+		if (g_received_signal == SIGINT)
+		{
+			last_cmd_code = 128 + SIGINT;
+			g_received_signal = 0;
+		}
 		input = prompt();
 		if (!input)
 			break ;
+		if (g_received_signal == SIGINT)
+		{
+			last_cmd_code = 128 + SIGINT;
+			g_received_signal = 0;
+		}
 		fixed_input = fix_dollar_quote(input);
 		free(input);
 		if (!fixed_input)
@@ -146,7 +156,6 @@ int	main(int ac, char **av, char **envp)
 			else if (is_redirection(cmd) && cmd->out && check_output_directory(cmd))
 			{
 				last_cmd_code = 1;
-				printf("ici\n");
 				free_commands(cmd);
 				cmd = NULL;
 				continue ;

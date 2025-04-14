@@ -127,15 +127,15 @@ static void	create_child_process(char **args, char *binary_path, t_env *env, int
 			return ;
 		execute_child_process(args, binary_path, env);
 	}
-	else if (pid > 0)
+	else
 	{
-		signal(SIGINT, SIG_IGN); // Si je mets ca, j'ai bien 130 
-		// if (handle_signals(SIGINT, CHILD_PROMPT) == -1) // si je mets ca, retour a la ligne mais pas 130
-		// 	return ;
+		if (handle_signals(SIGINT, IGNORE) == -1)
+			return ;
 		while ((wait_pid = waitpid(pid, &status, WNOHANG)) == 0)
 		{
 		}
-		signal(SIGINT, SIG_DFL); // Si je mets ca, j'ai bien 130 mais pas de retour a la ligne
+		if (handle_signals(SIGINT, PROMPT) == -1)
+			return ;
 		if (wait_pid > 0)
 		{
 			if (WIFEXITED(status))
@@ -150,10 +150,10 @@ static void	create_child_process(char **args, char *binary_path, t_env *env, int
 		if (WIFSIGNALED(status))
 		{
 			if (WTERMSIG(status) == SIGQUIT)
-			printf("Quit (core dumped)\n");
+				printf("Quit (core dumped)\n");
+			else if (WTERMSIG(status) == SIGINT)
+				printf("\n");
 		}
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-            printf("\n");  // afficher une nouvelle ligne pour contourner le soucis
 	}
 	close_all_fd(3);
 }

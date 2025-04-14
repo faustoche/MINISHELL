@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	handle_signals(int sig, int param)
+int	handle_signals(int sig, int param) // ou est-ce que je mets a jour g_received_signal?
 {
 	struct sigaction	sa;
 
@@ -39,10 +39,10 @@ int	handle_signals(int sig, int param)
 
 void	new_prompt(int sig)
 {
-	if (g_received_signal != 1)
+	if (sig == SIGINT)
 	{
 		printf("\n");
-		g_received_signal = sig;
+		g_received_signal = SIGINT;
 	}
 	rl_replace_line("", 0);
 	rl_on_new_line();
@@ -59,7 +59,7 @@ void	close_stdin(int sig)
 {
 	if (sig == SIGINT)
 	{
-		g_received_signal = 130;
+		g_received_signal = sig;
 		printf("\n");
 		rl_replace_line("", 0);
 		close(STDIN_FILENO);
