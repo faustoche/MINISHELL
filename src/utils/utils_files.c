@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:12:45 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 18:16:53 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 19:28:07 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ int	open_file(char *filename, int token)
 		fd = open(filename, O_RDONLY);
 	if (fd < 0)
 	{
-		perror("minislay:");
-		printf(ERR_DIR, filename);
+		perror("minislay");
 		close_all_fd(3);
 		return (-1);
 	}
