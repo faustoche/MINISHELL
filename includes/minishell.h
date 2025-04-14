@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/13 21:09:18 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/14 09:37:51 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -205,7 +205,12 @@ void	redir_heredoc(int heredoc_fd);
 void	redir_input(char *input_file);
 void 	redir_output(char *output_file, int append_mode);
 int		redir_execute(t_cmd *cmd, t_env *env_list);
+t_pipe	init_pipe_struct(t_cmd *cmd, t_env **env_list);
+void	pipe_child_process(t_cmd *current, t_pipe *pipe_data);
+void	pipe_parent_process(t_cmd **current, t_pipe *pipe_data);
 void	handle_pipe_redirection(t_cmd *cmd, t_env *env_list);
+void	handle_child_process(t_cmd *cmd, t_env *env, int pipefd[2], int fd);
+void	handle_exit_status_signals(int status, t_cmd *cmd);
 void	execute_redirection(t_cmd *cmd, t_env *env_list);
 int		execute_only_redirections(t_cmd *cmd);
 pid_t	create_pipe_and_fork(int pipefd[2]);

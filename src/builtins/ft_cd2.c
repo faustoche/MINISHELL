@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 18:39:10 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/13 20:45:30 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/14 07:52:40 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,14 @@ int	cd_no_arg(char *home, char *new_dir)
 	return (0);
 }
 
-t_env	*cd_update_env(t_cmd *cmd, t_env *new_env_list, char *old_pwd, char *new_dir)
+t_env	*cd_update_env(t_cmd *cmd, t_env *new_env, char *old_pwd, char *new_dir)
 {
 	*(cmd->exit_status) = 0;
 	if (!(getcwd(new_dir, PATH_MAX)))
 		perror("error retrieving current directory");
-	new_env_list = change_var_value(new_env_list, "OLDPWD", old_pwd);
-	new_env_list = change_var_value(new_env_list, "PWD", new_dir);
+	new_env = change_var_value(new_env, "OLDPWD", old_pwd);
+	new_env = change_var_value(new_env, "PWD", new_dir);
 	if (cmd->nb_arg == 2 && ft_strcmp(cmd->args[1], "-") == 0)
 		ft_pwd_cd();
-	return (new_env_list);
+	return (new_env);
 }

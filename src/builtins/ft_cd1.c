@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 08:47:18 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/13 20:45:13 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/14 07:52:13 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ static int	cd_one_arg(t_cmd *cmd, t_env *env_list, char *home, char *new_dir)
 	}
 	else if (ft_strcmp(cmd->args[1], "-") == 0)
 		ft_strcpy(new_dir, find_var_value(env_list, "OLDPWD"));
-	else if (ft_strcmp(cmd->args[1], "~") == 0 || ft_strcmp(cmd->args[1], "~/") == 0)
+	else if (ft_strcmp(cmd->args[1], "~") == 0
+		|| ft_strcmp(cmd->args[1], "~/") == 0)
 		ft_strcpy(new_dir, home);
 	else
 		ft_strcpy(new_dir, cmd->args[1]);
@@ -56,11 +57,11 @@ static int	cd_many_args(t_cmd *cmd)
 static int	cd_args(t_cmd *cmd, t_env *env_list, char *home, char *new_dir)
 {
 	if (cmd->nb_arg == 1)
-		return cd_no_arg(home, new_dir);
+		return (cd_no_arg(home, new_dir));
 	else if (cmd->nb_arg == 2)
-		return cd_one_arg(cmd, env_list, home, new_dir);
+		return (cd_one_arg(cmd, env_list, home, new_dir));
 	else if (cmd->nb_arg > 2)
-		return cd_many_args(cmd);
+		return (cd_many_args(cmd));
 	return (0);
 }
 
@@ -88,7 +89,6 @@ t_env	*ft_cd(t_cmd *cmd, t_env *env_list)
 	free_env_list(&env_list);
 	return (new_env);
 }
-
 
 // t_env	*ft_cd(t_cmd *cmd, t_env *env_list)
 // {
@@ -127,7 +127,8 @@ t_env	*ft_cd(t_cmd *cmd, t_env *env_list)
 //         }
 // 		else if (ft_strcmp(cmd->args[1], "-") == 0)
 // 			ft_strcpy(new_dir, find_var_value(new_env_list, "OLDPWD"));
-// 		else if (ft_strcmp(cmd->args[1], "~") == 0 || ft_strcmp(cmd->args[1], "~/") == 0)
+// 		else if (ft_strcmp(cmd->args[1], "~") == 0
+//			|| ft_strcmp(cmd->args[1], "~/") == 0)
 // 			ft_strcpy(new_dir, home);
 // 		else
 // 			ft_strcpy(new_dir, cmd->args[1]);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/13 17:52:36 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/14 09:43:09 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,7 +122,6 @@ int	main(int ac, char **av, char **envp)
 			{
 				if (is_redirection(cmd))
 				{
-					dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
 					execute_only_redirections(cmd);
 					if (cmd && cmd->exit_status)
 						last_cmd_code = *(cmd->exit_status);
@@ -133,7 +132,6 @@ int	main(int ac, char **av, char **envp)
 			}
 			else if (is_builtins(cmd->args[0]) && !has_pipes(cmd))
 			{
-				dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
 				if (is_redirection(cmd))
 				{
 					printf("DEBUG: Avant appel à handle_builtin_redirection: exit_status = %d\n", *(cmd->exit_status));
@@ -141,10 +139,7 @@ int	main(int ac, char **av, char **envp)
 					printf("DEBUG: Après appel à handle_builtin_redirection: exit_status = %d\n", *(cmd->exit_status));
 				}
 				else
-				{
-					dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
 					builtins_execution(cmd, &env_list);
-				}
 			}
 			else if (has_pipes(cmd))
 				execute_pipeline(cmd, env_list);
@@ -165,16 +160,9 @@ int	main(int ac, char **av, char **envp)
 				continue ;
 			}
 			else if (is_redirection(cmd))
-			{
-				dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
 				execute_redirection(cmd, env_list);
-			}
 			else
-			{
-				dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
 				execute_commands(cmd, env_list);
-			}
-
 		}
 		if (cmd && cmd->exit_status)
 			last_cmd_code = *(cmd->exit_status);
