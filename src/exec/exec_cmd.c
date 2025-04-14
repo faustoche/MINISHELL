@@ -6,81 +6,11 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/14 11:15:47 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 14:19:41 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* Complete pathname by adding '/' and name of binary */
-
-char	*build_pathname(char *directory, char *arg)
-{
-	char	*binary_path;
-	char	*tmp;
-	size_t	len;
-
-	directory = ft_realloc(directory, ft_strlen(directory) + 2);
-	if (!directory)
-		return (NULL);
-	if (directory[ft_strlen(directory) - 1] != '/')
-	{
-		tmp = directory;
-		directory = ft_strjoin(directory, "/");
-		free(tmp);
-	}
-	len = ft_strlen(directory) + ft_strlen(arg);
-	binary_path = malloc(sizeof(char) * len + 1);
-	if (!binary_path)
-	{
-		free(directory);
-		return (NULL);
-	}
-	tmp = binary_path;
-	binary_path = ft_strjoin(directory, arg);
-	free(tmp);
-	free(directory);
-	return (binary_path);
-}
-
-/* Check each directory in PATH to find binary_path */
-
-char	*find_binary_path(char *arg, t_env *env_list)
-{
-	char	*path_env;
-	char	**split_path;
-	char	*binary_path;
-	char	*path_copy;
-	int		i;
-
-	path_env = find_var_value(env_list, "PATH");
-	if (!path_env || path_env[0] == '\0')
-		return (NULL);
-	split_path = ft_split(path_env, ':');
-	if (!split_path)
-		return (NULL);
-	i = 0;
-	binary_path = NULL;
-	while (split_path[i])
-	{
-		path_copy = ft_strdup(split_path[i]);
-		if (!path_copy)
-		{
-			free_split(split_path);
-			return (NULL);
-		}
-		binary_path = build_pathname(path_copy, arg);
-		if (!access(binary_path, F_OK))
-		{
-			free_split(split_path);
-			return (binary_path);
-		}
-		free(binary_path);
-		i++;
-	}
-	free_split(split_path);
-	return (NULL);
-}
 
 static void	execute_child_process(char **args, char *binary_path, t_env *env)
 {
@@ -104,16 +34,21 @@ static void	execute_child_process(char **args, char *binary_path, t_env *env)
 
 /* Create child process and execute */
 
-static void	create_child_process(char **args, char *binary_path, t_env *env, int *code)
+static void	create_child_process(char **args, char *bin, t_env *env, int *code)
 {
 	pid_t	pid;
 	int		status;
 	t_cmd	*last_cmd;
-	int		last_status = 0;
+	int		last_status;
 	pid_t	wait_pid;
+	pid_t	last_pid;
 
+	last_status = 0;
 	last_cmd = get_last_cmd(env->cmd);
-	pid_t	last_pid = (last_cmd) ? last_cmd->pid : -1;
+	if (last_cmd)
+		last_pid = last_cmd->pid;
+	else
+		last_pid = -1;
 	g_received_signal = 0;
 	status = 0;
 	pid = fork();
@@ -125,17 +60,15 @@ static void	create_child_process(char **args, char *binary_path, t_env *env, int
 			return ;
 		if (handle_signals(SIGQUIT, DEFAULT) == -1)
 			return ;
-		execute_child_process(args, binary_path, env);
+		execute_child_process(args, bin, env);
 	}
 	else if (pid > 0)
 	{
-		signal(SIGINT, SIG_IGN); // Si je mets ca, j'ai bien 130 
-		// if (handle_signals(SIGINT, CHILD_PROMPT) == -1) // si je mets ca, retour a la ligne mais pas 130
-		// 	return ;
+		signal(SIGINT, SIG_IGN);
 		while ((wait_pid = waitpid(pid, &status, WNOHANG)) == 0)
 		{
 		}
-		signal(SIGINT, SIG_DFL); // Si je mets ca, j'ai bien 130 mais pas de retour a la ligne
+		signal(SIGINT, SIG_DFL);
 		if (wait_pid > 0)
 		{
 			if (WIFEXITED(status))
@@ -150,16 +83,15 @@ static void	create_child_process(char **args, char *binary_path, t_env *env, int
 		if (WIFSIGNALED(status))
 		{
 			if (WTERMSIG(status) == SIGQUIT)
-			printf("Quit (core dumped)\n");
+				printf("Quit (core dumped)\n");
 		}
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-            printf("\n");  // afficher une nouvelle ligne pour contourner le soucis
+			printf("\n");
 	}
 	close_all_fd(3);
 }
 
-
-// static void	create_child_process(char **args, char *binary_path, t_env *env, int *code)
+// void	create_child_process(char **args, char *binary, t_env *env, int *code)
 // {
 // 	pid_t				pid;
 // 	int					status;
@@ -208,73 +140,70 @@ static void	create_child_process(char **args, char *binary_path, t_env *env, int
 // 	close_all_fd(3);
 // }
 
-void	execute_commands(t_cmd *cmd, t_env *env_list)
+void	execute_commands(t_cmd *cmd, t_env *env)
 {
-	t_cmd	*current;
-	char	*binary_path;
+	t_cmd	*cur;
+	char	*bin;
 
-	current = cmd;
-	while (current)
+	cur = cmd;
+	while (cur)
 	{
-		if (is_builtins(current->args[0]) && current->args && current->args[0])
-			builtins_execution(current, &env_list);
-		else if (current->args && current->args[0])
+		if (is_builtins(cur->args[0]) && cur->args && cur->args[0])
+			builtins_execution(cur, &env);
+		else if (cur->args && cur->args[0])
 		{
-			if (current->args[0][0] == '/')
+			if (cur->args[0][0] == '/')
 			{
-				binary_path = ft_strdup(current->args[0]);
-				if (!binary_path)
+				bin = ft_strdup(cur->args[0]);
+				if (!bin)
 					return ;
-				if (access(binary_path, F_OK) == -1)
+				if (access(bin, F_OK) == -1)
 				{
-					*current->exit_status = 127; // ici 
-					printf(ERR_CMD, current->args[0]);
-					free(binary_path);
+					*cur->exit_status = 127;
+					printf(ERR_CMD, cur->args[0]);
+					free(bin);
 				}
 				else
 				{
-					create_child_process(current->args, binary_path, env_list, current->exit_status);
-					free(binary_path);
+					create_child_process(cur->args, bin, env, cur->exit_status);
+					free(bin);
 				}
 			}
-			else if ((current->args[0][0] == '/' || current->args[0][0] == '.')
-				&& (current->args[0][1] == '/' || current->args[0][1] == '.'))
+			else if ((cur->args[0][0] == '/' || cur->args[0][0] == '.')
+				&& (cur->args[0][1] == '/' || cur->args[0][1] == '.'))
 			{
-				binary_path = ft_strdup(current->args[0]);
-				if (!binary_path)
+				bin = ft_strdup(cur->args[0]);
+				if (!bin)
 					return ;
-				if (access(binary_path, F_OK) == -1)
+				if (access(bin, F_OK) == -1)
 				{
-					*current->exit_status = 127; // ici ?
-					printf(ERR_DIR, current->args[0]);
-					free(binary_path);
+					*cur->exit_status = 127;
+					printf(ERR_DIR, cur->args[0]);
+					free(bin);
 				}
 				else
 				{
-					dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
-					create_child_process(current->args, binary_path, env_list, current->exit_status);
-					free(binary_path);
+					create_child_process(cur->args, bin, env, cur->exit_status);
+					free(bin);
 				}
 			}
 			else
 			{
-				binary_path = find_binary_path(current->args[0], env_list);
-				if (binary_path == NULL)
+				bin = find_bin_path(cur->args[0], env);
+				if (bin == NULL)
 				{
-					dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
-					printf(ERR_CMD, current->args[0]);
-					if (current->exit_status)
-						*(current->exit_status) = 127; // ici ??
+					printf(ERR_CMD, cur->args[0]);
+					if (cur->exit_status)
+						*(cur->exit_status) = 127;
 					close_all_fd(3);
 				}
 				else
 				{
-					dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
-					create_child_process(current->args, binary_path, env_list, current->exit_status);
-					free(binary_path);
+					create_child_process(cur->args, bin, env, cur->exit_status);
+					free(bin);
 				}
 			}
 		}
-		current = current->next;
+		cur = cur->next;
 	}
 }

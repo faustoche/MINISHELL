@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 22:31:37 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/14 10:20:35 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 14:03:53 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	pipe_execve(t_cmd *current, t_pipe *pipe_data)
 	int		exit_code;
 
 	exit_code = 127;
-	binary_path = find_binary_path(current->args[0], *(pipe_data->env_list));
+	binary_path = find_bin_path(current->args[0], *(pipe_data->env_list));
 	env = env_list_to_array(*(pipe_data->env_list));
 	if (!binary_path)
 	{

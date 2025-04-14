@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redir3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:47:52 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/13 20:06:36 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/14 14:03:56 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int	redir_execute(t_cmd *cmd, t_env *env_list)
 	char	*binary_path;
 
 	env = env_list_to_array(env_list);
-	binary_path = find_binary_path(cmd->args[0], env_list);
+	binary_path = find_bin_path(cmd->args[0], env_list);
 	if (!binary_path)
 	{
 		*(cmd->exit_status) = 127;
