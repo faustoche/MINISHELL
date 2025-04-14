@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 10:49:52 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 21:46:36 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,35 +36,73 @@ int	get_token_type(char *token, int *command)
 	return (TOKEN_ARGUMENT);
 }
 
-int	handle_std_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env)
+int	init_and_add_cmd(t_cmd **curr, t_cmd **head, t_env *env)
 {
 	t_cmd	*new_cmd;
 	t_cmd	*tmp;
 
+	new_cmd = init_command();
+	if (!new_cmd)
+		return (-1);
+	new_cmd->env_list = env;
+	if (!(*head))
+		*head = new_cmd;
+	else
+	{
+		tmp = *head;
+		while (tmp && tmp->next)
+			tmp = tmp->next;
+		if (tmp)
+			tmp->next = new_cmd;
+		else
+			*head = new_cmd;
+	}
+	*curr = new_cmd;
+	return (0);
+}
+
+int	handle_std_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env)
+{
 	if (!(*curr))
 	{
-		new_cmd = init_command();
-		if (!new_cmd)
+		if (init_and_add_cmd(curr, head, env) == -1)
 			return (-1);
-		new_cmd->env_list = env;
-		if (!(*head))
-			*head = new_cmd;
-		else
-		{
-			tmp = *head;
-			while (tmp && tmp->next)
-				tmp = tmp->next;
-			if (tmp)
-				tmp->next = new_cmd;
-			else
-				*head = new_cmd;
-		}
-		*curr = new_cmd;
 	}
 	if (add_args(*tok, *curr) == -1)
 		return (-1);
 	return (0);
 }
+
+
+// int	handle_std_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env)
+// {
+// 	t_cmd	*new_cmd;
+// 	t_cmd	*tmp;
+
+// 	if (!(*curr))
+// 	{
+// 		new_cmd = init_command();
+// 		if (!new_cmd)
+// 			return (-1);
+// 		new_cmd->env_list = env;
+// 		if (!(*head))
+// 			*head = new_cmd;
+// 		else
+// 		{
+// 			tmp = *head;
+// 			while (tmp && tmp->next)
+// 				tmp = tmp->next;
+// 			if (tmp)
+// 				tmp->next = new_cmd;
+// 			else
+// 				*head = new_cmd;
+// 		}
+// 		*curr = new_cmd;
+// 	}
+// 	if (add_args(*tok, *curr) == -1)
+// 		return (-1);
+// 	return (0);
+// }
 
 int	process_other_token(t_token **token, t_cmd **curr, t_cmd **head, t_env *env)
 {
