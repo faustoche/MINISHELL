@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 09:43:09 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 11:09:30 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ int	main(int ac, char **av, char **envp)
 		if (cmd)
 		{
 			handle_signals(SIGINT, IGNORE);
-			if (cmd && handle_all_heredocs(cmd, env_list, &last_cmd_code) == -1)
+			if (cmd && handle_all_heredocs(cmd) == -1)
 			{
 				free_commands(cmd);
 				continue ;

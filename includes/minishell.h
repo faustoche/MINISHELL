@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 10:14:00 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 11:09:54 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -266,8 +266,8 @@ char	*create_final_word(t_lexer *lexer, char *word, int start, int end);
 
 /* PARSING */
 
-int		handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head, t_env *env_list, int *code);
-int		handle_all_heredocs(t_cmd *cmd, t_env *env_list, int *code);
+int		handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head);
+int		handle_all_heredocs(t_cmd *cmd);
 int		init_args(t_cmd *cmd);
 int		add_args(t_token *token, t_cmd *cmd);
 t_cmd	*init_command(void);
