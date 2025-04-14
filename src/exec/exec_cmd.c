@@ -62,13 +62,15 @@ static void	create_child_process(char **args, char *bin, t_env *env, int *code)
 			return ;
 		execute_child_process(args, bin, env);
 	}
-	else if (pid > 0)
+	else
 	{
-		signal(SIGINT, SIG_IGN);
+		if (handle_signals(SIGINT, IGNORE) == -1)
+			return ;
 		while ((wait_pid = waitpid(pid, &status, WNOHANG)) == 0)
 		{
 		}
-		signal(SIGINT, SIG_DFL);
+		if (handle_signals(SIGINT, PROMPT) == -1)
+			return ;
 		if (wait_pid > 0)
 		{
 			if (WIFEXITED(status))
@@ -84,9 +86,9 @@ static void	create_child_process(char **args, char *bin, t_env *env, int *code)
 		{
 			if (WTERMSIG(status) == SIGQUIT)
 				printf("Quit (core dumped)\n");
+			else if (WTERMSIG(status) == SIGINT)
+				printf("\n");
 		}
-		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-			printf("\n");
 	}
 	close_all_fd(3);
 }
