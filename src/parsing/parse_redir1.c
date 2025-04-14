@@ -6,39 +6,78 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 14:54:50 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 19:27:35 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	redirection(t_cmd **cmd, char *file, int out, int append)
+static int redirection(t_cmd **cmd, char *file, int out, int append)
 {
-	char	*tmp;
+    char *tmp;
+    int fd;
 
-	if (!cmd || !file)
-		return (-1);
-	if (out)
-	{
-		tmp = ft_strdup(file);
-		if (!tmp)
-			return (-1);
-		if ((*cmd)->out)
-			free((*cmd)->out);
-		(*cmd)->out = tmp;
-		(*cmd)->append = append;
-	}
-	else
-	{
-		tmp = ft_strdup(file);
-		if (!tmp)
-			return (-1);
-		if ((*cmd)->in)
-			free((*cmd)->in);
-		(*cmd)->in = tmp;
-	}
-	return (0);
+    if (!cmd || !file)
+        return (-1);
+    if (out)
+    {
+        if (append)
+            fd = open_file(file, REDIR_APPEND);
+        else
+            fd = open_file(file, REDIR_OUT);
+    }
+    else
+        fd = open_file(file, REDIR_IN);
+    if (fd == -1)
+        return (-1);
+    close(fd);
+    tmp = ft_strdup(file);
+    if (!tmp)
+        return (-1);
+    
+    if (out)
+    {
+        if ((*cmd)->out)
+            free((*cmd)->out);
+        (*cmd)->out = tmp;
+        (*cmd)->append = append;
+    }
+    else
+    {
+        if ((*cmd)->in)
+            free((*cmd)->in);
+        (*cmd)->in = tmp;
+    }
+    return (0);
 }
+
+// static int	redirection(t_cmd **cmd, char *file, int out, int append)
+// {
+// 	char	*tmp;
+
+// 	if (!cmd || !file)
+// 		return (-1);
+// 	if (out)
+// 	{
+// 		tmp = ft_strdup(file);
+// 		if (!tmp)
+// 			return (-1);
+// 		if ((*cmd)->out)
+// 			free((*cmd)->out);
+// 		(*cmd)->out = tmp;
+// 		(*cmd)->append = append;
+// 	}
+// 	else
+// 	{
+// 		tmp = ft_strdup(file);
+// 		if (!tmp)
+// 			return (-1);
+// 		if ((*cmd)->in)
+// 			free((*cmd)->in);
+// 		(*cmd)->in = tmp;
+// 	}
+// 	return (0);
+// }
 
 static int	if_init_command(t_cmd **curr, t_cmd **head, t_env *env)
 {
@@ -53,32 +92,56 @@ static int	if_init_command(t_cmd **curr, t_cmd **head, t_env *env)
 	return (0);
 }
 
-int	process_redir_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env)
+int process_redir_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env)
 {
-	if (!(*curr))
-		if (if_init_command(curr, head, env) == -1)
-			return (-1);
-	if (!(*tok)->next || ((*tok)->next->type != TOKEN_ARGUMENT
-			&& (*tok)->next->type != TOKEN_COMMAND))
-	{
-		(printf(ERR_SYNTAX), free_commands(*head));
-		return (-1);
-	}
-	if (handle_redirection(*tok, *curr, *head) == -1)
-	{
-		if (*head)
-			free_commands(*head);
-		*head = NULL;
-		*curr = NULL;
-		return (-1);
-	}
-	*tok = (*tok)->next;
-	if (*tok)
-		*tok = (*tok)->next;
-	return (0);
+    if (!(*curr))
+        if (if_init_command(curr, head, env) == -1)
+            return (-1);
+    if (!(*tok)->next || ((*tok)->next->type != TOKEN_ARGUMENT
+            && (*tok)->next->type != TOKEN_COMMAND))
+    {
+        printf(ERR_SYNTAX);
+        free_commands(*head);
+        return (-1);
+    }
+    if (handle_redirection(*tok, *curr, *head) == -1)
+    {
+        *head = NULL;
+        *curr = NULL;
+        return (-1);
+    }
+    *tok = (*tok)->next;
+    if (*tok)
+        *tok = (*tok)->next;
+    return (0);
 }
 
-// int	process_redir_token(t_to **tok, t_cmd **curr, t_cmd **head, t_env *env)
+// int	process_redir_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env)
+// {
+// 	if (!(*curr))
+// 		if (if_init_command(curr, head, env) == -1)
+// 			return (-1);
+// 	if (!(*tok)->next || ((*tok)->next->type != TOKEN_ARGUMENT
+// 			&& (*tok)->next->type != TOKEN_COMMAND))
+// 	{
+// 		(printf(ERR_SYNTAX), free_commands(*head));
+// 		return (-1);
+// 	}
+// 	if (handle_redirection(*tok, *curr, *head) == -1)
+// 	{
+// 		if (*head)
+// 			free_commands(*head);
+// 		*head = NULL;
+// 		*curr = NULL;
+// 		return (-1);
+// 	}
+// 	*tok = (*tok)->next;
+// 	if (*tok)
+// 		*tok = (*tok)->next;
+// 	return (0);
+// }
+
+// int	process_redir_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env)
 // {
 // 	if (!(*curr))
 // 	{

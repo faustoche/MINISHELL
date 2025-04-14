@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:47:52 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 14:03:56 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 17:59:03 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ void	redir_input(char *input_file)
 
 	fd = open_file(input_file, REDIR_IN);
 	if (fd == -1)
+	{
+		printf("minislay: %s: Permission denied\n", input_file);
 		exit(1);
+	}
 	if (dup2(fd, STDIN_FILENO) == -1)
 	{
 		perror("dup2 failed");
@@ -50,7 +53,6 @@ void	redir_output(char *output_file, int append_mode)
 {
 	int	fd;
 
-	printf(">> redir_output called with: %s\n", output_file);
 	if (append_mode)
 		fd = open_file(output_file, REDIR_APPEND);
 	else

@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 09:14:49 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 10:21:00 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 18:06:22 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ void	in_redirection(t_cmd *current, int input_fd)
 {
 	int	fd;
 
+	dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);	
 	if (input_fd != STDIN_FILENO)
 	{
 		dup2(input_fd, STDIN_FILENO);
@@ -47,6 +48,7 @@ void	out_redirection(t_cmd *current, t_pipe *pipe_data)
 	}
 	if (current->out)
 	{
+		dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);	
 		if (current->append)
 			fd = open_file(current->out, REDIR_APPEND);
 		else
@@ -91,9 +93,13 @@ void	pipe_child_process(t_cmd *current, t_pipe *pipe_data)
 		if (is_builtins(current->args[0]))
 			pipe_builtin(current, pipe_data);
 		else
+		{
 			pipe_execve(current, pipe_data);
+		}
 	}
 	else
 		free_pipe(pipe_data->cmd, *(pipe_data->env_list), NULL);
 	exit(1);
 }
+
+// 			dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);	

@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 19:02:24 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 19:17:16 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -140,7 +140,10 @@ int	main(int ac, char **av, char **envp)
 					builtins_execution(cmd, &env_list);
 			}
 			else if (has_pipes(cmd))
+			{
+				printf("pipeline\n");
 				execute_pipeline(cmd, env_list);
+			}
 			else if (is_redirection(cmd) && cmd->out && check_output_directory(cmd))
 			{
 				last_cmd_code = 1;

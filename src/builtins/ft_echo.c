@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_echo.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:52:28 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/13 20:45:46 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/14 19:26:02 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,6 @@ void	ft_echo(t_cmd *cmd)
 	}
 	if (newline)
 		printf("\n");
-	*cmd->exit_status = 0;
+	if (cmd->exit_status)
+		*cmd->exit_status = 0;
 }
