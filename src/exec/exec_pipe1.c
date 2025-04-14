@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 20:05:00 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/14 10:06:37 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 10:20:03 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,11 +29,8 @@ static int	wait_kids(pid_t last_pid, t_cmd *last_cmd)
 				last_status = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
 				last_status = 128 + WTERMSIG(status);
-			if (wait_pid == last_pid)
-			{
-				if (last_cmd && last_cmd->exit_status)
-					*(last_cmd->exit_status) = last_status;
-			}
+			if (wait_pid == last_pid && last_cmd && last_cmd->exit_status)
+				*(last_cmd->exit_status) = last_status;
 		}
 	}
 	if (WIFSIGNALED(status))

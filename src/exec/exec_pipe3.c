@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 09:14:49 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 09:41:00 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 10:21:00 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ void	pipe_child_process(t_cmd *current, t_pipe *pipe_data)
 		return ;
 	in_redirection(current, pipe_data->input_fd);
 	out_redirection(current, pipe_data);
-	if (current->args)
+	if (current && current->args && current->args[0])
 	{
 		if (is_builtins(current->args[0]))
 			pipe_builtin(current, pipe_data);

@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 22:31:37 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/14 09:41:08 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 10:20:35 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ void	pipe_builtin(t_cmd *current, t_pipe *pipe_data)
 		dup2(pipe_data->pipe_fd[1], STDOUT_FILENO);
 		close(pipe_data->pipe_fd[1]);
 	}
-	builtins_execution(current, pipe_data->env_list);
-	if (current->exit_status)
+	if (current && current->args && current->args[0])
+		builtins_execution(current, pipe_data->env_list);
+	if (current && current->exit_status)
 		exit_code = *(current->exit_status);
 	free_env_list(pipe_data->env_list);
 	free_pipe_redir(pipe_data->cmd);
