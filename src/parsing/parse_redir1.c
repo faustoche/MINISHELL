@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/10 18:43:14 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 14:54:50 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,19 +40,24 @@ static int	redirection(t_cmd **cmd, char *file, int out, int append)
 	return (0);
 }
 
+static int	if_init_command(t_cmd **curr, t_cmd **head, t_env *env)
+{
+	*curr = init_command();
+	if (!(*curr))
+		return (-1);
+	(*curr)->env_list = env;
+	if (!(*head))
+		*head = *curr;
+	if (init_args(*curr) == -1)
+		return (-1);
+	return (0);
+}
+
 int	process_redir_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env)
 {
 	if (!(*curr))
-	{
-		*curr = init_command();
-		if (!(*curr))
+		if (if_init_command(curr, head, env) == -1)
 			return (-1);
-		(*curr)->env_list = env;
-		if (!(*head))
-			*head = *curr;
-		if (init_args(*curr) == -1)
-			return (-1);
-	}
 	if (!(*tok)->next || ((*tok)->next->type != TOKEN_ARGUMENT
 			&& (*tok)->next->type != TOKEN_COMMAND))
 	{
@@ -73,19 +78,59 @@ int	process_redir_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env)
 	return (0);
 }
 
+// int	process_redir_token(t_to **tok, t_cmd **curr, t_cmd **head, t_env *env)
+// {
+// 	if (!(*curr))
+// 	{
+// 		*curr = init_command();
+// 		if (!(*curr))
+// 			return (-1);
+// 		(*curr)->env_list = env;
+// 		if (!(*head))
+// 			*head = *curr;
+// 		if (init_args(*curr) == -1)
+// 			return (-1);
+// 	}
+// 	if (!(*tok)->next || ((*tok)->next->type != TOKEN_ARGUMENT
+// 			&& (*tok)->next->type != TOKEN_COMMAND))
+// 	{
+// 		(printf(ERR_SYNTAX), free_commands(*head));
+// 		return (-1);
+// 	}
+// 	if (handle_redirection(*tok, *curr, *head) == -1)
+// 	{
+// 		if (*head)
+// 			free_commands(*head);
+// 		*head = NULL;
+// 		*curr = NULL;
+// 		return (-1);
+// 	}
+// 	*tok = (*tok)->next;
+// 	if (*tok)
+// 		*tok = (*tok)->next;
+// 	return (0);
+// }
+
 /* According to the token, redirect in the right direction */
 
-int	handle_redirection(t_token *token, t_cmd *current, t_cmd *head)
+int	check_for_current(t_token *token, t_cmd *current, t_cmd *head)
 {
-	int	result;
-
-	result = 0;
 	if (!current || !token->next)
 	{
 		printf("Error: invalid redirection\n");
 		free_commands(head);
 		return (-1);
 	}
+	return (0);
+}
+
+int	handle_redirection(t_token *token, t_cmd *current, t_cmd *head)
+{
+	int	result;
+
+	result = 0;
+	if (check_for_current(token, current, head) == -1)
+		return (-1);
 	if (token->type == REDIR_OUT)
 		result = redirection(&current, token->next->value, 1, 0);
 	else if (token->type == REDIR_IN)

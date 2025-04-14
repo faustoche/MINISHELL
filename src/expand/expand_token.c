@@ -6,13 +6,11 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 11:58:53 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 12:51:41 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 14:33:12 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-
 
 /* Expand les variables dans un token */
 

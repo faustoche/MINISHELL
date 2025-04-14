@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 13:14:51 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 14:42:26 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,31 +42,6 @@ static int	expand_args(t_cmd *cmd)
 	cmd->args = new_args;
 	cmd->max_arg *= 2;
 	return (0);
-}
-
-char	*remove_quotes(char *str)
-{
-	int		i = 0, j = 0;
-	char	*res;
-	int		in_single = 0, in_double = 0;
-
-	if (!str)
-		return (NULL);
-	res = malloc(strlen(str) + 1);
-	if (!res)
-		return (NULL);
-	while (str[i])
-	{
-		if (str[i] == '\'' && !in_double)
-			in_single = !in_single;
-		else if (str[i] == '\"' && !in_single)
-			in_double = !in_double;
-		else
-			res[j++] = str[i];
-		i++;
-	}
-	res[j] = '\0';
-	return (res);
 }
 
 /* remove quotes a la place de strdup pour gerer l'expansion*/
@@ -130,7 +105,7 @@ t_cmd	*init_command(void)
 t_cmd	*parse_commands(t_token *token_list, t_env *env_list, int *code)
 {
 	t_cmd	*head;
-	t_cmd	*current ;
+	t_cmd	*current;
 	t_token	*token;
 
 	head = NULL;
@@ -140,7 +115,7 @@ t_cmd	*parse_commands(t_token *token_list, t_env *env_list, int *code)
 	{
 		if (process_token(&token, &current, &head, env_list))
 		{
-			*code = 2; // TBC
+			*code = 2;
 			if (head)
 				free_commands(head);
 			return (NULL);
@@ -149,7 +124,7 @@ t_cmd	*parse_commands(t_token *token_list, t_env *env_list, int *code)
 	if (head == NULL)
 	{
 		printf(ERR_SYNTAX);
-		*code = 2; // TBC
+		*code = 2;
 		if (current != NULL && current != head)
 			free_commands(current);
 	}

@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 14:03:44 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 14:42:47 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -271,6 +271,7 @@ int		handle_all_heredocs(t_cmd *cmd);
 int		init_args(t_cmd *cmd);
 int		add_args(t_token *token, t_cmd *cmd);
 t_cmd	*init_command(void);
+char	*remove_quotes(char *str);
 t_cmd	*parse_commands(t_token *token_lis, t_env *env_list, int *code);
 int		process_redir_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env);
 int		handle_redirection(t_token *token, t_cmd *current, t_cmd *head);

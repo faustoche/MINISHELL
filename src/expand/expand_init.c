@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 12:01:35 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 12:07:05 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 14:33:06 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,13 @@
 
 int	is_quoted(char *str)
 {
+	int	len;
+
+	len = ft_strlen(str);
 	if (!str)
 		return (0);
-	int len = ft_strlen(str);
-	if ((str[0] == '\'' && str[len - 1] == '\'') ||
-		(str[0] == '"' && str[len - 1] == '"'))
+	if ((str[0] == '\'' && str[len - 1] == '\'')
+		|| (str[0] == '"' && str[len - 1] == '"'))
 		return (1);
 	return (0);
 }
