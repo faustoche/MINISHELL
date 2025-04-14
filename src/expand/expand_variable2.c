@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 17:54:53 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 10:06:53 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 11:18:46 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,3 +128,4 @@ int	process_variable_part5(t_expand *exp, int *code)
 	}
 	return (0);
 }
+

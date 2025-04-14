@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/13 21:11:43 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/14 11:09:09 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,12 @@ static int	read_heredoc_content(char *delimiter, int write_fd)
 // 	return (0);
 // }
 
-int	handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head, t_env *env_list, int *code)
+int	handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head)
 {
 	int	pipe_fd[2];
 	int	fd;
 	int stat = 0;
 
-	(void)code;
-	(void)env_list;
 	fd = dup(STDIN_FILENO); 
 	if (!cmd || !delimiter)
 	{
@@ -123,13 +121,13 @@ int	handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head, t_env *env_list, in
 	return (0);
 }
 
-int	handle_all_heredocs(t_cmd *cmd, t_env *env_list, int *code)
+int	handle_all_heredocs(t_cmd *cmd)
 {
 	while (cmd)
 	{
 		if (cmd->heredoc_eof)
 		{
-			if (handle_heredoc(cmd, cmd->heredoc_eof, cmd, env_list, code) == -1)
+			if (handle_heredoc(cmd, cmd->heredoc_eof, cmd) == -1)
 				return (-1);
 			free(cmd->heredoc_eof);
 			cmd->heredoc_eof = NULL;

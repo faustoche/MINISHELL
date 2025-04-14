@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 10:14:00 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 12:04:50 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct s_token
 	char			*value;
 	int				type;
 	t_cmd			*exit_status;
+	int				quote_type;
 	struct s_token	*next;
 }	t_token;
 
@@ -266,8 +267,8 @@ char	*create_final_word(t_lexer *lexer, char *word, int start, int end);
 
 /* PARSING */
 
-int		handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head, t_env *env_list, int *code);
-int		handle_all_heredocs(t_cmd *cmd, t_env *env_list, int *code);
+int		handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head);
+int		handle_all_heredocs(t_cmd *cmd);
 int		init_args(t_cmd *cmd);
 int		add_args(t_token *token, t_cmd *cmd);
 t_cmd	*init_command(void);
