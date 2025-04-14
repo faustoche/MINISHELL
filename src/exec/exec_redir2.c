@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redir2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:47:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/13 20:04:48 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/14 09:34:10 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,10 +39,7 @@ int	handle_input_redirection(t_cmd *cmd)
 
 	original_stdin = dup(STDIN_FILENO);
 	if (original_stdin == -1)
-	{
-		*(cmd->exit_status) = 1;
 		return (-1);
-	}
 	if (cmd->heredoc != -1)
 	{
 		if (dup2(cmd->heredoc, STDIN_FILENO) == -1)
@@ -87,37 +84,46 @@ int	handle_output_redirection(t_cmd *cmd)
 	return (original_stdout);
 }
 
+static int	prepare_builtin_redir(t_cmd *cmd, int *og_in, int *og_out, int *fd)
+{
+	*fd = -1;
+	if (cmd->heredoc != -1)
+		*fd = cmd->heredoc;
+	*og_in = handle_input_redirection(cmd);
+	if (*og_in == -1)
+	{
+		*(cmd->exit_status) = 1;
+		return (-1);
+	}
+	*og_out = handle_output_redirection(cmd);
+	if (*og_out == -1)
+	{
+		*(cmd->exit_status) = 1;
+		dup2(*og_in, STDIN_FILENO);
+		close(*og_in);
+		return (-1);
+	}
+	return (0);
+}
+
 void	handle_builtin_redirection(t_cmd *cmd, t_env **env_list)
 {
-	int	original_stdin;
-	int	original_stdout;
+	int	og_stdin;
+	int	og_stdout;
 	int	heredoc_fd;
 
 	heredoc_fd = -1;
-	if (cmd->heredoc != -1)
-		heredoc_fd = cmd->heredoc;
-	original_stdin = handle_input_redirection(cmd);
-	if (original_stdin == -1)
-	{
-		*(cmd->exit_status) = 1;
+	if (prepare_builtin_redir(cmd, &og_stdin, &og_stdout, &heredoc_fd))
 		return ;
-	}
-	original_stdout = handle_output_redirection(cmd);
-	if (original_stdout == -1)
-	{
-		*(cmd->exit_status) = 1;
-		dup2(original_stdin, STDIN_FILENO);
-		close(original_stdin);
-		return ;
-	}
 	builtins_execution(cmd, env_list);
-	(dup2(original_stdin, STDIN_FILENO), dup2(original_stdout, STDOUT_FILENO));
-	(close(original_stdin), close(original_stdout));
+	dup2(og_stdin, STDIN_FILENO);
+	dup2(og_stdout, STDOUT_FILENO);
+	close(og_stdin);
+	close(og_stdout);
 	*(cmd->exit_status) = 0;
 	if (heredoc_fd != -1)
 	{
 		close(heredoc_fd);
 		cmd->heredoc = -1;
 	}
-	// free_commands(cmd);
 }

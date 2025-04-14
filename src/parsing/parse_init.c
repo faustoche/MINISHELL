@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 21:43:31 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/14 08:19:19 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ t_cmd	*init_command(void)
 	cmd->max_arg = 0;
 	cmd->heredoc = -1;
 	cmd->heredoc_eof = NULL;
-	cmd->processed = 0;
+
 	cmd->env_list = NULL;
 	cmd->exit_status = malloc(sizeof(int));
 	if (!cmd->exit_status)

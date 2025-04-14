@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 11:38:54 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 18:58:28 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 09:04:02 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	execute_redir_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, t_env *env)
 		if (is_builtins(cmd->args[0]))
 		{
 			builtins_execution(cmd, &env);
-			free_commands(cmd);		// si leaks alors retirer ca // conflits	
+			free_commands(cmd);
 		}
 		else
 			execute_commands(cmd, env);
@@ -91,14 +91,12 @@ int	check_output_directory(t_cmd *cmd)
 {
 	char	*dir;
 	char	*file;
-	
+
 	if (!cmd->out)
 		return (0);
-		
 	dir = ft_strdup(cmd->out);
 	if (!dir)
 		return (0);
-		
 	file = strrchr(dir, '/');
 	if (file)
 	{
