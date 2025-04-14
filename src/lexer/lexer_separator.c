@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_separator.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 10:08:09 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/13 19:50:22 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/14 12:53:43 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ static void	toggle_quote_and_copy(char *input, char *processed, t_state *state)
 	else if (c == '"' && !state->singles)
 		state->doubles = !state->doubles;
 	processed[state->j++] = input[state->i++];
+
 }
 
 static void	handle_backslash_quotes(char *input, char *proc, t_state *state)
@@ -80,7 +81,7 @@ char	*handle_escape_char(char *input)
 	len = ft_strlen(input);
 	processed = malloc(sizeof(char) * (len + 1));
 	if (!processed)
-		return (NULL);
+	return (NULL);
 	state.i = 0;
 	state.j = 0;
 	state.singles = 0;
@@ -88,13 +89,13 @@ char	*handle_escape_char(char *input)
 	while (state.i < len)
 	{
 		if ((input[state.i] == '\'' && !state.doubles)
-			|| (input[state.i] == '"' && !state.singles))
-			toggle_quote_and_copy(input, processed, &state);
+		|| (input[state.i] == '"' && !state.singles))
+		toggle_quote_and_copy(input, processed, &state);
 		else if (input[state.i] == '\\' && (state.i + 1) < len)
 			handle_backslash(input, processed, &state);
 		else
 			processed[state.j++] = input[state.i++];
 	}
-	processed[state.j] = '\0';
+	processed[state.j] = '\0';	
 	return (processed);
 }

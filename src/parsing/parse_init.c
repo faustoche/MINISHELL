@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 10:16:39 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 13:14:51 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,32 @@ static int	expand_args(t_cmd *cmd)
 	return (0);
 }
 
+char	*remove_quotes(char *str)
+{
+	int		i = 0, j = 0;
+	char	*res;
+	int		in_single = 0, in_double = 0;
+
+	if (!str)
+		return (NULL);
+	res = malloc(strlen(str) + 1);
+	if (!res)
+		return (NULL);
+	while (str[i])
+	{
+		if (str[i] == '\'' && !in_double)
+			in_single = !in_single;
+		else if (str[i] == '\"' && !in_single)
+			in_double = !in_double;
+		else
+			res[j++] = str[i];
+		i++;
+	}
+	res[j] = '\0';
+	return (res);
+}
+
+/* remove quotes a la place de strdup pour gerer l'expansion*/
 int	add_args(t_token *token, t_cmd *cmd)
 {
 	int	i;
@@ -58,7 +84,7 @@ int	add_args(t_token *token, t_cmd *cmd)
 		if (expand_args(cmd) == -1)
 			return (-1);
 	}
-	cmd->args[cmd->nb_arg] = ft_strdup(token->value);
+	cmd->args[cmd->nb_arg] = remove_quotes(token->value);
 	if (!cmd->args[cmd->nb_arg])
 	{
 		i = -1;

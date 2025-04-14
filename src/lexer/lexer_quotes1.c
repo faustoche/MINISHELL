@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 16:50:10 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/09 09:01:29 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 12:54:50 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ static int	process_token_segment(t_lexer *lexer, int start, char **merged_word)
 			printf(ERR_SYNTAX);
 			return (-1);
 		}
-		quote_content = ft_strndup(lexer->input + start + 1, end - start - 1);
+		quote_content = ft_strndup(lexer->input + start, end - start + 1);
 		*merged_word = merge_quote_content(*merged_word, quote_content);
 		free(quote_content);
 		return (end + 1);

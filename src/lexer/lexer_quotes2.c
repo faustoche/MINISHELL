@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_quotes2.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:25:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/13 12:25:40 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/14 11:49:39 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,9 @@ static void	process_char(char *input, char *result, int *index, int *quotes)
 	if (handle_quote_case(input, result, index, quotes))
 		return ;
 	if (handle_edge_quotes(input, result, index))
+	{
 		return ;
+	}
 	if (handle_dollar_in_dq(input, result, index, quotes[1]))
 		return ;
 	result[index[1]++] = input[index[0]++];

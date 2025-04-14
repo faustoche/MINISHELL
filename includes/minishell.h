@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 11:09:54 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 12:04:50 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,7 @@ typedef struct s_token
 	char			*value;
 	int				type;
 	t_cmd			*exit_status;
+	int				quote_type;
 	struct s_token	*next;
 }	t_token;
 

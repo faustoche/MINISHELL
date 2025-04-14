@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 11:09:30 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 13:02:24 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ static char	*prompt(void)
 		add_history(line);
 	return (line);
 }
+
+
 
 int	main(int ac, char **av, char **envp)
 {
@@ -133,11 +135,7 @@ int	main(int ac, char **av, char **envp)
 			else if (is_builtins(cmd->args[0]) && !has_pipes(cmd))
 			{
 				if (is_redirection(cmd))
-				{
-					printf("DEBUG: Avant appel à handle_builtin_redirection: exit_status = %d\n", *(cmd->exit_status));
 					handle_builtin_redirection(cmd, &env_list);
-					printf("DEBUG: Après appel à handle_builtin_redirection: exit_status = %d\n", *(cmd->exit_status));
-				}
 				else
 					builtins_execution(cmd, &env_list);
 			}
@@ -146,7 +144,6 @@ int	main(int ac, char **av, char **envp)
 			else if (is_redirection(cmd) && cmd->out && check_output_directory(cmd))
 			{
 				last_cmd_code = 1;
-				printf("ici\n");
 				free_commands(cmd);
 				cmd = NULL;
 				continue ;
