@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_init.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:18:42 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/13 21:09:41 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/14 07:58:34 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,24 +43,24 @@ t_env	*create_env_element(char *env)
 static t_env	*create_element_from_envp(char *env_str)
 {
 	t_env	*new_element;
-	
+
 	new_element = create_env_element(env_str);
 	if (!new_element)
 		return (NULL);
 	return (new_element);
 }
 
-static void	add_element_to_list(t_env **env_list, t_env **current, t_env *new_element)
+static void	add_element_to_list(t_env **env_list, t_env **cur, t_env *new_el)
 {
 	if (!*env_list)
 	{
-		*env_list = new_element;
-		*current = new_element;
+		*env_list = new_el;
+		*cur = new_el;
 	}
 	else
 	{
-		(*current)->next = new_element;
-		*current = new_element;
+		(*cur)->next = new_el;
+		*cur = new_el;
 	}
 }
 
@@ -93,7 +93,7 @@ t_env	*change_var_value(t_env *env_list, char *name, char *value)
 	t_env	*current;
 	t_env	*head;
 	char	*new_value;
-	
+
 	head = env_list;
 	current = env_list;
 	while (current)
@@ -102,7 +102,7 @@ t_env	*change_var_value(t_env *env_list, char *name, char *value)
 		{
 			new_value = ft_strdup(value);
 			if (!new_value)
-			return (head);
+				return (head);
 			free(current->value);
 			current->value = new_value;
 			break ;
@@ -151,7 +151,6 @@ t_env	*change_var_value(t_env *env_list, char *name, char *value)
 	// 	t_env	*copy_current;
 	// 	t_env	*original_current;
 	// 	t_env	*new_element;
-	
 	// 	original_current = original_env;
 	// 	copy_head = NULL;
 	// 	copy_current = NULL;

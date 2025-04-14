@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env_copy.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 20:58:17 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/13 21:08:00 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/14 07:57:10 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 char	*find_var_value(t_env *env_list, char *name)
 {
 	t_env	*current;
-	
+
 	current = env_list;
 	while (current)
 	{
 		if (ft_strcmp(current->name, name) == 0)
-		return (current->value);
+			return (current->value);
 		current = current->next;
 	}
 	return (NULL);
@@ -28,7 +28,9 @@ char	*find_var_value(t_env *env_list, char *name)
 
 static t_env	*create_new_element(void)
 {
-	t_env	*new_element = malloc(sizeof(t_env));
+	t_env	*new_element;
+
+	new_element = malloc(sizeof(t_env));
 	if (!new_element)
 		return (NULL);
 	new_element->name = NULL;
@@ -50,17 +52,17 @@ static int	copy_element_data(t_env *new_element, t_env *original_element)
 	return (1);
 }
 
-static void	manage_copy_list(t_env **copy_head, t_env **copy_current, t_env *new_element, int is_first_element)
+static void	copy_list(t_env **head, t_env **current, t_env *new_el, int fst_el)
 {
-	if (is_first_element)
+	if (fst_el)
 	{
-		*copy_head = new_element;
-		*copy_current = new_element;
+		*head = new_el;
+		*current = new_el;
 	}
 	else
 	{
-		(*copy_current)->next = new_element;
-		*copy_current = new_element;
+		(*current)->next = new_el;
+		*current = new_el;
 	}
 }
 
@@ -87,7 +89,7 @@ t_env	*copy_env_list(t_env *original_env)
 			(free_elements(new_element), free_env_list(&copy_head));
 			return (NULL);
 		}
-		manage_copy_list(&copy_head, &copy_current, new_element, !copy_head);
+		copy_list(&copy_head, &copy_current, new_element, !copy_head);
 		original_current = original_current->next;
 	}
 	return (copy_head);

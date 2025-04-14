@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 18:14:36 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/13 20:46:29 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/14 07:54:33 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 static int	parse_exit_code(char *arg, long long *exit_code)
 {
 	int	error;
-	
+
 	error = 0;
 	*exit_code = ft_atoll(arg, &error);
 	if (error == 1)
@@ -50,7 +50,7 @@ static long long	process_exit_code(long long exit_code)
 static long long	handle_exit_arguments(t_cmd *cmd)
 {
 	long long	exit_code;
-	int 		error;
+	int			error;
 
 	exit_code = 0;
 	error = 0;
@@ -67,12 +67,12 @@ static long long	handle_exit_arguments(t_cmd *cmd)
 		{
 			exit_error_message(1, NULL);
 			*(cmd->exit_status) = 1;
-			return -1;
+			return (-1);
 		}
 		else
-			return process_exit_code(exit_code);
+			return (process_exit_code(exit_code));
 	}
-	return *(cmd->exit_status);
+	return (*(cmd->exit_status));
 }
 
 void	ft_exit(t_cmd *cmd)
@@ -82,7 +82,7 @@ void	ft_exit(t_cmd *cmd)
 	printf("exit\n");
 	exit_code = handle_exit_arguments(cmd);
 	if (exit_code == -1)
-		return;
+		return ;
 	*(cmd->exit_status) = exit_code;
 	quit_minislay(NULL, cmd, NULL, NULL);
 	exit(exit_code);
@@ -92,7 +92,6 @@ void	ft_exit(t_cmd *cmd)
 // {
 // 	long long		exit_code;
 // 	int				error;
-	
 // 	exit_code = 0;
 // 	printf("exit\n");
 // 	if (cmd->args[1])
@@ -100,7 +99,7 @@ void	ft_exit(t_cmd *cmd)
 // 		exit_code = ft_atoll(cmd->args[1], &error);
 // 		if (error)
 // 		{
-// 			printf("minislay : exit: %s: numeric argument required\n", cmd->args[1]);
+// 			printf("minislay : exit: %s: numeric required\n", cmd->args[1]);
 // 			*(cmd->exit_status) = 2; // verifier si 2
 // 			exit(2);
 // 		}
@@ -123,15 +122,11 @@ void	ft_exit(t_cmd *cmd)
 // 	quit_minislay(NULL, cmd, NULL, NULL);
 // 	exit(exit_code);
 // }
-
-
-
 // long long	ft_atoll(const char *str, int *error)
 // {
 // 	long long	result;
 // 	int			i;
 // 	int			sign;
-	
 // 	*error = 0;
 // 	i = 0;
 // 	result = 0;
