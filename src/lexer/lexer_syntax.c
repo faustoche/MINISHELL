@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_syntax.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 22:29:51 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/12 10:16:15 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/14 14:34:50 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ int	input_check(char *input)
 		return (-1);
 	}
 	if (input[0] == '+' || input[0] == '=' || input[0] == '@' || input[0] == '['
-			|| input[0] == '$' || input[0] == ']' || input[0] == '_')
+		|| input[0] == '$' || input[0] == ']' || input[0] == '_')
 	{
 		printf(ERR_CMD, input);
 		return (-1);

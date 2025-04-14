@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redir3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:47:52 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/13 20:06:36 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/14 17:59:03 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@ void	redir_input(char *input_file)
 
 	fd = open_file(input_file, REDIR_IN);
 	if (fd == -1)
+	{
+		printf("minislay: %s: Permission denied\n", input_file);
 		exit(1);
+	}
 	if (dup2(fd, STDIN_FILENO) == -1)
 	{
 		perror("dup2 failed");
@@ -50,7 +53,6 @@ void	redir_output(char *output_file, int append_mode)
 {
 	int	fd;
 
-	printf(">> redir_output called with: %s\n", output_file);
 	if (append_mode)
 		fd = open_file(output_file, REDIR_APPEND);
 	else
@@ -75,7 +77,7 @@ int	redir_execute(t_cmd *cmd, t_env *env_list)
 	char	*binary_path;
 
 	env = env_list_to_array(env_list);
-	binary_path = find_binary_path(cmd->args[0], env_list);
+	binary_path = find_bin_path(cmd->args[0], env_list);
 	if (!binary_path)
 	{
 		*(cmd->exit_status) = 127;

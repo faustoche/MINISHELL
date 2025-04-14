@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 17:54:53 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 10:06:53 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 14:21:25 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,55 +75,6 @@ int	process_variable_part4(t_expand *exp)
 	{
 		exp->result[exp->j++] = '$';
 		exp->i++;
-		return (1);
-	}
-	return (0);
-}
-
-int	process_variable_part5(t_expand *exp, int *code)
-{
-	char	exit_status_str[16];
-	int		exit_code;
-	int		tmp;
-	int		len;
-
-	exp->i++;
-	exit_code = 0;
-	if (exp->str[exp->i] == '?')
-	{	
-		if (code)
-			exit_code = *code;
-		if (exit_code == 0)
-			ft_strcpy(exit_status_str, "0");
-		else
-		{
-			tmp = exit_code;
-			len = 0;
-			while (tmp > 0)
-			{
-				tmp /= 10;
-				len++;
-			}
-			exit_status_str[len] = '\0';
-			tmp = exit_code;
-			while (len > 0)
-			{
-				exit_status_str[--len] = (tmp % 10) + '0';
-				tmp /= 10;
-			}
-		}
-		if (!copy_str_to_result(exp, exit_status_str, ft_strlen(exit_status_str)))
-			return (0);
-		exp->i++;
-		return (1);
-	}
-
-	if (exp->str[exp->i] != '{' && !isalnum(exp->str[exp->i])
-		&& exp->str[exp->i] != '_'
-		&& exp->str[exp->i] != '"' && exp->str[exp->i] != '\''
-		&& exp->str[exp->i] != '`')
-	{
-		exp->result[exp->j++] = '$';
 		return (1);
 	}
 	return (0);

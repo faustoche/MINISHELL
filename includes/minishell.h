@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 10:14:00 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 18:20:41 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ extern volatile sig_atomic_t	g_received_signal;
 
 /*------------- STRUCTURES --------------*/
 
-struct s_cmd;
-typedef struct s_cmd t_cmd;
+struct			s_cmd;
+typedef struct	s_cmd t_cmd;
 
 typedef struct s_env
 {
@@ -93,6 +93,7 @@ typedef struct s_token
 	char			*value;
 	int				type;
 	t_cmd			*exit_status;
+	int				quote_type;
 	struct s_token	*next;
 }	t_token;
 
@@ -108,6 +109,7 @@ typedef struct s_cmd
 	size_t			nb_arg;
 	struct s_cmd	*next;
 	t_env			*env_list;
+	char			**all_outputs;
 	int				*exit_status;
 	pid_t			pid;
 }	t_cmd;
@@ -123,7 +125,6 @@ typedef struct s_expand
 	t_cmd			*cmd;
 	int				quote_type;
 }	t_expand;
-
 
 typedef struct s_lexer
 {
@@ -175,7 +176,7 @@ t_env	*ft_unset(t_env *env_list, char *name);
 
 char	*find_var_value(t_env *env_list, char *name);
 t_env	*copy_env_list(t_env *original_env);
-t_env   *init_minimal_env(void);
+t_env	*init_minimal_env(void);
 t_env	*create_env_element(char *env);
 t_env	*init_env(char **envp);
 t_env	*change_var_value(t_env *env_list, char *name, char *value);
@@ -185,24 +186,24 @@ t_env	*change_var_value(t_env *env_list, char *name, char *value);
 int		is_builtins(char *cmd);
 void	builtins_execution(t_cmd *cmd, t_env **env_list);
 char	*build_pathname(char *directory, char *arg);
-char	*find_binary_path(char *arg, t_env *env_list);
+char	*find_bin_path(char *arg, t_env *env_list);
 void	execute_commands(t_cmd *cmd, t_env *env_list);
 t_cmd	*get_last_cmd(t_cmd *cmd);
 void	execute_pipeline(t_cmd *cmd, t_env *env_list);
-int 	setup_pipe(t_pipe *pipe_data);
-void    in_redirection(t_cmd *current, int input_fd);
-void    out_redirection(t_cmd *current, t_pipe *pipe_data);
-void    pipe_builtin(t_cmd *current, t_pipe *pipe_data);
-void    pipe_execve(t_cmd *current, t_pipe *pipe_data);
+int		setup_pipe(t_pipe *pipe_data);
+void	in_redirection(t_cmd *current, int input_fd);
+void	out_redirection(t_cmd *current, t_pipe *pipe_data);
+void	pipe_builtin(t_cmd *current, t_pipe *pipe_data);
+void	pipe_execve(t_cmd *current, t_pipe *pipe_data);
 char	**env_list_to_array(t_env *env_list);
-int 	handle_input_redirection(t_cmd *cmd);
+int		handle_input_redirection(t_cmd *cmd);
 int		handle_output_redirection(t_cmd *cmd);
-void 	handle_builtin_redirection(t_cmd *cmd, t_env **env_list);
+void	handle_builtin_redirection(t_cmd *cmd, t_env **env_list);
 void	free_pipe(t_cmd *cmd, t_env *env_list, char **env);
 void	free_pipe_redir(t_cmd *cmd);
 void	redir_heredoc(int heredoc_fd);
 void	redir_input(char *input_file);
-void 	redir_output(char *output_file, int append_mode);
+void	redir_output(char *output_file, int append_mode);
 int		redir_execute(t_cmd *cmd, t_env *env_list);
 t_pipe	init_pipe_struct(t_cmd *cmd, t_env **env_list);
 void	pipe_child_process(t_cmd *current, t_pipe *pipe_data);
@@ -266,11 +267,12 @@ char	*create_final_word(t_lexer *lexer, char *word, int start, int end);
 
 /* PARSING */
 
-int		handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head, t_env *env_list, int *code);
-int		handle_all_heredocs(t_cmd *cmd, t_env *env_list, int *code);
+int		handle_heredoc(t_cmd *cmd, char *delimiter, t_cmd *head);
+int		handle_all_heredocs(t_cmd *cmd);
 int		init_args(t_cmd *cmd);
 int		add_args(t_token *token, t_cmd *cmd);
 t_cmd	*init_command(void);
+char	*remove_quotes(char *str);
 t_cmd	*parse_commands(t_token *token_lis, t_env *env_list, int *code);
 int		process_redir_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env);
 int		handle_redirection(t_token *token, t_cmd *current, t_cmd *head);

@@ -6,11 +6,24 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 12:01:35 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 10:06:58 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 14:33:06 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int	is_quoted(char *str)
+{
+	int	len;
+
+	len = ft_strlen(str);
+	if (!str)
+		return (0);
+	if ((str[0] == '\'' && str[len - 1] == '\'')
+		|| (str[0] == '"' && str[len - 1] == '"'))
+		return (1);
+	return (0);
+}
 
 /* Main function to expand variables */
 
@@ -18,8 +31,11 @@ char	*expand_variable(t_env *env_list, char *str, int quote_type, int *code)
 {
 	t_expand	exp;
 
-	if (quote_type == SINGLE_QUOTE || (str && str[0] == '\'' && str[ft_strlen(str) - 1] == '\''))
+	(void)quote_type;
+	if (is_quoted(str))
+	{
 		return (ft_strdup(str));
+	}
 	exp.env_list = env_list;
 	if (!init_expand_result(str, &exp))
 		return (NULL);

@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 09:43:09 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 19:17:16 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,8 +123,10 @@ int	main(int ac, char **av, char **envp)
 		if (cmd)
 		{
 			handle_signals(SIGINT, IGNORE);
-			if (cmd && handle_all_heredocs(cmd, env_list, &last_cmd_code) == -1)
+			if (cmd && handle_all_heredocs(cmd) == -1)
 			{
+				if (cmd && cmd->exit_status)
+					last_cmd_code = *(cmd->exit_status);
 				free_commands(cmd);
 				continue ;
 			}
@@ -143,16 +145,15 @@ int	main(int ac, char **av, char **envp)
 			else if (is_builtins(cmd->args[0]) && !has_pipes(cmd))
 			{
 				if (is_redirection(cmd))
-				{
-					printf("DEBUG: Avant appel à handle_builtin_redirection: exit_status = %d\n", *(cmd->exit_status));
 					handle_builtin_redirection(cmd, &env_list);
-					printf("DEBUG: Après appel à handle_builtin_redirection: exit_status = %d\n", *(cmd->exit_status));
-				}
 				else
 					builtins_execution(cmd, &env_list);
 			}
 			else if (has_pipes(cmd))
+			{
+				printf("pipeline\n");
 				execute_pipeline(cmd, env_list);
+			}
 			else if (is_redirection(cmd) && cmd->out && check_output_directory(cmd))
 			{
 				last_cmd_code = 1;
