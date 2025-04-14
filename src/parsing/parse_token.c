@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 10:19:05 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 10:29:44 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,7 @@ int	process_pipe_token(t_token **token, t_cmd **current, t_cmd **head)
 		return (-1);
 	}
 	new_cmd->env_list = (*current)->env_list;
+	free(new_cmd->exit_status);
 	new_cmd->exit_status = (*current)->exit_status;
 	(*current)->next = new_cmd;
 	*current = new_cmd;

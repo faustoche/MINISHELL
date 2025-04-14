@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_free_cmd.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/13 20:23:48 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/14 10:31:21 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ void	free_commands(t_cmd *cmd)
 {
 	t_cmd	*tmp;
 	int		i;
+	int		*last_exit_status;
 
 	if (!cmd)
 		return ;
@@ -47,7 +48,13 @@ void	free_commands(t_cmd *cmd)
 		if (cmd->heredoc_eof)
 			ft_memdel(cmd->heredoc_eof);
 		if (cmd->exit_status)
-			ft_memdel(cmd->exit_status);
+		{
+			if (last_exit_status != cmd->exit_status)
+			{
+				last_exit_status = cmd->exit_status;
+				ft_memdel(cmd->exit_status);
+			}
+		}
 		ft_memdel(cmd);
 		cmd = tmp;
 	}
