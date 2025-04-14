@@ -6,23 +6,40 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 14:54:50 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 18:27:59 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	redirection(t_cmd **cmd, char *file, int out, int append)
+static int redirection(t_cmd **cmd, char *file, int out, int append)
 {
-	char	*tmp;
+	char *tmp;
 
 	if (!cmd || !file)
 		return (-1);
+
+	// On tente d'ouvrir le fichier ici pour valider immédiatement
+	int fd;
+	if (out)
+		fd = open(file, O_WRONLY | O_CREAT | (append ? O_APPEND : O_TRUNC), 0644);
+	else
+		fd = open(file, O_RDONLY);
+
+	if (fd == -1)
+	{
+		perror(file); // Affiche genre "zzz: Is a directory"
+		return (-1);
+	}
+	close(fd);
+
+	// Ensuite, on fait comme avant
+	tmp = ft_strdup(file);
+	if (!tmp)
+		return (-1);
+
 	if (out)
 	{
-		tmp = ft_strdup(file);
-		if (!tmp)
-			return (-1);
 		if ((*cmd)->out)
 			free((*cmd)->out);
 		(*cmd)->out = tmp;
@@ -30,15 +47,42 @@ static int	redirection(t_cmd **cmd, char *file, int out, int append)
 	}
 	else
 	{
-		tmp = ft_strdup(file);
-		if (!tmp)
-			return (-1);
 		if ((*cmd)->in)
 			free((*cmd)->in);
 		(*cmd)->in = tmp;
 	}
 	return (0);
 }
+
+
+// static int	redirection(t_cmd **cmd, char *file, int out, int append)
+// {
+// 	char	*tmp;
+// 	int		fd;
+
+// 	if (!cmd || !file)
+// 		return (-1);
+// 	if (out)
+// 	{
+// 		tmp = ft_strdup(file);
+// 		if (!tmp)
+// 			return (-1);
+// 		if ((*cmd)->out)
+// 			free((*cmd)->out);
+// 		(*cmd)->out = tmp;
+// 		(*cmd)->append = append;
+// 	}
+// 	else
+// 	{
+// 		tmp = ft_strdup(file);
+// 		if (!tmp)
+// 			return (-1);
+// 		if ((*cmd)->in)
+// 			free((*cmd)->in);
+// 		(*cmd)->in = tmp;
+// 	}
+// 	return (0);
+// }
 
 static int	if_init_command(t_cmd **curr, t_cmd **head, t_env *env)
 {

@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 14:42:47 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 18:20:41 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ typedef struct s_cmd
 	size_t			nb_arg;
 	struct s_cmd	*next;
 	t_env			*env_list;
+	char			**all_outputs;
 	int				*exit_status;
 	pid_t			pid;
 }	t_cmd;
