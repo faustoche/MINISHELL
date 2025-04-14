@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 18:31:31 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 18:49:09 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ void	free_commands(t_cmd *cmd)
 			i = 0;
 			while (cmd->args[i])
 			{
-				printf("free arg[%d]: %s\n", i, cmd->args[i]);
 				ft_memdel(cmd->args[i]);
 				i++;
 			}
