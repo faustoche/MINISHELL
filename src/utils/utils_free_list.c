@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_free_list.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:28:18 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/14 10:54:49 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 21:43:40 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,43 +67,85 @@ static void free_files(t_cmd *cmd)
 		ft_memdel(cmd->heredoc_eof);
 }
 
+void	free_single_cmd(t_cmd *cmd, int **last_exit_status_ptr)
+{
+	int	i;
+
+	free_files(cmd);
+	if (cmd->args)
+	{
+		i = 0;
+		while (cmd->args[i])
+		{
+			ft_memdel(cmd->args[i]);
+			i++;
+		}
+		ft_memdel(cmd->args);
+	}
+	if (cmd->exit_status)
+	{
+		if (!*last_exit_status_ptr || *last_exit_status_ptr != cmd->exit_status)
+		{
+			*last_exit_status_ptr = cmd->exit_status;
+			free(cmd->exit_status);
+		}
+	}
+	ft_memdel(cmd);
+}
 
 void	free_pipe_redir(t_cmd *cmd)
 {
 	t_cmd	*tmp_cmd;
 	t_cmd	*next;
-	int		i;
 	int		*last_exit_status;
 
 	tmp_cmd = cmd;
 	last_exit_status = NULL;
 	while (tmp_cmd)
 	{
-		i = 0;
 		next = tmp_cmd->next;
-		free_files(tmp_cmd);
-		if (tmp_cmd->args)
-		{
-			while (tmp_cmd->args[i])
-			{
-				ft_memdel(tmp_cmd->args[i]);
-				i++;
-			}
-			ft_memdel(tmp_cmd->args);
-		}
-		if (tmp_cmd->exit_status)
-		{
-			if (!last_exit_status || last_exit_status != tmp_cmd->exit_status)
-			{
-				last_exit_status = tmp_cmd->exit_status;
-				free(tmp_cmd->exit_status);
-			}
-		}
-		ft_memdel(tmp_cmd);
+		free_single_cmd(tmp_cmd, &last_exit_status);
 		tmp_cmd = next;
 	}
 	close_all_fd(3);
 }
+
+// void	free_pipe_redir(t_cmd *cmd)
+// {
+// 	t_cmd	*tmp_cmd;
+// 	t_cmd	*next;
+// 	int		i;
+// 	int		*last_exit_status;
+
+// 	tmp_cmd = cmd;
+// 	last_exit_status = NULL;
+// 	while (tmp_cmd)
+// 	{
+// 		i = 0;
+// 		next = tmp_cmd->next;
+// 		free_files(tmp_cmd);
+// 		if (tmp_cmd->args)
+// 		{
+// 			while (tmp_cmd->args[i])
+// 			{
+// 				ft_memdel(tmp_cmd->args[i]);
+// 				i++;
+// 			}
+// 			ft_memdel(tmp_cmd->args);
+// 		}
+// 		if (tmp_cmd->exit_status)
+// 		{
+// 			if (!last_exit_status || last_exit_status != tmp_cmd->exit_status)
+// 			{
+// 				last_exit_status = tmp_cmd->exit_status;
+// 				free(tmp_cmd->exit_status);
+// 			}
+// 		}
+// 		ft_memdel(tmp_cmd);
+// 		tmp_cmd = next;
+// 	}
+// 	close_all_fd(3);
+// }
 
 // void	free_pipe_redir(t_cmd *cmd)
 // {

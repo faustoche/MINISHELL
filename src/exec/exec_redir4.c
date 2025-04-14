@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redir4.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:48:26 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 18:25:27 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 21:39:01 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void	handle_child_process(t_cmd *cmd, t_env *env, int pipefd[2], int fd)
 	if (fd != -1)
 		redir_heredoc(fd);
 	else if (cmd->in)
-		redir_input(cmd->in);
+		redir_input(cmd->in, cmd->exit_status);
 	if (cmd->out)
-		redir_output(cmd->out, cmd->append);
+		redir_output(cmd->out, cmd->append, cmd->exit_status);
 	(close(pipefd[0]), close(pipefd[1]));
 	if (cmd->args && cmd->args[0])
 	{

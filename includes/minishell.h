@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 18:20:41 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 21:48:47 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@
 # define ERR_DIR		"minislay: %s: No such file or directory\n"
 # define ERR_ARG		"minislay: %s: too many arguments\n"
 # define ERR_EXP		"minislay: export: %s: not a valid identifier\n"
+# define ERR_HERE		"minislay: warning: here-document delimited by eof\n"
 
 /*--------------- DEFINES FOR SIGNALS --------------*/
 
@@ -202,8 +203,8 @@ void	handle_builtin_redirection(t_cmd *cmd, t_env **env_list);
 void	free_pipe(t_cmd *cmd, t_env *env_list, char **env);
 void	free_pipe_redir(t_cmd *cmd);
 void	redir_heredoc(int heredoc_fd);
-void	redir_input(char *input_file);
-void	redir_output(char *output_file, int append_mode);
+void	redir_input(char *input_file, int *code);
+void	redir_output(char *output_file, int append_mode, int *code);
 int		redir_execute(t_cmd *cmd, t_env *env_list);
 t_pipe	init_pipe_struct(t_cmd *cmd, t_env **env_list);
 void	pipe_child_process(t_cmd *current, t_pipe *pipe_data);
@@ -298,7 +299,7 @@ void	quit_minislay(char *line, t_cmd *cmd, t_token *token, t_env *env);
 void	clean_exit(t_token *tokens, char *input, t_cmd *commands);
 int		print_error_message(char *str);
 void	close_all_fd(int fd);
-int		open_file(char *filename, int token);
+int		open_file(char *filename, int token, int *code);
 void	ft_memdel(void *ptr);
 void	free_commands(t_cmd *cmd);
 char	*ft_realloc(char *str, size_t size);
