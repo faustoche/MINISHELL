@@ -12,35 +12,32 @@
 
 #include "minishell.h"
 
-static int	read_heredoc_content(char *delimiter, int write_fd)
+static int	read_heredoc_content(char *delimiter, int fd)
 {
-	char	*input;
+	char	*in;
 
 	while (1)
 	{
-		input = readline("heredoc> ");
-		if (!input)
+		in = readline("heredoc> ");
+		if (!in)
 		{
 			if (g_received_signal == SIGINT)
 			{
 				g_received_signal = 0;
-				return (close(write_fd), -1);
+				return (close(fd), -1);
 			}
-			(printf(ERR_HERE), close(write_fd));
+			(printf(ERR_HERE), close(fd));
 			return (0);
 		}
-		if (ft_strcmp(input, delimiter) == 0)
+		if (ft_strcmp(in, delimiter) == 0)
 		{
-			free(input);
+			free(in);
 			break ;
 		}
-		if (input)
-		{
-			write(write_fd, input, ft_strlen(input));
-			(write(write_fd, "\n", 1), free(input));
-		}
+		if (in)
+			(write(fd, in, ft_strlen(in)), write(fd, "\n", 1), free(in));
 	}
-	close(write_fd);
+	close(fd);
 	return (0);
 }
 
