@@ -28,15 +28,9 @@ void	handle_signals(int sig, int param)
 	else if (param == CLOSE_IN)
 		sa.sa_handler = close_stdin;
 	else
-	{
-		if (sig == SIGINT)
-			g_received_signal = SIGINT;
-	}
-	if (sigaction(sig, &sa, NULL) == -1)
-	{
-		perror("sigaction failed");
 		return ;
-	}
+	if (sigaction(sig, &sa, NULL) == -1)
+		perror("sigaction failed");
 }
 
 void	new_prompt(int sig)

@@ -28,7 +28,16 @@ static int	wait_kids(pid_t last_pid, t_cmd *last_cmd)
 			if (WIFEXITED(status))
 				last_status = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
+			{
 				last_status = 128 + WTERMSIG(status);
+				// if (WTERMSIG(status) == SIGQUIT)
+				// {
+				// 	printf("Quit (core dumped)\n");
+				// 	g_received_signal = SIGQUIT;
+				// }
+				// else if (WTERMSIG(status) == SIGINT)
+				// 	g_received_signal = SIGINT;
+			}
 			if (wait_pid == last_pid && last_cmd && last_cmd->exit_status)
 				*(last_cmd->exit_status) = last_status;
 		}
@@ -36,7 +45,12 @@ static int	wait_kids(pid_t last_pid, t_cmd *last_cmd)
 	if (WIFSIGNALED(status))
 	{
 		if (WTERMSIG(status) == SIGQUIT)
+		{
 			printf("Quit (core dumped)\n");
+			g_received_signal = SIGQUIT;
+		}
+		else if (WTERMSIG(status) == SIGINT)
+			g_received_signal = SIGINT;
 	}
 	return (last_status);
 }

@@ -78,11 +78,6 @@ int	main(int ac, char **av, char **envp)
 	{
 		handle_signals(SIGINT, PROMPT);
 		handle_signals(SIGQUIT, IGNORE);
-		if (g_received_signal == SIGINT)
-		{
-			last_cmd_code = 128 + SIGINT;
-			g_received_signal = 0;
-		}
 		input = prompt();
 		if (!input)
 			break ;
@@ -175,6 +170,11 @@ int	main(int ac, char **av, char **envp)
 		{
 			free_commands(cmd);
 			cmd = NULL;
+		}
+		if (g_received_signal == SIGINT)
+		{
+			last_cmd_code = 128 + SIGINT;
+			g_received_signal = 0;
 		}
 	}
 	if (input)

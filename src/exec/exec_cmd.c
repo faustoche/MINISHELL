@@ -81,9 +81,15 @@ static void	create_child_process(char **args, char *bin, t_env *env, int *code)
 		if (WIFSIGNALED(status))
 		{
 			if (WTERMSIG(status) == SIGQUIT)
+			{
 				printf("Quit (core dumped)\n");
+				g_received_signal = SIGQUIT;
+			}
 			else if (WTERMSIG(status) == SIGINT)
+			{
 				printf("\n");
+				g_received_signal = SIGINT;
+			}
 		}
 	}
 	close_all_fd(3);
