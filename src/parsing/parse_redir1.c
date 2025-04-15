@@ -3,80 +3,100 @@
 /*                                                        :::      ::::::::   */
 /*   parse_redir1.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 19:27:35 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 21:47:45 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int redirection(t_cmd **cmd, char *file, int out, int append)
+int	apply_redirection_to_cmd(t_cmd **cmd, char *file, int out, int append)
 {
-    char *tmp;
-    int fd;
+	char *tmp;
 
-    if (!cmd || !file)
-        return (-1);
-    if (out)
-    {
-        if (append)
-            fd = open_file(file, REDIR_APPEND);
-        else
-            fd = open_file(file, REDIR_OUT);
-    }
-    else
-        fd = open_file(file, REDIR_IN);
-    if (fd == -1)
-        return (-1);
-    close(fd);
-    tmp = ft_strdup(file);
-    if (!tmp)
-        return (-1);
-    
-    if (out)
-    {
-        if ((*cmd)->out)
-            free((*cmd)->out);
-        (*cmd)->out = tmp;
-        (*cmd)->append = append;
-    }
-    else
-    {
-        if ((*cmd)->in)
-            free((*cmd)->in);
-        (*cmd)->in = tmp;
-    }
-    return (0);
+	tmp = ft_strdup(file);
+	if (!tmp)
+		return (-1);
+
+	if (out)
+	{
+		if ((*cmd)->out)
+			free((*cmd)->out);
+		(*cmd)->out = tmp;
+		(*cmd)->append = append;
+	}
+	else
+	{
+		if ((*cmd)->in)
+			free((*cmd)->in);
+		(*cmd)->in = tmp;
+	}
+	return (0);
 }
 
-// static int	redirection(t_cmd **cmd, char *file, int out, int append)
-// {
-// 	char	*tmp;
+static int redirection(t_cmd **cmd, char *file, int out, int append)
+{
+	int fd;
 
-// 	if (!cmd || !file)
-// 		return (-1);
-// 	if (out)
-// 	{
-// 		tmp = ft_strdup(file);
-// 		if (!tmp)
-// 			return (-1);
-// 		if ((*cmd)->out)
-// 			free((*cmd)->out);
-// 		(*cmd)->out = tmp;
-// 		(*cmd)->append = append;
-// 	}
-// 	else
-// 	{
-// 		tmp = ft_strdup(file);
-// 		if (!tmp)
-// 			return (-1);
-// 		if ((*cmd)->in)
-// 			free((*cmd)->in);
-// 		(*cmd)->in = tmp;
-// 	}
-// 	return (0);
+	if (!cmd || !file)
+		return (-1);
+	if (out)
+	{
+		if (append)
+			fd = open_file(file, REDIR_APPEND, (*cmd)->exit_status);
+		else
+			fd = open_file(file, REDIR_OUT, (*cmd)->exit_status);
+	}
+	else
+		fd = open_file(file, REDIR_IN, (*cmd)->exit_status);
+	if (fd == -1)
+		return (-1);
+	close(fd);
+	if (apply_redirection_to_cmd(cmd, file, out, append) == -1)
+		return (-1);
+
+	return (0);
+}
+
+// static int redirection(t_cmd **cmd, char *file, int out, int append)
+// {
+//     char *tmp;
+//     int fd;
+
+//     if (!cmd || !file)
+//         return (-1);
+//     if (out)
+//     {
+//         if (append)
+//             fd = open_file(file, REDIR_APPEND, (*cmd)->exit_status);
+//         else
+//             fd = open_file(file, REDIR_OUT, (*cmd)->exit_status);
+//     }
+//     else
+//         fd = open_file(file, REDIR_IN, (*cmd)->exit_status);
+//     if (fd == -1)
+//         return (-1);
+//     close(fd);
+//     tmp = ft_strdup(file);
+//     if (!tmp)
+//         return (-1);
+    
+//     if (out)
+//     {
+//         if ((*cmd)->out)
+//             free((*cmd)->out);
+//         (*cmd)->out = tmp;
+//         (*cmd)->append = append;
+//     }
+//     else
+//     {
+//         if ((*cmd)->in)
+//             free((*cmd)->in);
+//         (*cmd)->in = tmp;
+//     }
+//     return (0);
 // }
 
 static int	if_init_command(t_cmd **curr, t_cmd **head, t_env *env)

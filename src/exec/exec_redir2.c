@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redir2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:47:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 09:34:10 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 21:32:04 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static int	handle_file_input_redirection(t_cmd *cmd, int original_stdin)
 {
 	int	fd_in;
 
-	fd_in = open_file(cmd->in, REDIR_IN);
+	fd_in = open_file(cmd->in, REDIR_IN, cmd->exit_status);
 	if (fd_in == -1)
 	{
 		close(original_stdin);
@@ -70,9 +70,9 @@ int	handle_output_redirection(t_cmd *cmd)
 	if (cmd->out)
 	{
 		if (cmd->append)
-			fd_out = open_file(cmd->out, REDIR_APPEND);
+			fd_out = open_file(cmd->out, REDIR_APPEND, cmd->exit_status);
 		else
-			fd_out = open_file(cmd->out, REDIR_OUT);
+			fd_out = open_file(cmd->out, REDIR_OUT, cmd->exit_status);
 		if (fd_out == -1)
 		{
 			*(cmd->exit_status) = 1;

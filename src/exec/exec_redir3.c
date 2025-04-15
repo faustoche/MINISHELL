@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redir3.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:47:52 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 17:59:03 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/14 21:38:33 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,11 @@ void	redir_heredoc(int heredoc_fd)
 	close(heredoc_fd);
 }
 
-void	redir_input(char *input_file)
+void	redir_input(char *input_file, int *code)
 {
 	int	fd;
 
-	fd = open_file(input_file, REDIR_IN);
+	fd = open_file(input_file, REDIR_IN, code);
 	if (fd == -1)
 	{
 		printf("minislay: %s: Permission denied\n", input_file);
@@ -49,14 +49,14 @@ void	redir_input(char *input_file)
 	close(fd);
 }
 
-void	redir_output(char *output_file, int append_mode)
+void	redir_output(char *output_file, int append_mode, int *code)
 {
 	int	fd;
 
 	if (append_mode)
-		fd = open_file(output_file, REDIR_APPEND);
+		fd = open_file(output_file, REDIR_APPEND, code);
 	else
-		fd = open_file(output_file, REDIR_OUT);
+		fd = open_file(output_file, REDIR_OUT, code);
 	if (fd == -1)
 	{
 		printf("fd == -1\n");

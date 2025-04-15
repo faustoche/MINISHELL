@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:12:45 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 19:39:59 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 07:34:55 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	close_all_fd(int fd)
 	close_all_fd(fd + 1);
 }
 
-int	open_file(char *filename, int token)
+int	open_file(char *filename, int token, int *code)
 {
 	int	fd;
 
@@ -28,6 +28,8 @@ int	open_file(char *filename, int token)
 	if (!filename)
 	{
 		printf("Error: NULL filename\n");
+		if (code)
+			*code = 1;
 		return (-1);
 	}
 	if (token == REDIR_OUT)
@@ -41,6 +43,8 @@ int	open_file(char *filename, int token)
 		perror("minislay");
 		// ici ajouter exit code
 		close_all_fd(3);
+		if (code)
+			*code = 1;
 		return (-1);
 	}
 	return (fd);
