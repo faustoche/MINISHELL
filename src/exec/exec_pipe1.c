@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 20:05:00 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/15 10:08:23 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 18:30:14 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,66 +112,3 @@ void	execute_pipeline(t_cmd *cmd, t_env *env_list)
 	process_execute_pipeline(cmd, &pipe_data);
 	cleanup_and_wait(&pipe_data);
 }
-
-// static void cleanup_and_wait(t_pipe *pipe_data)
-// {
-// 	int     status;
-// 	pid_t   wait_pid;
-// 	t_cmd   *last_cmd;
-// 	int     last_status = 0;
-// 	last_cmd = get_last_cmd(pipe_data->cmd);
-// 	pid_t   last_pid = (last_cmd) ? last_cmd->pid : -1;
-// 	status = 0;
-// 	if (pipe_data->input_fd != STDIN_FILENO)
-// 		close(pipe_data->input_fd);
-// 	while ((wait_pid = waitpid(-1, &status, 0)) > 0)
-// 	{
-// 		if (WIFEXITED(status))
-// 			last_status = WEXITSTATUS(status);
-// 		else if (WIFSIGNALED(status))
-// 			last_status = 128 + WTERMSIG(status);
-// 		if (wait_pid == last_pid)
-// 		{
-// 			*(last_cmd->exit_status) = last_status;
-// 			if (pipe_data->cmd && pipe_data->cmd->exit_status)
-// 				*(pipe_data->cmd->exit_status) = last_status;
-// 		}
-// 	}
-// 	if (WIFSIGNALED(status))
-// 	{
-// 		if (WTERMSIG(status) == SIGQUIT)
-// 			printf("Quit (core dumped)\n");
-// 	}
-// 	close_all_fd(3);
-// }
-
-// void	execute_pipeline(t_cmd *cmd, t_env *env_list)
-// {
-// 	t_cmd	*current;
-// 	pid_t	pid;
-// 	t_pipe	pipe_data;
-
-// 	pipe_data = init_pipe_struct(cmd, &env_list);
-// 	current = cmd;
-// 	while (current)
-// 	{
-// 		if (current->next && !setup_pipe(&pipe_data))
-// 			return ;
-// 		pid = fork();
-// 		if (pid == -1)
-// 		{
-// 			perror("Fork creation failed\n");
-// 			if (current->next)
-// 				(close(pipe_data.pipe_fd[0]), close(pipe_data.pipe_fd[1]));
-// 			return ;
-// 		}
-// 		else if (pid == 0)
-// 			pipe_child_process(current, &pipe_data);
-// 		else
-// 		{
-// 			current->pid = pid;
-// 			pipe_parent_process(&current, &pipe_data);
-// 		}
-// 	}
-// 	cleanup_and_wait(&pipe_data);
-// }

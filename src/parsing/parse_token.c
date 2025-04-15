@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/15 08:07:28 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 18:33:25 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,33 +111,3 @@ int	process_pipe_token(t_token **token, t_cmd **current, t_cmd **head)
 	*token = (*token)->next;
 	return (0);
 }
-
-// int	handle_std_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env)
-// {
-// 	t_cmd	*new_cmd;
-// 	t_cmd	*tmp;
-
-// 	if (!(*curr))
-// 	{
-// 		new_cmd = init_command();
-// 		if (!new_cmd)
-// 			return (-1);
-// 		new_cmd->env_list = env;
-// 		if (!(*head))
-// 			*head = new_cmd;
-// 		else
-// 		{
-// 			tmp = *head;
-// 			while (tmp && tmp->next)
-// 				tmp = tmp->next;
-// 			if (tmp)
-// 				tmp->next = new_cmd;
-// 			else
-// 				*head = new_cmd;
-// 		}
-// 		*curr = new_cmd;
-// 	}
-// 	if (add_args(*tok, *curr) == -1)
-// 		return (-1);
-// 	return (0);
-// }

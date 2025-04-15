@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 18:14:36 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/15 08:59:36 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 18:31:32 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,78 +89,3 @@ void	ft_exit(t_cmd *cmd)
 	quit_minislay(NULL, cmd, NULL, NULL);
 	exit(exit_code);
 }
-
-// void	ft_exit(t_cmd *cmd)
-// {
-// 	long long		exit_code;
-// 	int				error;
-// 	exit_code = 0;
-// 	printf("exit\n");
-// 	if (cmd->args[1])
-// 	{
-// 		exit_code = ft_atoll(cmd->args[1], &error);
-// 		if (error)
-// 		{
-// 			printf("minislay : exit: %s: numeric required\n", cmd->args[1]);
-// 			*(cmd->exit_status) = 2; // verifier si 2
-// 			exit(2);
-// 		}
-// 		else if (cmd->args[2])
-// 		{
-// 			printf("minislay : exit: too many arguments\n");
-// 			*(cmd->exit_status) = 1; // verifier 1
-// 			return ;
-// 		}
-// 		else
-// 		{
-// 			exit_code = exit_code % 256;
-// 			if (exit_code < 0)
-// 				exit_code += 256;
-// 		}
-// 	}
-// 	else
-// 		exit_code = *(cmd->exit_status); // ici necessaire ?
-// 	*(cmd->exit_status) = exit_code;
-// 	quit_minislay(NULL, cmd, NULL, NULL);
-// 	exit(exit_code);
-// }
-// long long	ft_atoll(const char *str, int *error)
-// {
-// 	long long	result;
-// 	int			i;
-// 	int			sign;
-// 	*error = 0;
-// 	i = 0;
-// 	result = 0;
-// 	sign = 1;
-// 	while (str[i] == ' ' || (str[i] >= 9 && str[i] <= 13))
-// 		i++;
-// 	if (str[i] == '-')
-// 		sign = -1;
-// 	if (str[i] == '-' || str[i] == '+')
-// 		i++;
-// 	if (ft_isdigit(str[i] == 1))
-// 	{
-// 		*error = 1;
-// 		return (0);
-// 	}
-// 	while (str[i] >= '0' && str[i] <= '9')
-// 	{
-// 		if ((result > LLONG_MAX / 10) || (result == LLONG_MAX / 10
-// 			&& (str[i] - '0') > LLONG_MAX % 10))
-// 		{
-// 			*error = 1;
-// 			if (sign == 1)
-// 				return (LLONG_MAX);
-// 			else
-// 				return (LLONG_MIN);
-// 		}
-// 		result = result * 10 + (str[i++] - '0');
-// 	}
-// 	if (str[i] != '\0')
-// 	{
-// 		*error = 1;
-// 		return (0);
-// 	}
-// 	return (result * sign);
-// }

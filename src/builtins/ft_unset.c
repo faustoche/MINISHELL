@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_unset.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 15:04:05 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/13 20:49:11 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/15 18:31:45 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,38 +66,3 @@ t_env	*ft_unset(t_env *env_list, char *name)
 	free_env_list(&env_list);
 	return (new_env_list);
 }
-
-// t_env *ft_unset(t_env *env_list, char *name)
-// {
-// 	t_env	*new_env_list;
-// 	t_env	*current;
-// 	t_env	*result;
-// 	t_env	*prev;
-
-// 	if (name == NULL || *name == '\0')
-// 		return (env_list);
-// 	new_env_list = copy_env_list(env_list);
-// 	current = new_env_list;
-// 	prev = NULL;
-// 	while (current)
-// 	{
-// 		result = unset_utils(env_list, new_env_list, name);
-// 		if (result != NULL)
-// 			return (result);
-// 		if (strcmp(current->name, name) == 0)
-// 		{
-// 			if (prev)
-// 				prev->next = current->next;
-// 			else
-// 				new_env_list = current->next;
-// 			free(current->name);
-// 			free(current->value);
-// 			free(current);
-// 			break ;
-// 		}
-// 		prev = current;
-// 		current = current->next;
-// 	}
-// 	free_env_list(&env_list);
-// 	return (new_env_list);
-// }

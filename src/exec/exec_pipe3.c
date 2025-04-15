@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 09:14:49 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/15 10:08:37 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 18:29:57 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,5 +97,3 @@ void	pipe_child_process(t_cmd *current, t_pipe *pipe_data)
 		free_pipe(pipe_data->cmd, *(pipe_data->env_list), NULL);
 	exit(1);
 }
-
-// 			dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);	
