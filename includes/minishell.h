@@ -285,7 +285,7 @@ int		process_pipe_token(t_token **token, t_cmd **current, t_cmd **head);
 
 /* SIGNALS */
 
-int		handle_signals(int sig, int param);
+void		handle_signals(int sig, int param);
 void	new_prompt(int sig);
 void	child_new_prompt(int sig);
 void	close_stdin(int sig);

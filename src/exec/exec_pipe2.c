@@ -80,8 +80,7 @@ void	pipe_execve(t_cmd *current, t_pipe *pipe_data)
 
 void	pipe_parent_process(t_cmd **current, t_pipe *pipe_data)
 {
-	if (handle_signals(SIGINT, CHILD_PROMPT) == -1)
-		return ;
+	handle_signals(SIGINT, CHILD_PROMPT);
 	if (pipe_data->input_fd != STDIN_FILENO)
 		close(pipe_data->input_fd);
 	if ((*current)->next)

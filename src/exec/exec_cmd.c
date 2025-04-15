@@ -56,21 +56,17 @@ static void	create_child_process(char **args, char *bin, t_env *env, int *code)
 		return ;
 	else if (pid == 0)
 	{
-		if (handle_signals(SIGINT, DEFAULT) == -1)
-			return ;
-		if (handle_signals(SIGQUIT, DEFAULT) == -1)
-			return ;
+		handle_signals(SIGINT, DEFAULT);
+		handle_signals(SIGQUIT, DEFAULT);
 		execute_child_process(args, bin, env);
 	}
 	else
 	{
-		if (handle_signals(SIGINT, IGNORE) == -1)
-			return ;
+		handle_signals(SIGINT, IGNORE);
 		while ((wait_pid = waitpid(pid, &status, WNOHANG)) == 0)
 		{
 		}
-		if (handle_signals(SIGINT, PROMPT) == -1)
-			return ;
+		handle_signals(SIGINT, PROMPT);
 		if (wait_pid > 0)
 		{
 			if (WIFEXITED(status))
@@ -92,55 +88,6 @@ static void	create_child_process(char **args, char *bin, t_env *env, int *code)
 	}
 	close_all_fd(3);
 }
-
-// void	create_child_process(char **args, char *binary, t_env *env, int *code)
-// {
-// 	pid_t				pid;
-// 	int					status;
-// 	t_cmd	*last_cmd;
-// 	int		last_status = 0;
-// 	pid_t	wait_pid;
-
-// 	last_cmd = get_last_cmd(env->cmd);
-// 	pid_t	last_pid = (last_cmd) ? last_cmd->pid : -1;
-// 	g_received_signal = 0;
-// 	status = 0;
-// 	pid = fork();
-// 	if (pid == -1)
-// 		return ;
-// 	else if (pid == 0)
-// 	{
-// 		dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
-// 		if (handle_signals(SIGINT, DEFAULT) == -1)
-// 			return ;
-// 		if (handle_signals(SIGQUIT, DEFAULT) == -1)
-// 			return ;
-// 		execute_child_process(args, binary_path, env);
-// 	}
-// 	else if (pid > 0)
-// 	{
-// 		dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
-// 		if (handle_signals(SIGINT, CHILD_PROMPT) == -1)
-// 			return ;
-// 		while ((wait_pid = waitpid(pid, &status, 0)) > 0)
-// 		{
-// 			if (WIFEXITED(status))
-// 				last_status = WEXITSTATUS(status);
-// 			else if (WIFSIGNALED(status))
-// 				last_status = 128 + WTERMSIG(status);
-// 			if (code)
-// 				*code = last_status;
-// 			if (wait_pid == last_pid && last_cmd && last_cmd->exit_status)
-// 				*(last_cmd->exit_status) = last_status;
-// 		}
-// 		if (WIFSIGNALED(status))
-// 		{
-// 			if (WTERMSIG(status) == SIGQUIT)
-// 			printf("Quit (core dumped)\n");
-// 		}
-// 	}
-// 	close_all_fd(3);
-// }
 
 void	execute_commands(t_cmd *cmd, t_env *env)
 {
@@ -209,3 +156,52 @@ void	execute_commands(t_cmd *cmd, t_env *env)
 		cur = cur->next;
 	}
 }
+
+// void	create_child_process(char **args, char *binary, t_env *env, int *code)
+// {
+// 	pid_t				pid;
+// 	int					status;
+// 	t_cmd	*last_cmd;
+// 	int		last_status = 0;
+// 	pid_t	wait_pid;
+
+// 	last_cmd = get_last_cmd(env->cmd);
+// 	pid_t	last_pid = (last_cmd) ? last_cmd->pid : -1;
+// 	g_received_signal = 0;
+// 	status = 0;
+// 	pid = fork();
+// 	if (pid == -1)
+// 		return ;
+// 	else if (pid == 0)
+// 	{
+// 		dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
+// 		if (handle_signals(SIGINT, DEFAULT) == -1)
+// 			return ;
+// 		if (handle_signals(SIGQUIT, DEFAULT) == -1)
+// 			return ;
+// 		execute_child_process(args, binary_path, env);
+// 	}
+// 	else if (pid > 0)
+// 	{
+// 		dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);
+// 		if (handle_signals(SIGINT, CHILD_PROMPT) == -1)
+// 			return ;
+// 		while ((wait_pid = waitpid(pid, &status, 0)) > 0)
+// 		{
+// 			if (WIFEXITED(status))
+// 				last_status = WEXITSTATUS(status);
+// 			else if (WIFSIGNALED(status))
+// 				last_status = 128 + WTERMSIG(status);
+// 			if (code)
+// 				*code = last_status;
+// 			if (wait_pid == last_pid && last_cmd && last_cmd->exit_status)
+// 				*(last_cmd->exit_status) = last_status;
+// 		}
+// 		if (WIFSIGNALED(status))
+// 		{
+// 			if (WTERMSIG(status) == SIGQUIT)
+// 			printf("Quit (core dumped)\n");
+// 		}
+// 	}
+// 	close_all_fd(3);
+// }
