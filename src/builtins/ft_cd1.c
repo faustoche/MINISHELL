@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 08:47:18 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 07:52:13 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 07:52:27 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ t_env	*ft_cd(t_cmd *cmd, t_env *env_list)
 	}
 	if (cd_errors(cmd, new_dir, &new_env))
 		return (env_list);
-	new_env = cd_update_env(cmd, new_env, old_pwd, new_dir);
+	new_env = cd_upda_env(cmd, new_env, old_pwd, new_dir);
 	free_env_list(&env_list);
 	return (new_env);
 }

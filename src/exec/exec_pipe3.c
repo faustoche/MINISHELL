@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_pipe3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 09:14:49 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 21:31:36 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/15 07:44:30 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ void	in_redirection(t_cmd *current, int input_fd)
 {
 	int	fd;
 
-	dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);	
 	if (input_fd != STDIN_FILENO)
 	{
 		dup2(input_fd, STDIN_FILENO);
@@ -48,7 +47,6 @@ void	out_redirection(t_cmd *current, t_pipe *pipe_data)
 	}
 	if (current->out)
 	{
-		dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);	
 		if (current->append)
 			fd = open_file(current->out, REDIR_APPEND, current->exit_status);
 		else

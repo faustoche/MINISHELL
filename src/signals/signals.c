@@ -6,13 +6,13 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/31 14:40:12 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/14 11:15:35 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 07:41:54 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	handle_signals(int sig, int param) // ou est-ce que je mets a jour g_received_signal?
+int	handle_signals(int sig, int param)
 {
 	struct sigaction	sa;
 

@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 18:12:45 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/15 07:34:55 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 07:53:48 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ int	open_file(char *filename, int token, int *code)
 	if (fd < 0)
 	{
 		perror("minislay");
-		// ici ajouter exit code
 		close_all_fd(3);
 		if (code)
 			*code = 1;
