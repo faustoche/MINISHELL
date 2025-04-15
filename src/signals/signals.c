@@ -45,10 +45,10 @@ void	new_prompt(int sig)
 	{
 		printf("\n");
 		g_received_signal = SIGINT;
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
 	}
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
 }
 
 void	child_new_prompt(int sig)
