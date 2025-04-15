@@ -31,8 +31,7 @@ void	handle_pipe_redirection(t_cmd *cmd, t_env *env_list)
 		handle_child_process(cmd, env_list, pipefd, heredoc_fd);
 	else
 	{
-		if (handle_signals(SIGINT, CLOSE_IN) == -1)
-			return ;
+		handle_signals(SIGINT, CLOSE_IN);
 		(close(pipefd[1]), waitpid(pid, &status, 0));
 		handle_exit_status_signals(status, cmd);
 		if (heredoc_fd != -1)

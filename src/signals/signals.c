@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-int	handle_signals(int sig, int param)
+void	handle_signals(int sig, int param)
 {
 	struct sigaction	sa;
 
@@ -28,13 +28,9 @@ int	handle_signals(int sig, int param)
 	else if (param == CLOSE_IN)
 		sa.sa_handler = close_stdin;
 	else
-	{
-		if (sig == SIGINT)
-			g_received_signal = SIGINT;
-	}
+		return ;
 	if (sigaction(sig, &sa, NULL) == -1)
-		return (-1);
-	return (0);
+		perror("sigaction failed");
 }
 
 void	new_prompt(int sig)
@@ -43,10 +39,10 @@ void	new_prompt(int sig)
 	{
 		printf("\n");
 		g_received_signal = SIGINT;
+		rl_replace_line("", 0);
+		rl_on_new_line();
+		rl_redisplay();
 	}
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
 }
 
 void	child_new_prompt(int sig)

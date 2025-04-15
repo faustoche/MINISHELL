@@ -17,9 +17,11 @@ static int	wait_kids(pid_t last_pid, t_cmd *last_cmd)
 	int		status;
 	int		last_status;
 	pid_t	wait_pid;
+	int		printed_signal;
 
 	wait_pid = 1;
 	last_status = 0;
+	printed_signal = 0;
 	while (wait_pid > 0)
 	{
 		wait_pid = waitpid(-1, &status, 0);
@@ -28,15 +30,23 @@ static int	wait_kids(pid_t last_pid, t_cmd *last_cmd)
 			if (WIFEXITED(status))
 				last_status = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
+			{
 				last_status = 128 + WTERMSIG(status);
+				if (!printed_signal)
+				{
+					if (WTERMSIG(status) == SIGQUIT)
+					{
+						printf("Quit (core dumped)\n");
+						g_received_signal = SIGQUIT;
+					}
+					else if (WTERMSIG(status) == SIGINT)
+						g_received_signal = SIGINT;
+					printed_signal = 1;
+				}	
+			}
 			if (wait_pid == last_pid && last_cmd && last_cmd->exit_status)
 				*(last_cmd->exit_status) = last_status;
 		}
-	}
-	if (WIFSIGNALED(status))
-	{
-		if (WTERMSIG(status) == SIGQUIT)
-			printf("Quit (core dumped)\n");
 	}
 	return (last_status);
 }

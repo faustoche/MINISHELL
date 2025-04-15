@@ -188,6 +188,8 @@ void	builtins_execution(t_cmd *cmd, t_env **env_list);
 char	*build_pathname(char *directory, char *arg);
 char	*find_bin_path(char *arg, t_env *env_list);
 void	execute_commands(t_cmd *cmd, t_env *env_list);
+void	execute_child_process(char **args, char *binary_path, t_env *env);
+void	create_child_process(char **args, char *bin, t_env *env, int *code);
 t_cmd	*get_last_cmd(t_cmd *cmd);
 void	execute_pipeline(t_cmd *cmd, t_env *env_list);
 int		setup_pipe(t_pipe *pipe_data);
@@ -285,10 +287,11 @@ int		process_pipe_token(t_token **token, t_cmd **current, t_cmd **head);
 
 /* SIGNALS */
 
-int		handle_signals(int sig, int param);
+void		handle_signals(int sig, int param);
 void	new_prompt(int sig);
 void	child_new_prompt(int sig);
 void	close_stdin(int sig);
+int		check_exit_or_signal(int status, int last_status);
 
 /* UTILS */
 

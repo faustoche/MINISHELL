@@ -80,10 +80,8 @@ t_pipe	init_pipe_struct(t_cmd *cmd, t_env **env_list)
 
 void	pipe_child_process(t_cmd *current, t_pipe *pipe_data)
 {
-	if (handle_signals(SIGINT, DEFAULT) == -1)
-		return ;
-	if (handle_signals(SIGQUIT, DEFAULT) == -1)
-		return ;
+	handle_signals(SIGINT, DEFAULT);
+	handle_signals(SIGQUIT, DEFAULT);
 	in_redirection(current, pipe_data->input_fd);
 	out_redirection(current, pipe_data);
 	if (current && current->args && current->args[0])
