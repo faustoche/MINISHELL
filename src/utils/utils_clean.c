@@ -26,7 +26,7 @@ void	quit_minislay(char *line, t_cmd *cmd, t_token *token, t_env *env)
 		token = tmp;
 	}
 	free_env_list(&env);
-	clear_history();
+	rl_clear_history();
 }
 
 void	clean_exit(t_token *tokens, char *input, t_cmd *commands)
