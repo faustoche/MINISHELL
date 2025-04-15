@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/15 09:28:25 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 11:52:38 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,7 +197,7 @@ void	execute_commands(t_cmd *cmd, t_env *env)
 					printf(ERR_CMD, cur->args[0]);
 					if (cur->exit_status)
 						*(cur->exit_status) = 127;
-					close_all_fd(3);
+					//close_all_fd(3);
 				}
 				else
 				{

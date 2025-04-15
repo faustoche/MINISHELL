@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/15 10:10:03 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 11:38:06 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,7 +168,6 @@ int	main(int ac, char **av, char **envp)
 			else
 				execute_commands(cmd, env_list);
 		}
-		close_all_fd(3);
 		if (cmd && cmd->exit_status)
 			last_cmd_code = *(cmd->exit_status);
 		if (cmd)

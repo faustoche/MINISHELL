@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:20:54 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 14:34:00 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 11:30:33 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	is_valid_variable_char(char c)
 		|| c == '"' || c == '\'' || c == '`');
 }
 
-int	process_variable_part5(t_expand *exp, int *code)
+int	expand_exit_status(t_expand *exp, int *code)
 {
 	exp->i++;
 	if (exp->str[exp->i] == '?')
