@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 22:31:37 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/15 07:43:29 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 09:11:26 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,7 @@ void	pipe_parent_process(t_cmd **current, t_pipe *pipe_data)
 	if (pipe_data->input_fd != STDIN_FILENO)
 		close(pipe_data->input_fd);
 	if ((*current)->next)
-	{
+	{	
 		close(pipe_data->pipe_fd[1]);
 		pipe_data->input_fd = pipe_data->pipe_fd[0];
 	}

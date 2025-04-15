@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 18:14:36 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/14 07:54:33 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 08:59:36 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ void	ft_exit(t_cmd *cmd)
 	if (exit_code == -1)
 		return ;
 	*(cmd->exit_status) = exit_code;
+	if (cmd->env_list)
+		free_env_list(&cmd->env_list);
 	quit_minislay(NULL, cmd, NULL, NULL);
 	exit(exit_code);
 }

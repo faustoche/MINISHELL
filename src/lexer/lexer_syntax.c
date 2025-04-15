@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/22 22:29:51 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/14 14:34:50 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 11:05:21 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,10 +46,24 @@ int	delimiter_error(char *input)
 		printf(ERR_SYNTAX);
 		return (-1);
 	}
-	if ((input[0] == '/' || input[0] == '.') && (input[1] == '/'
-			|| input[1] == '.'))
+	return (0);
+}
+
+int	check_dot_slash(char *input)
+{
+	if (input[0] == '.' && input[1] == '/' && !ft_isalnum(input[2]))
 	{
-		printf(ERR_DIR, input);
+		printf("minislay: %s: Is a directory\n", input);
+		return (-1);
+	}
+	if (input[0] == '/' && input[1] == '.' && !ft_isalnum(input[2]))
+	{
+		printf("minislay: %s: Is a directory\n", input);
+		return (-1);
+	}
+	if (input[0] == '.' && (input[1] == '.' || input[1] == '\0'))
+	{
+		printf(ERR_CMD, input);
 		return (-1);
 	}
 	return (0);
@@ -57,7 +71,9 @@ int	delimiter_error(char *input)
 
 int	character_error(char *input)
 {
-	if (input[0] == '~' || input[0] == '.' || input[0] == ',')
+	if (check_dot_slash(input) == -1)
+		return (-1);
+	if (input[0] == '~' || input[0] == ',')
 	{
 		printf("minislay: No such file or directory\n");
 		return (-1);
@@ -71,10 +87,7 @@ int	character_error(char *input)
 		|| (input[0] == '"' && input[1] == '"' && input[2] == '\0'))
 		return (print_error_message("bash: Applications: command not found\n"));
 	if (input[0] == '(' && (input[1] == '(' || input[1] == ')'))
-	{
-		printf(ERR_SYNTAX);
-		return (-1);
-	}
+		print_error_message(ERR_SYNTAX);
 	if (input[0] == '/' && (input[1] == '\0' || input[1] == ' '))
 	{
 		printf(ERR_DIR, input);
