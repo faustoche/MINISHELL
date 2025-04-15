@@ -6,13 +6,13 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/15 11:31:22 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 18:28:29 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# define _GNU_SOURCE //pour sigaction dans vscode
+# define _GNU_SOURCE
 
 /*--------------- DEFINES TOKENS --------------*/
 

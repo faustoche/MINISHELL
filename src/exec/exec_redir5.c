@@ -6,13 +6,11 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 09:07:24 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 09:07:31 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 18:29:41 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* Dans waitpid, j'ai remplacé null par &status pour récupérer */
 
 void	handle_pipe_redirection(t_cmd *cmd, t_env *env_list)
 {

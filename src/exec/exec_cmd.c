@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/15 11:52:38 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 18:28:55 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,71 +72,3 @@ void	execute_commands(t_cmd *cmd, t_env *env)
 		cur = cur->next;
 	}
 }
-
-// void	execute_commands(t_cmd *cmd, t_env *env)
-// {
-// 	t_cmd	*cur;
-// 	char	*bin;
-
-// 	cur = cmd;
-// 	while (cur)
-// 	{
-// 		if (is_builtins(cur->args[0]) && cur->args && cur->args[0])
-// 			builtins_execution(cur, &env);
-// 		else if (cur->args && cur->args[0])
-// 		{
-// 			if (cur->args[0][0] == '/')
-// 			{
-// 				bin = ft_strdup(cur->args[0]);
-// 				if (!bin)
-// 					return ;
-// 				if (access(bin, F_OK) == -1)
-// 				{
-// 					*cur->exit_status = 127;
-// 					printf(ERR_CMD, cur->args[0]);
-// 					free(bin);
-// 				}
-// 				else
-// 				{
-// 					create_child_process(cur->args, bin, env, cur->exit_status);
-// 					free(bin);
-// 				}
-// 			}
-// 			else if ((cur->args[0][0] == '/') || (cur->args[0][0] == '.'
-// 				&& cur->args[0][1] == '/'))
-// 			{
-// 				bin = ft_strdup(cur->args[0]);
-// 				if (!bin)
-// 					return ;
-// 				if (access(bin, F_OK) == -1)
-// 				{
-// 					*cur->exit_status = 127;
-// 					printf(ERR_DIR, cur->args[0]);
-// 					free(bin);
-// 				}
-// 				else
-// 				{
-// 					create_child_process(cur->args, bin, env, cur->exit_status);
-// 					free(bin);
-// 				}
-// 			}
-// 			else
-// 			{
-// 				bin = find_bin_path(cur->args[0], env);
-// 				if (bin == NULL)
-// 				{
-// 					printf(ERR_CMD, cur->args[0]);
-// 					if (cur->exit_status)
-// 						*(cur->exit_status) = 127;
-// 					//close_all_fd(3);
-// 				}
-// 				else
-// 				{
-// 					create_child_process(cur->args, bin, env, cur->exit_status);
-// 					free(bin);
-// 				}
-// 			}
-// 		}
-// 		cur = cur->next;
-// 	}
-// }

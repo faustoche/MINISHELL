@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_redir4.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:48:26 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 21:39:01 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/15 18:29:34 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ void	handle_child_process(t_cmd *cmd, t_env *env, int pipefd[2], int fd)
 	}
 	exit(EXIT_FAILURE);
 }
-
-/* //waitpid(pid, &status, 0); // est-ce qu'on garde cette ligne en 1?*/
 
 void	handle_exit_status_signals(int status, t_cmd *cmd)
 {

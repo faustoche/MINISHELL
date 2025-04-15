@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 08:01:57 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/15 11:53:22 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 17:16:19 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	free_split(char **split)
 	i = 0;
 	while (split[i])
 	{
-		free(split[i]);
+		ft_memdel(split[i]); // ici pas protegre
 		i++;
 	}
 	free(split);

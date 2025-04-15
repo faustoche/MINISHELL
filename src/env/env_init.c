@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 19:18:42 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/14 07:58:34 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 18:31:55 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,84 +111,3 @@ t_env	*change_var_value(t_env *env_list, char *name, char *value)
 	}
 	return (head);
 }
-
-// t_env	*init_env(char **envp)
-// {
-// 	t_env	*env_list;
-// 	t_env	*current;
-// 	t_env	*new_element;
-// 	int		i;
-
-// 	env_list = NULL;
-// 	current = NULL;
-// 	i = 0;
-// 	while (envp[i])
-// 	{
-// 		new_element = create_env_element(envp[i]);
-// 		if (!new_element)
-// 		{
-// 			free_env_list(&env_list);
-// 			return (NULL);
-// 		}
-// 		if (!env_list)
-// 		{
-// 			env_list = new_element;
-// 			current = env_list;
-// 		}
-// 		else
-// 		{
-// 			current->next = new_element;
-// 			current = new_element;
-// 		}
-// 		i++;
-// 	}
-// 	return (env_list);
-// }
-
-// t_env	*copy_env_list(t_env *original_env)
-// {
-	// 	t_env	*copy_head;
-	// 	t_env	*copy_current;
-	// 	t_env	*original_current;
-	// 	t_env	*new_element;
-	// 	original_current = original_env;
-	// 	copy_head = NULL;
-	// 	copy_current = NULL;
-	// 	while (original_current)
-	// 	{
-		// 		new_element = malloc(sizeof(t_env));
-		// 		if (!new_element)
-		// 		{
-			// 			free_env_list(&copy_head);
-			// 			return (NULL);
-			// 		}
-			// 		new_element->name = ft_strdup(original_current->name);
-			// 		if (!new_element->name)
-			// 		{
-				// 			free_elements(new_element);
-				// 			free_env_list(&copy_head);
-				// 			return (NULL);
-				// 		}
-				// 		new_element->value = ft_strdup(original_current->value);
-				// 		if (!new_element->value)
-				// 		{
-					// 			free_elements(new_element);
-					// 			free_env_list(&copy_head);
-					// 			return (NULL);
-					// 		}
-					// 		new_element->next = NULL;
-					// 		new_element->cmd = original_current->cmd;
-					// 		if (!copy_head)
-					// 		{
-						// 			copy_head = new_element;
-						// 			copy_current = new_element;
-						// 		}
-						// 		else
-						// 		{
-							// 			copy_current->next = new_element;
-							// 			copy_current = new_element;
-							// 		}
-							// 		original_current = original_current->next;
-							// 	}
-							// 	return (copy_head);
-							// }

@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/15 08:25:12 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 18:33:36 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	free_single_command(t_cmd *cmd, int **last_exit_status_ptr)
 	if (cmd->args)
 	{
 		i = 0;
-		while (cmd->args[i])
+		while (cmd->args[i]) // ici pas protege
 		{
 			ft_memdel(cmd->args[i]);
 			i++;
@@ -73,47 +73,6 @@ void	free_commands(t_cmd *cmd)
 		cmd = tmp;
 	}
 }
-
-// void	free_commands(t_cmd *cmd)
-// {
-// 	t_cmd	*tmp;
-// 	int		i;
-// 	int		*last_exit_status;
-
-// 	last_exit_status = NULL;
-// 	if (!cmd)
-// 		return ;
-// 	while (cmd)
-// 	{
-// 		tmp = cmd->next;
-// 		if (cmd->args)
-// 		{
-// 			i = 0;
-// 			while (cmd->args[i])
-// 			{
-// 				ft_memdel(cmd->args[i]);
-// 				i++;
-// 			}
-// 			ft_memdel(cmd->args);
-// 		}
-// 		if (cmd->in)
-// 			ft_memdel(cmd->in);
-// 		if (cmd->out)
-// 			ft_memdel(cmd->out);
-// 		if (cmd->heredoc_eof)
-// 			ft_memdel(cmd->heredoc_eof);
-// 		if (cmd->exit_status)
-// 		{
-// 			if (!last_exit_status || last_exit_status != cmd->exit_status)
-// 			{
-// 				last_exit_status = cmd->exit_status;
-// 				free(cmd->exit_status);
-// 			}
-// 		}
-// 		ft_memdel(cmd);
-// 		cmd = tmp;
-// 	}
-// }
 
 char	*ft_realloc(char *str, size_t size)
 {
