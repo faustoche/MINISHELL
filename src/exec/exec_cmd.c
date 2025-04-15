@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/14 14:19:41 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 09:28:25 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -171,8 +171,8 @@ void	execute_commands(t_cmd *cmd, t_env *env)
 					free(bin);
 				}
 			}
-			else if ((cur->args[0][0] == '/' || cur->args[0][0] == '.')
-				&& (cur->args[0][1] == '/' || cur->args[0][1] == '.'))
+			else if ((cur->args[0][0] == '/') || (cur->args[0][0] == '.'
+				&& cur->args[0][1] == '/'))
 			{
 				bin = ft_strdup(cur->args[0]);
 				if (!bin)
