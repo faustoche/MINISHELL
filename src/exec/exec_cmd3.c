@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:18:40 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/15 18:29:07 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 21:06:18 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,9 +96,7 @@ void	create_child_process(char **args, char *bin, t_env *env, int *code)
 {
 	pid_t	pid;
 	int		status;
-	int		last_status;
 
-	last_status = 0;
 	g_received_signal = 0;
 	status = 0;
 	pid = fork();
