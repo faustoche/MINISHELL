@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:50:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 07:54:45 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 21:07:05 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static int	extract_name_value(char *arg, char **name, char **value)
 	{
 		*name = ft_strdup(arg);
 		*value = NULL;
+		return (0); // verifier si leak
 	}
 	if (!is_valid_identifier(*name))
 	{
