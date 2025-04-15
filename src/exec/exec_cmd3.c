@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ghieong <marvin@42.fr>                     +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:18:40 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/15 14:18:46 by ghieong          ###   ########.fr       */
+/*   Updated: 2025/04/15 17:29:20 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,11 @@ void	execute_child_process(char **args, char *binary_path, t_env *env)
 	char	**env_arr;
 
 	env_arr = env_list_to_array(env);
+	if (!binary_path)
+	{
+		printf(ERR_CMD, args[0]);
+		exit(127);
+	}
 	if (access(binary_path, X_OK) == -1)
 	{
 		printf(ERR_CMD, args[0]);

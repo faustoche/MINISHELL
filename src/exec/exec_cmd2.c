@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:19:10 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 17:50:42 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 17:36:50 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,13 +26,19 @@ static char	*create_bin_path(char **split_path, char *arg)
 		if (!path_copy)
 			return (NULL);
 		binary_path = build_pathname(path_copy, arg);
+		if (!binary_path)
+		{
+			free(path_copy);
+			return (NULL);
+		}
 		if (!access(binary_path, F_OK))
 			return (binary_path);
 		free(binary_path);
 		i++;
 	}
-	return (binary_path);
+	return (NULL);
 }
+
 /* Complete pathname by adding '/' and name of binary */
 
 char	*build_pathname(char *directory, char *arg)
@@ -80,12 +86,6 @@ char	*find_bin_path(char *arg, t_env *env_list)
 	if (!split_path)
 		return (NULL);
 	binary_path = create_bin_path(split_path, arg);
-	if (binary_path == NULL)
-	{
-		free(split_path);
-		free_split(split_path);
-		return (NULL);
-	}
 	free_split(split_path);
 	return (binary_path);
 }
