@@ -20,6 +20,7 @@ OBJS_DIR		= obj
 # ************************************************************************ #
 
 MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
+				main_loop.c\
 				get_next_line/get_next_line.c\
 				get_next_line/get_next_line_utils.c\
 				builtins/ft_cd1.c\

@@ -183,6 +183,7 @@ t_env	*change_var_value(t_env *env_list, char *name, char *value);
 
 /* EXEC */
 
+void	process_commands(char *input, t_env **env_list, int *last_cmd_code);
 int		is_builtins(char *cmd);
 void	builtins_execution(t_cmd *cmd, t_env **env_list);
 char	*build_pathname(char *directory, char *arg);
@@ -287,7 +288,7 @@ int		process_pipe_token(t_token **token, t_cmd **current, t_cmd **head);
 
 /* SIGNALS */
 
-void		handle_signals(int sig, int param);
+void	handle_signals(int sig, int param);
 void	new_prompt(int sig);
 void	child_new_prompt(int sig);
 void	close_stdin(int sig);

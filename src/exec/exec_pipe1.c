@@ -12,6 +12,22 @@
 
 #include "minishell.h"
 
+static int	handle_termsig(int printed_signal, int status)
+{
+	if (!printed_signal)
+	{
+		if (WTERMSIG(status) == SIGQUIT)
+		{
+			printf("Quit (core dumped)\n");
+			g_received_signal = SIGQUIT;
+		}
+		else if (WTERMSIG(status) == SIGINT)
+			g_received_signal = SIGINT;
+		printed_signal = 1;
+	}
+	return (printed_signal);
+}
+
 static int	wait_kids(pid_t last_pid, t_cmd *last_cmd)
 {
 	int		status;
@@ -32,17 +48,7 @@ static int	wait_kids(pid_t last_pid, t_cmd *last_cmd)
 			else if (WIFSIGNALED(status))
 			{
 				last_status = 128 + WTERMSIG(status);
-				if (!printed_signal)
-				{
-					if (WTERMSIG(status) == SIGQUIT)
-					{
-						printf("Quit (core dumped)\n");
-						g_received_signal = SIGQUIT;
-					}
-					else if (WTERMSIG(status) == SIGINT)
-						g_received_signal = SIGINT;
-					printed_signal = 1;
-				}	
+				printed_signal = handle_termsig(printed_signal, status);
 			}
 			if (wait_pid == last_pid && last_cmd && last_cmd->exit_status)
 				*(last_cmd->exit_status) = last_status;
