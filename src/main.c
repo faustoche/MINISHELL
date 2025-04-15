@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 19:17:16 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 08:40:00 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,7 @@ int	main(int ac, char **av, char **envp)
 	}
 	env_list = copy_env_list(original_env);
 	if (!env_list)
-	{
-		//free_env_list(env_list);
 		return (print_error_message("Error: invalid env variable\n"));
-	}
 	free_env_list(&original_env);
 	if (!env_list)
 	{
@@ -104,7 +101,7 @@ int	main(int ac, char **av, char **envp)
 			if (handle_direct_env_var(fixed_input, env_list))
 			{
 				free(fixed_input);
-				continue;
+				continue ;
 			}
 		}
 		token_list = parse_input(input, &last_cmd_code);
@@ -174,9 +171,9 @@ int	main(int ac, char **av, char **envp)
 			else
 				execute_commands(cmd, env_list);
 		}
+		close_all_fd(3);
 		if (cmd && cmd->exit_status)
 			last_cmd_code = *(cmd->exit_status);
-		close_all_fd(3);
 		if (cmd)
 		{
 			free_commands(cmd);

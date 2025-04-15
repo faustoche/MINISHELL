@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_others.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 21:01:52 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/14 21:42:36 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/15 07:43:05 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ void	ft_lstadd_back(t_env **lst, t_env *new)
 int	handle_direct_env_var(char *input, t_env *env_list)
 {
 	char	*var_value;
+
 	if (!input || input[0] != '$')
 		return (0);
 	if (input[1] == '\0')

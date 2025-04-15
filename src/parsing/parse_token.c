@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_token.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 21:46:36 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/15 08:07:28 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,44 @@ int	handle_std_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env)
 	return (0);
 }
 
+int	process_other_tok(t_token **tok, t_cmd **cur, t_cmd **head, t_env *env)
+{
+	if ((*tok)->type == TOKEN_SEP)
+		*cur = NULL;
+	else
+	{
+		if (handle_std_token(tok, cur, head, env))
+			return (-1);
+	}
+	if (*tok)
+		*tok = (*tok)->next;
+	return (0);
+}
+
+int	process_pipe_token(t_token **token, t_cmd **current, t_cmd **head)
+{
+	t_cmd	*new_cmd;
+
+	if (!*current)
+	{
+		printf(ERR_SYNTAX);
+		free_commands(*head);
+		return (-1);
+	}
+	new_cmd = init_command();
+	if (!new_cmd)
+	{
+		free_commands(*head);
+		return (-1);
+	}
+	new_cmd->env_list = (*current)->env_list;
+	free(new_cmd->exit_status);
+	new_cmd->exit_status = (*current)->exit_status;
+	(*current)->next = new_cmd;
+	*current = new_cmd;
+	*token = (*token)->next;
+	return (0);
+}
 
 // int	handle_std_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env)
 // {
@@ -103,57 +141,3 @@ int	handle_std_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env)
 // 		return (-1);
 // 	return (0);
 // }
-
-int	process_other_token(t_token **token, t_cmd **curr, t_cmd **head, t_env *env)
-{
-	if ((*token)->type == TOKEN_SEP)
-		*curr = NULL;
-	else
-	{
-		if (handle_std_token(token, curr, head, env))
-			return (-1);
-	}
-	if (*token)
-		*token = (*token)->next;
-	return (0);
-}
-
-/* Selon le token concerné, j'appelle les fonctions correspondantes */
-
-int	process_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env)
-{
-	if (!(*token))
-		return (0);
-	if ((*token)->type == TOKEN_PIPE)
-		return (process_pipe_token(token, current, head));
-	else if ((*token)->type == REDIR_OUT || (*token)->type == REDIR_APPEND
-		|| (*token)->type == REDIR_IN || (*token)->type == HEREDOC)
-		return (process_redir_token(token, current, head, env));
-	else
-		return (process_other_token(token, current, head, env));
-}
-
-int	process_pipe_token(t_token **token, t_cmd **current, t_cmd **head)
-{
-	t_cmd	*new_cmd;
-
-	if (!*current)
-	{
-		printf(ERR_SYNTAX);
-		free_commands(*head);
-		return (-1);
-	}
-	new_cmd = init_command();
-	if (!new_cmd)
-	{
-		free_commands(*head);
-		return (-1);
-	}
-	new_cmd->env_list = (*current)->env_list;
-	free(new_cmd->exit_status);
-	new_cmd->exit_status = (*current)->exit_status;
-	(*current)->next = new_cmd;
-	*current = new_cmd;
-	*token = (*token)->next;
-	return (0);
-}

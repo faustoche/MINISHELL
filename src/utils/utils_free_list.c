@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_free_list.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/03 20:28:18 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/14 21:43:40 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/15 08:26:09 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,61 +53,6 @@ void	free_token_list(t_token *tokens)
 		free(current);
 		current = next;
 	}
-}
-
-static void free_files(t_cmd *cmd)
-{
-	if (!cmd)
-		return ;
-	if (cmd->in)
-		ft_memdel(cmd->in);
-	if (cmd->out)
-		ft_memdel(cmd->out);
-	if (cmd->heredoc_eof)
-		ft_memdel(cmd->heredoc_eof);
-}
-
-void	free_single_cmd(t_cmd *cmd, int **last_exit_status_ptr)
-{
-	int	i;
-
-	free_files(cmd);
-	if (cmd->args)
-	{
-		i = 0;
-		while (cmd->args[i])
-		{
-			ft_memdel(cmd->args[i]);
-			i++;
-		}
-		ft_memdel(cmd->args);
-	}
-	if (cmd->exit_status)
-	{
-		if (!*last_exit_status_ptr || *last_exit_status_ptr != cmd->exit_status)
-		{
-			*last_exit_status_ptr = cmd->exit_status;
-			free(cmd->exit_status);
-		}
-	}
-	ft_memdel(cmd);
-}
-
-void	free_pipe_redir(t_cmd *cmd)
-{
-	t_cmd	*tmp_cmd;
-	t_cmd	*next;
-	int		*last_exit_status;
-
-	tmp_cmd = cmd;
-	last_exit_status = NULL;
-	while (tmp_cmd)
-	{
-		next = tmp_cmd->next;
-		free_single_cmd(tmp_cmd, &last_exit_status);
-		tmp_cmd = next;
-	}
-	close_all_fd(3);
 }
 
 // void	free_pipe_redir(t_cmd *cmd)

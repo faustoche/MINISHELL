@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 21:48:47 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/15 08:43:47 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,8 +78,7 @@ extern volatile sig_atomic_t	g_received_signal;
 
 /*------------- STRUCTURES --------------*/
 
-struct			s_cmd;
-typedef struct	s_cmd t_cmd;
+typedef struct s_cmd			t_cmd;
 
 typedef struct s_env
 {
@@ -162,7 +161,7 @@ t_env	*ft_cd(t_cmd *cmd, t_env *env_list);
 int		cd_errors(t_cmd *cmd, char *dir, t_env **new_env);
 int		cd_no_home(char *home);
 int		cd_no_arg(char *home, char *new_dir);
-t_env	*cd_update_env(t_cmd *cmd, t_env *new_env_list, char *old_pwd, char *new_dir);
+t_env	*cd_upda_env(t_cmd *cmd, t_env *new_env, char *old_pwd, char *new_dir);
 void	ft_echo(t_cmd *cmd);
 void	ft_env(t_env *env_list);
 void	print_sorted_env(t_env *env_list);
@@ -275,12 +274,13 @@ int		add_args(t_token *token, t_cmd *cmd);
 t_cmd	*init_command(void);
 char	*remove_quotes(char *str);
 t_cmd	*parse_commands(t_token *token_lis, t_env *env_list, int *code);
-int		process_redir_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env);
+int		process_redir_token(t_token **tok, t_cmd **cur, t_cmd **hd, t_env *env);
 int		handle_redirection(t_token *token, t_cmd *current, t_cmd *head);
 int		get_token_type(char *token, int *command);
+int		redirection(t_cmd **cmd, char *file, int out, int append);
 int		handle_std_token(t_token **tok, t_cmd **curr, t_cmd **head, t_env *env);
-int		process_other_token(t_token **token, t_cmd **curr, t_cmd **head, t_env *env);
-int		process_token(t_token **token, t_cmd **current, t_cmd **head, t_env *env);
+int		process_other_tok(t_token **tok, t_cmd **cur, t_cmd **head, t_env *env);
+int		process_tok(t_token **token, t_cmd **current, t_cmd **head, t_env *env);
 int		process_pipe_token(t_token **token, t_cmd **current, t_cmd **head);
 
 /* SIGNALS */
@@ -305,6 +305,7 @@ void	free_commands(t_cmd *cmd);
 char	*ft_realloc(char *str, size_t size);
 void	free_split(char **split);
 void	free_env_array(char **env_array);
+void	free_single_command(t_cmd *cmd, int **last_exit_status_ptr);
 void	free_env_list(t_env **env_list);
 void	free_elements(t_env *element);
 void	free_token_list(t_token *head);

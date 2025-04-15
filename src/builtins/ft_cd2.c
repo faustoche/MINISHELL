@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 18:39:10 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/14 07:52:40 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 07:52:15 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	cd_no_arg(char *home, char *new_dir)
 	return (0);
 }
 
-t_env	*cd_update_env(t_cmd *cmd, t_env *new_env, char *old_pwd, char *new_dir)
+t_env	*cd_upda_env(t_cmd *cmd, t_env *new_env, char *old_pwd, char *new_dir)
 {
 	*(cmd->exit_status) = 0;
 	if (!(getcwd(new_dir, PATH_MAX)))

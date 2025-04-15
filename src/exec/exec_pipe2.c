@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 22:31:37 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/14 19:15:08 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 07:43:29 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,7 @@ void	pipe_execve(t_cmd *current, t_pipe *pipe_data)
 		(free_pipe_execve(env, binary_path, pipe_data), exit(exit_code));
 	}
 	if (execve(binary_path, current->args, env) == -1)
-	{
-		dprintf(2, "line = %d, file %s\n", __LINE__, __FILE__);	
 		(free_pipe_execve(env, binary_path, pipe_data), exit(exit_code));
-	}
 	exit(1);
 }
 

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_free_cmd.c                                   :+:      :+:    :+:   */
+/*   utils_free_cmd1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 21:44:51 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/15 08:25:12 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,22 @@
 
 /* Free the command */
 
-void ft_memdel(void *ptr)
+void	ft_memdel(void *ptr)
 {
 	free(ptr);
 	ptr = NULL;
+}
+
+void	free_cmd_var(t_cmd *cmd)
+{
+	if (!cmd)
+		return ;
+	if (cmd->in)
+		ft_memdel(cmd->in);
+	if (cmd->out)
+		ft_memdel(cmd->out);
+	if (cmd->heredoc_eof)
+		ft_memdel(cmd->heredoc_eof);
 }
 
 void	free_single_command(t_cmd *cmd, int **last_exit_status_ptr)
@@ -34,12 +46,7 @@ void	free_single_command(t_cmd *cmd, int **last_exit_status_ptr)
 		}
 		ft_memdel(cmd->args);
 	}
-	if (cmd->in)
-		ft_memdel(cmd->in);
-	if (cmd->out)
-		ft_memdel(cmd->out);
-	if (cmd->heredoc_eof)
-		ft_memdel(cmd->heredoc_eof);
+	free_cmd_var(cmd);
 	if (cmd->exit_status)
 	{
 		if (!*last_exit_status_ptr || *last_exit_status_ptr != cmd->exit_status)
@@ -66,7 +73,6 @@ void	free_commands(t_cmd *cmd)
 		cmd = tmp;
 	}
 }
-
 
 // void	free_commands(t_cmd *cmd)
 // {
@@ -130,34 +136,4 @@ char	*ft_realloc(char *str, size_t size)
 	new_str[size - 1] = '\0';
 	free(str);
 	return (new_str);
-}
-
-void	free_split(char **split)
-{
-	int	i;
-
-	if (!split)
-		return ;
-	i = 0;
-	while (split[i])
-	{
-		free(split[i]);
-		i++;
-	}
-	free(split);
-}
-
-void	free_env_array(char **env_array)
-{
-	int	i;
-
-	if (!env_array)
-		return ;
-	i = 0;
-	while (env_array[i])
-	{
-		free(env_array[i]);
-		i++;
-	}
-	free(env_array);
 }

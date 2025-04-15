@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_init.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/26 17:54:08 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 21:40:49 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/15 08:14:49 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,13 +82,13 @@ t_token	*parse_input(char *input, int *code)
 
 	if (!input)
 	{
-		*code = 2; ////// ici
+		*code = 2;
 		return (NULL);
 	}
 	token_list = lexing(input);
 	if (!token_list)
 	{
-		*code = 2; ////////// ici
+		*code = 2;
 		return (NULL);
 	}
 	return (token_list);
