@@ -6,13 +6,13 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 17:54:53 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 14:21:25 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 11:29:58 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	process_variable_part1(t_expand *exp)
+int	expand_dq_dollar(t_expand *exp)
 {
 	if (exp->i > 0 && exp->str[exp->i - 1] == '"'
 		&& exp->str[exp->i] == '$' && exp->str[exp->i + 1] == '"')
@@ -26,7 +26,7 @@ int	process_variable_part1(t_expand *exp)
 	return (0);
 }
 
-int	process_variable_part2(t_expand *exp)
+int	expand_dq_check(t_expand *exp)
 {
 	int	temp_i;
 
@@ -47,7 +47,7 @@ int	process_variable_part2(t_expand *exp)
 	return (0);
 }
 
-int	process_variable_part3(t_expand *exp)
+int	expand_quote_var(t_expand *exp)
 {
 	char	quote;
 	size_t	start;
@@ -69,7 +69,7 @@ int	process_variable_part3(t_expand *exp)
 	return (0);
 }
 
-int	process_variable_part4(t_expand *exp)
+int	expand_one_dollar(t_expand *exp)
 {
 	if (!exp->str[exp->i + 1])
 	{

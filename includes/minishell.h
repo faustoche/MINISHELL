@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/15 08:43:47 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 11:31:22 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -225,18 +225,18 @@ char	*init_expand_result(const char *str, t_expand *exp);
 int		expand_loop(t_expand *exp, int *code);
 void	expand_variable_in_token(t_token *token, t_env *env_list, int *code);
 void	expand_tokens(t_token *token_list, t_env *env_list, int *code);
-int		process_variable_part6(t_expand *exp);
+int		expand_check_digit(t_expand *exp);
 char	*extract_variable_name(t_expand *exp, size_t *len);
 int		copy_variable_value(t_expand *exp, char *value, char *name);
 int		resize_result_buffer(t_expand *exp);
 int		check_buffer_size(t_expand *exp);
 int		copy_str_to_result(t_expand *exp, char *str, int len);
 int		process_variable(t_expand *exp, int *code);
-int		process_variable_part1(t_expand *exp);
-int		process_variable_part2(t_expand *exp);
-int		process_variable_part3(t_expand *exp);
-int		process_variable_part4(t_expand *exp);
-int		process_variable_part5(t_expand *exp, int *code);
+int		expand_dq_dollar(t_expand *exp);
+int		expand_dq_check(t_expand *exp);
+int		expand_quote_var(t_expand *exp);
+int		expand_one_dollar(t_expand *exp);
+int		expand_exit_status(t_expand *exp, int *code);
 
 /* LEXER */
 

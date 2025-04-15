@@ -6,13 +6,13 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 17:53:37 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/11 18:40:34 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 11:34:11 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	process_variable_part7(t_expand *exp)
+static int	expand_inside_str(t_expand *exp)
 {
 	int		var_start;
 	char	*quote_type;
@@ -38,7 +38,7 @@ static int	process_variable_part7(t_expand *exp)
 	return (0);
 }
 
-static int	process_variable_part8(t_expand *exp, int *var_start, int *var_end)
+static int	expand_var_limits(t_expand *exp, int *var_start, int *var_end)
 {
 	*var_start = exp->i;
 	if (exp->str[exp->i] == '{')
@@ -61,7 +61,7 @@ static int	process_variable_part8(t_expand *exp, int *var_start, int *var_end)
 	return (0);
 }
 
-static int	process_variable_part9(t_expand *exp, int var_start, int var_end)
+static int	expand_var_value(t_expand *exp, int var_start, int var_end)
 {
 	char	*var_name;
 	char	*var_value;
@@ -81,18 +81,18 @@ static int	process_variable_part9(t_expand *exp, int var_start, int var_end)
 
 static int	process_variable_begin(t_expand *exp, int *ret, int *code)
 {
-	if (process_variable_part1(exp))
+	if (expand_dq_dollar(exp))
 		return (1);
-	if (process_variable_part2(exp))
+	if (expand_dq_check(exp))
 		return (1);
-	if (process_variable_part3(exp))
+	if (expand_quote_var(exp))
 		return (1);
-	if (process_variable_part4(exp))
+	if (expand_one_dollar(exp))
 		return (1);
-	*ret = process_variable_part5(exp, code);
+	*ret = expand_exit_status(exp, code);
 	if (*ret)
 		return (-1);
-	*ret = process_variable_part6(exp);
+	*ret = expand_check_digit(exp);
 	if (*ret)
 		return (-1);
 	return (0);
@@ -108,13 +108,13 @@ int	process_variable(t_expand *exp, int *code)
 	result = process_variable_begin(exp, &ret, code);
 	if (result != 0)
 		return (result);
-	ret = process_variable_part7(exp);
+	ret = expand_inside_str(exp);
 	if (ret)
 		return (-1);
 	var_start = 0;
 	var_end = 0;
-	process_variable_part8(exp, &var_start, &var_end);
-	ret = process_variable_part9(exp, var_start, var_end);
+	expand_var_limits(exp, &var_start, &var_end);
+	ret = expand_var_value(exp, var_start, var_end);
 	if (ret)
 		return (1);
 	else

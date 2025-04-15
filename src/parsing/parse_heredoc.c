@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/15 08:36:41 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/15 12:10:49 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	read_heredoc_content(char *delimiter, int write_fd)
 		input = readline("heredoc> ");
 		if (!input)
 		{
-			if (g_received_signal == 130)
+			if (g_received_signal == SIGINT)
 				return (close(write_fd), -1);
 			(printf(ERR_HERE), close(write_fd));
 			return (0);
@@ -48,6 +48,7 @@ static int	init_heredoc(t_cmd *cmd, char *del, int *fd, int *pipe_fd)
 	{
 		if (cmd && cmd->exit_status)
 			*(cmd->exit_status) = 1;
+		free_commands(cmd);
 		return (print_error_message("Error: invalid heredoc\n"));
 	}
 	if (pipe(pipe_fd) == -1)
@@ -70,12 +71,10 @@ static int	handle_heredoc_content(t_cmd *cmd, char *del, int fd, int *pipe_fd)
 		if (cmd->exit_status)
 			*(cmd->exit_status) = 130;
 		dup2(fd, STDIN_FILENO);
-		close(fd);
 		close(pipe_fd[1]);
 		return (-1);
 	}
 	close(pipe_fd[1]);
-	close(fd);
 	if (cmd->heredoc != -1)
 		close(cmd->heredoc);
 	cmd->heredoc = pipe_fd[0];
