@@ -22,7 +22,10 @@ static int	read_heredoc_content(char *delimiter, int write_fd)
 		if (!input)
 		{
 			if (g_received_signal == SIGINT)
+			{
+				g_received_signal = 0;
 				return (close(write_fd), -1);
+			}
 			(printf(ERR_HERE), close(write_fd));
 			return (0);
 		}
@@ -70,6 +73,7 @@ static int	handle_heredoc_content(t_cmd *cmd, char *del, int fd, int *pipe_fd)
 	{
 		if (cmd->exit_status)
 			*(cmd->exit_status) = 130;
+		g_received_signal = 0;
 		dup2(fd, STDIN_FILENO);
 		close(pipe_fd[1]);
 		return (-1);
@@ -111,6 +115,8 @@ int	handle_all_heredocs(t_cmd *cmd)
 		}
 		cmd = cmd->next;
 	}
+	handle_signals(SIGINT, PROMPT);
+	handle_signals(SIGQUIT, IGNORE);
 	return (0);
 }
 
