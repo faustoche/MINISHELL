@@ -41,14 +41,23 @@ static long long	parse_sign(const char *str, int *index)
 
 static long long	handle_over(long long res, char digit, int sign, int *error)
 {
-	if ((res > LLONG_MAX / 10)
-		|| (res == LLONG_MAX / 10 && (digit - '0') > LLONG_MAX % 10))
+	if (sign == 1)
 	{
-		*error = 1;
-		if (sign == 1)
+		if ((res > LLONG_MAX / 10)
+			|| (res == LLONG_MAX / 10 && (digit - '0') > LLONG_MAX % 10))
+		{
+			*error = 1;
 			return (LLONG_MAX);
-		else
+		}
+	}
+	else
+	{
+		if ((res > -(LLONG_MIN / 10))
+			|| (res == -(LLONG_MIN / 10) && (digit - '0') > -(LLONG_MIN % 10)))
+		{
+			*error = 1;
 			return (LLONG_MIN);
+		}	
 	}
 	return (-1);
 }
@@ -96,3 +105,17 @@ long long	ft_atoll(const char *str, int *error)
 	}
 	return (result * sign);
 }
+
+/* static long long	handle_over(long long res, char digit, int sign, int *error)
+{
+	if ((res > LLONG_MAX / 10)
+		|| (res == LLONG_MAX / 10 && (digit - '0') > LLONG_MAX % 10))
+	{
+		*error = 1;
+		if (sign == 1)
+			return (LLONG_MAX);
+		else
+			return (LLONG_MIN);
+	}
+	return (-1);
+} */
