@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 12:52:48 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 16:16:58 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@ void	free_cmd_var(t_cmd *cmd)
 		ft_memdel(cmd->out);
 	if (cmd->heredoc_eof)
 		ft_memdel(cmd->heredoc_eof);
+	if (cmd->heredoc != -1)
+	{
+		close(cmd->heredoc);
+		cmd->heredoc = -1;
+	}
 }
 
 void	free_single_command(t_cmd *cmd, int **last_exit_status_ptr)

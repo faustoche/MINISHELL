@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 14:00:41 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 16:27:54 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,6 +223,7 @@ pid_t	create_pipe_and_fork(int pipefd[2]);
 void	execute_redir_pipe(t_cmd *cmd, int pipefd[2], pid_t pid, t_env *env);
 void	handle_pipe_redirect(int pipefd[2], int mode, int *stdin_save);
 int		check_output_directory(t_cmd *commands);
+void	handle_command_not_found(t_pipe *pipe_data, char **env);
 
 /* EXPAND */
 

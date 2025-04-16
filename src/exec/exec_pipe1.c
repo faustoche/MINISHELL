@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 20:05:00 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/16 16:10:19 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 16:20:46 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,13 +83,11 @@ static void	process_execute_pipeline(t_cmd *cmd, t_pipe *pipe)
 		{
 			perror("Fork creation failed\n");
 			if (current->next)
-			{
 				(close(pipe->pipe_fd[0]), close(pipe->pipe_fd[1]));
-			}
 			return ;
 		}
 		else if (pid == 0)
-		pipe_child_process(current, pipe);
+			pipe_child_process(current, pipe);
 		else
 		{
 			current->pid = pid;

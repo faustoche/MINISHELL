@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 15:45:41 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 16:31:36 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ static int	init_heredoc(t_cmd *cmd, char *del, int *fd, int *pipe_fd)
 	}
 	if (pipe(pipe_fd) == -1)
 	{
+		close(*fd);
 		if (cmd->exit_status)
 			*(cmd->exit_status) = 1;
 		return (print_error_message("Error: pipe creation failed\n"));
@@ -66,13 +67,13 @@ static int	handle_heredoc_content(t_cmd *cmd, char *del, int fd, int *pipe_fd)
 
 	handle_signals(SIGINT, CLOSE_IN);
 	stat = read_heredoc_content(del, pipe_fd[1]);
+	dup2(fd, STDIN_FILENO);
+	close(pipe_fd[1]);
 	if (stat == -1)
 	{
 		if (cmd->exit_status)
 			*(cmd->exit_status) = 130;
 		g_received_signal = 0;
-		dup2(fd, STDIN_FILENO);
-		close(pipe_fd[1]);
 		return (-1);
 	}
 	close(pipe_fd[1]);
