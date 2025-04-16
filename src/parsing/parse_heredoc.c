@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 16:31:36 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 17:32:22 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,15 +67,17 @@ static int	handle_heredoc_content(t_cmd *cmd, char *del, int fd, int *pipe_fd)
 
 	handle_signals(SIGINT, CLOSE_IN);
 	stat = read_heredoc_content(del, pipe_fd[1]);
-	dup2(fd, STDIN_FILENO);
-	close(pipe_fd[1]);
 	if (stat == -1)
 	{
 		if (cmd->exit_status)
-			*(cmd->exit_status) = 130;
+		*(cmd->exit_status) = 130;
 		g_received_signal = 0;
+		dup2(fd, STDIN_FILENO);
+		close(fd);
+		close(pipe_fd[1]);
 		return (-1);
 	}
+	close(fd);
 	close(pipe_fd[1]);
 	if (cmd->heredoc != -1)
 		close(cmd->heredoc);
@@ -115,6 +117,6 @@ int	handle_all_heredocs(t_cmd *cmd)
 	}
 	handle_signals(SIGINT, PROMPT);
 	handle_signals(SIGQUIT, IGNORE);
-	//close_all_fd(3);
+	// close_all_fd(3);
 	return (0);
 }
