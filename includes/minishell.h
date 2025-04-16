@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/15 18:28:29 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 10:11:02 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -223,7 +223,7 @@ int		check_output_directory(t_cmd *commands);
 
 /* EXPAND */
 
-char	*expand_variable(t_env *env_list, char *str, int quote_type, int *code);
+char	*expand_variable(t_env *env_list, char *str, int *code);
 char	*init_expand_result(const char *str, t_expand *exp);
 int		expand_loop(t_expand *exp, int *code);
 void	expand_variable_in_token(t_token *token, t_env *env_list, int *code);

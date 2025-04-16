@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/06 21:01:52 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/15 07:43:05 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 10:09:42 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,6 @@ int	handle_direct_env_var(char *input, t_env *env_list)
 		return (0);
 	var_value = find_var_value(env_list, input + 1);
 	if (var_value)
-	{
-		printf("%s\n", var_value);
-		return (1);
-	}
+		return (0);
 	return (0);
 }
