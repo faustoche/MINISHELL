@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 12:01:35 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 14:33:06 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 10:10:44 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,11 +27,10 @@ int	is_quoted(char *str)
 
 /* Main function to expand variables */
 
-char	*expand_variable(t_env *env_list, char *str, int quote_type, int *code)
+char	*expand_variable(t_env *env_list, char *str, int *code)
 {
 	t_expand	exp;
 
-	(void)quote_type;
 	if (is_quoted(str))
 	{
 		return (ft_strdup(str));

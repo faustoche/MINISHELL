@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 11:58:53 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/15 11:31:08 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 10:11:19 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	expand_variable_in_token(t_token *token, t_env *env_list, int *code)
 		return ;
 	if (token->value && ft_strchr(token->value, '$'))
 	{
-		expanded = expand_variable(env_list, token->value, token->type, code);
+		expanded = expand_variable(env_list, token->value, code);
 		if (expanded)
 		{
 			free(token->value);
