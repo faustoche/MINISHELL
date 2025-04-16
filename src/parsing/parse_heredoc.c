@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 15:10:17 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 15:20:38 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,6 +114,5 @@ int	handle_all_heredocs(t_cmd *cmd)
 	}
 	handle_signals(SIGINT, PROMPT);
 	handle_signals(SIGQUIT, IGNORE);
-	close_all_fd(3);
-	return (0);     
+	return (0);
 }
