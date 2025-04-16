@@ -23,6 +23,7 @@ void	ft_pwd(t_cmd *cmd)
 		if (cmd->args[i][0] == '-')
 		{
 			printf("minislay: pwd: %s: invalid option\n", cmd->args[i]);
+			*(cmd->exit_status) = 2;
 			return ;
 		}
 		i++;
