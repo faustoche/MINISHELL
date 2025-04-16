@@ -114,5 +114,6 @@ int	handle_all_heredocs(t_cmd *cmd)
 	}
 	handle_signals(SIGINT, PROMPT);
 	handle_signals(SIGQUIT, IGNORE);
+	close_all_fd(3);
 	return (0);
 }
