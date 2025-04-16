@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 22:31:37 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/16 16:27:00 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 17:39:47 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ void	pipe_execve(t_cmd *current, t_pipe *pipe_data)
 		printf("minislay: %s: permission denied\n", current->args[0]);
 		(free_pipe_execve(env, binary_path, pipe_data), exit(exit_code));
 	}
+	close_all_fd(3);
 	if (execve(binary_path, current->args, env) == -1)
 		(free_pipe_execve(env, binary_path, pipe_data), exit(exit_code));
 	exit(1);
