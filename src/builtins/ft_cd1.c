@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 08:47:18 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 18:15:06 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 21:26:01 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,10 @@ static int	cd_one_arg(t_cmd *cmd, t_env *env_list, char *home, char *new_dir)
 	if (!cmd->args[1] || cmd->args[1][0] == '\0')
 	{
 		if (cd_no_home(home))
+		{
+			*(cmd->exit_status) = 1;
 			return (1);
+		}
 		ft_strcpy(new_dir, home);
 	}
 	else if (ft_strcmp(cmd->args[1], "-") == 0)
@@ -57,7 +60,13 @@ static int	cd_many_args(t_cmd *cmd)
 static int	cd_args(t_cmd *cmd, t_env *env_list, char *home, char *new_dir)
 {
 	if (cmd->nb_arg == 1)
-		return (cd_no_arg(home, new_dir));
+	{
+		if (cd_no_arg(home, new_dir))
+		{
+			*(cmd->exit_status) = 1;
+			return (1);
+		}
+	}
 	else if (cmd->nb_arg == 2)
 		return (cd_one_arg(cmd, env_list, home, new_dir));
 	else if (cmd->nb_arg > 2)
