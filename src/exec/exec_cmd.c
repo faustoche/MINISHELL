@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/16 16:10:06 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 18:53:07 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,14 @@ static void	process_abs_relative(t_env *env, t_cmd *cur)
 		*cur->exit_status = 127;
 		printf(ERR_DIR, cur->args[0]);
 		free(bin);
+		return ;
+	}
+	if (access(bin, X_OK) == -1)
+	{
+		*cur->exit_status = 126;
+		printf("minislay: %s: Permission denied\n", cur->args[0]);
+		free(bin);
+		return ;
 	}
 	else
 	{
