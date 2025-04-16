@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/15 18:24:19 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 08:41:22 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,6 @@ int	main(int ac, char **av, char **envp)
 		if (!input)
 			break ;
 		process_commands(input, &env_list, &last_cmd_code);
-		free(input);
 	}
 	(free_env_list(&env_list), rl_clear_history(), close_all_fd(3));
 	return (EXIT_SUCCESS);

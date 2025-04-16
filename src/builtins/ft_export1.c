@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export1.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:50:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/15 21:07:05 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/16 08:42:31 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static int	extract_name_value(char *arg, char **name, char **value)
 	{
 		*name = ft_strdup(arg);
 		*value = NULL;
-		return (0); // verifier si leak
+		return (0);
 	}
 	if (!is_valid_identifier(*name))
 	{
@@ -111,7 +111,7 @@ t_env	*ft_export(t_env *env_list, char *arg, int *code)
 	{
 		if (code)
 			*code = 1;
-		free_env_list(&env_list);
+		(free(name), free_env_list(&env_list));
 		return (new_env_list);
 	}
 	new_env_list = update_env_var(new_env_list, name, value);
