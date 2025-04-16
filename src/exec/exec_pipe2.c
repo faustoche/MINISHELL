@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 22:31:37 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/16 16:06:39 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 16:27:00 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,17 +58,13 @@ void	pipe_execve(t_cmd *current, t_pipe *pipe_data)
 	exit_code = 127;
 	binary_path = find_bin_path(current->args[0], *(pipe_data->env_list));
 	env = env_list_to_array(*(pipe_data->env_list));
-	if (current->args[0][0] == '/' || (current->args[0][0] == '.' && current->args[0][1] == '/'))
+	if (current->args[0][0] == '/' || (current->args[0][0] == '.'
+			&& current->args[0][1] == '/'))
 		binary_path = ft_strdup(current->args[0]);
 	else
 		binary_path = find_bin_path(current->args[0], *(pipe_data->env_list));
 	if (!binary_path)
-	{
-		ft_putstr_fd("minislay: command not found\n", 2);
-		free_env_array(env);
-		(free_env_list(pipe_data->env_list), free_commands(pipe_data->cmd));
-		exit(exit_code);
-	}
+		(handle_command_not_found(pipe_data, env), exit(exit_code));
 	if (access(binary_path, X_OK) == -1)
 	{
 		exit_code = 126;

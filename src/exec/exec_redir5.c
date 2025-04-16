@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 09:07:24 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 16:10:29 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 16:21:06 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,7 @@ void	handle_pipe_redirection(t_cmd *cmd, t_env *env_list)
 	if (pid == -1)
 		return ;
 	if (pid == 0)
-	{
 		handle_child_process(cmd, env_list, pipefd, heredoc_fd);
-	}
 	else
 	{
 		handle_signals(SIGINT, CLOSE_IN);
