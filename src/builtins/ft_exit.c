@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 18:14:36 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/16 13:48:23 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 19:05:36 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static long long	handle_exit_arguments(t_cmd *cmd)
 		{
 			exit_error_message(error, cmd->args[1]);
 			*(cmd->exit_status) = 2;
-			exit(2);
+			return (2);
 		}
 		else if (cmd->args[2])
 		{
