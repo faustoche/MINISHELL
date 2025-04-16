@@ -6,26 +6,18 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/29 20:05:00 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/15 18:30:14 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 14:02:14 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	handle_termsig(int printed_signal, int status)
+static void	wait_vars(int *stat, int *last, pid_t *wait_pid, int *print_signal)
 {
-	if (!printed_signal)
-	{
-		if (WTERMSIG(status) == SIGQUIT)
-		{
-			printf("Quit (core dumped)\n");
-			g_received_signal = SIGQUIT;
-		}
-		else if (WTERMSIG(status) == SIGINT)
-			g_received_signal = SIGINT;
-		printed_signal = 1;
-	}
-	return (printed_signal);
+	*wait_pid = 1;
+	*last = 0;
+	*print_signal = 0;
+	*stat = 0;
 }
 
 static int	wait_kids(pid_t last_pid, t_cmd *last_cmd)
@@ -35,25 +27,25 @@ static int	wait_kids(pid_t last_pid, t_cmd *last_cmd)
 	pid_t	wait_pid;
 	int		printed_signal;
 
-	wait_pid = 1;
-	last_status = 0;
-	printed_signal = 0;
+	wait_vars(&status, &last_status, &wait_pid, &printed_signal);
 	while (wait_pid > 0)
 	{
 		wait_pid = waitpid(-1, &status, 0);
 		if (wait_pid > 0)
 		{
-			if (WIFEXITED(status))
-				last_status = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
+			if (wait_pid == last_pid)
 			{
-				last_status = 128 + WTERMSIG(status);
-				printed_signal = handle_termsig(printed_signal, status);
+				if (WIFEXITED(status))
+					last_status = WEXITSTATUS(status);
+				else if (WIFSIGNALED(status))
+					last_status = 128 + WTERMSIG(status);
 			}
-			if (wait_pid == last_pid && last_cmd && last_cmd->exit_status)
-				*(last_cmd->exit_status) = last_status;
+			if (WIFSIGNALED(status))
+				printed_signal = handle_termsig(printed_signal, status);
 		}
 	}
+	if (last_cmd && last_cmd->exit_status)
+		*(last_cmd->exit_status) = last_status;
 	return (last_status);
 }
 

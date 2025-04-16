@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 10:11:02 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 14:00:41 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,8 @@ void	ft_echo(t_cmd *cmd);
 void	ft_env(t_env *env_list);
 void	print_sorted_env(t_env *env_list);
 void	ft_exit(t_cmd *cmd);
+int		parse_exit_code(char *arg, long long *exit_code);
+void	exit_error_message(int error, char *arg);
 t_env	*ft_export(t_env *env_list, char *arg, int *code);
 int		is_valid_identifier(char *name);
 t_env	*no_args_export(t_env *env_list);
@@ -192,6 +194,7 @@ void	execute_commands(t_cmd *cmd, t_env *env_list);
 void	execute_child_process(char **args, char *binary_path, t_env *env);
 void	create_child_process(char **args, char *bin, t_env *env, int *code);
 t_cmd	*get_last_cmd(t_cmd *cmd);
+int		handle_termsig(int printed_signal, int status);
 void	execute_pipeline(t_cmd *cmd, t_env *env_list);
 int		setup_pipe(t_pipe *pipe_data);
 void	in_redirection(t_cmd *current, int input_fd);

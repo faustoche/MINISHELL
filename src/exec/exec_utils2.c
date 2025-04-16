@@ -1,30 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils_check.c                                      :+:      :+:    :+:   */
+/*   exec_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/07 22:11:11 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/16 13:49:00 by fcrocq           ###   ########.fr       */
+/*   Created: 2025/04/16 13:44:08 by fcrocq            #+#    #+#             */
+/*   Updated: 2025/04/16 13:44:53 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	is_escaped_char(char c)
+t_pipe	init_pipe_struct(t_cmd *cmd, t_env **env_list)
 {
-	return (c == '"' || c == '\\' || c == '$');
-}
+	t_pipe	pipe_data;
 
-int	has_pipes(t_cmd *cmd)
-{
-	if (cmd && cmd->next)
-		return (1);
-	return (0);
-}
-
-int	is_empty_command(t_cmd *cmd)
-{
-	return (!cmd->args || !cmd->args[0] || ft_strlen(cmd->args[0]) == 0);
+	pipe_data.cmd = cmd;
+	pipe_data.env_list = env_list;
+	pipe_data.input_fd = STDIN_FILENO;
+	pipe_data.pipe_fd[0] = -1;
+	pipe_data.pipe_fd[1] = -1;
+	return (pipe_data);
 }

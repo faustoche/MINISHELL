@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 08:42:58 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 12:52:48 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,10 @@ void	free_single_command(t_cmd *cmd, int **last_exit_status_ptr)
 		i = 0;
 		while (cmd->args[i])
 		{
-			ft_memdel(cmd->args[i]);
+			free(cmd->args[i]);
 			i++;
 		}
-		ft_memdel(cmd->args);
+		free(cmd->args);
 	}
 	free_cmd_var(cmd);
 	if (cmd->exit_status)

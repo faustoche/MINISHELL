@@ -3,14 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   exec_cmd3.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 14:18:40 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/15 21:06:18 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/16 10:41:32 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/* Wait for the child to end and return the right exit status */
 
 static int	wait_child_process(pid_t pid, int status, int *code, t_env *env)
 {
