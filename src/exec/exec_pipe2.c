@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 22:31:37 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/15 09:11:26 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 13:27:43 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,6 @@ void	pipe_builtin(t_cmd *current, t_pipe *pipe_data)
 	exit(exit_code);
 }
 
-// est-ce que j'ajoute un if (binary)?
-
 static void	free_pipe_execve(char **env, char *binary, t_pipe *data)
 {
 	free(binary);
@@ -70,7 +68,7 @@ void	pipe_execve(t_cmd *current, t_pipe *pipe_data)
 	if (access(binary_path, X_OK) == -1)
 	{
 		exit_code = 126;
-		printf("minislay: %s: Permission denied\n", current->args[0]);
+		printf("minislay: %s: permission denied\n", current->args[0]);
 		(free_pipe_execve(env, binary_path, pipe_data), exit(exit_code));
 	}
 	if (execve(binary_path, current->args, env) == -1)

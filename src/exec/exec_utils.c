@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 11:38:54 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 09:04:02 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 13:48:29 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,4 +110,11 @@ int	check_output_directory(t_cmd *cmd)
 	}
 	free(dir);
 	return (0);
+}
+
+t_cmd	*get_last_cmd(t_cmd *cmd)
+{
+	while (cmd && cmd->next)
+		cmd = cmd->next;
+	return (cmd);
 }

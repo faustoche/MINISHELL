@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 10:09:25 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 11:14:33 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static char	*prompt(void)
 {
 	char	*line;
 
-	line = readline("minislay> \033[1;34m~\033[0m ");
+	line = readline("minislay> ~ ");
 	if (!line)
 	{
 		printf("exit\n");

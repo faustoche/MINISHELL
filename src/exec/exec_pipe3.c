@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 09:14:49 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/15 18:29:57 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 13:48:53 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,41 +59,67 @@ void	out_redirection(t_cmd *current, t_pipe *pipe_data)
 	}
 }
 
-t_cmd	*get_last_cmd(t_cmd *cmd)
+static long long	pipe_exit_code(long long exit_code)
 {
-	while (cmd && cmd->next)
-		cmd = cmd->next;
-	return (cmd);
+	exit_code = exit_code % 256;
+	if (exit_code < 0)
+		exit_code += 256;
+	return (exit_code);
 }
 
-t_pipe	init_pipe_struct(t_cmd *cmd, t_env **env_list)
+static long long	pipe_exit_arguments(t_cmd *cmd)
 {
-	t_pipe	pipe_data;
+	long long	exit_code;
+	int			error;
 
-	pipe_data.cmd = cmd;
-	pipe_data.env_list = env_list;
-	pipe_data.input_fd = STDIN_FILENO;
-	pipe_data.pipe_fd[0] = -1;
-	pipe_data.pipe_fd[1] = -1;
-	return (pipe_data);
+	exit_code = 0;
+	error = 0;
+	if (cmd->args[1])
+	{
+		error = parse_exit_code(cmd->args[1], &exit_code);
+		if (error == 2)
+		{
+			exit_error_message(error, cmd->args[1]);
+			*(cmd->exit_status) = 2;
+			exit(2);
+		}
+		else if (cmd->args[2])
+		{
+			exit_error_message(1, NULL);
+			*(cmd->exit_status) = 1;
+			return (-1);
+		}
+		else
+			return (pipe_exit_code(exit_code));
+	}
+	return (*(cmd->exit_status));
 }
 
-void	pipe_child_process(t_cmd *current, t_pipe *pipe_data)
+void	pipe_child_process(t_cmd *current, t_pipe *pp)
 {
+	int	code;
+
 	handle_signals(SIGINT, DEFAULT);
 	handle_signals(SIGQUIT, DEFAULT);
-	in_redirection(current, pipe_data->input_fd);
-	out_redirection(current, pipe_data);
+	in_redirection(current, pp->input_fd);
+	out_redirection(current, pp);
 	if (current && current->args && current->args[0])
 	{
 		if (is_builtins(current->args[0]))
-			pipe_builtin(current, pipe_data);
-		else
 		{
-			pipe_execve(current, pipe_data);
+			if (ft_strcmp(current->args[0], "exit") == 0)
+			{
+				code = pipe_exit_arguments(current);
+				if (code != -1)
+					(free_pipe(pp->cmd, *(pp->env_list), NULL), exit(code));
+			}
+			else
+				pipe_builtin(current, pp);
 		}
+		else
+			pipe_execve(current, pp);
 	}
 	else
-		free_pipe(pipe_data->cmd, *(pipe_data->env_list), NULL);
+		free_pipe(pp->cmd, *(pp->env_list), NULL);
 	exit(1);
 }

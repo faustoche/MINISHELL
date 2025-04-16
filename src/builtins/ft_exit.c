@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 18:14:36 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/15 18:31:32 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 13:48:23 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 - 1000 % 256 = 232 thus exit 1000 = exit 232
 */
 
-static int	parse_exit_code(char *arg, long long *exit_code)
+int	parse_exit_code(char *arg, long long *exit_code)
 {
 	int	error;
 
@@ -31,7 +31,7 @@ static int	parse_exit_code(char *arg, long long *exit_code)
 		return (0);
 }
 
-static void	exit_error_message(int error, char *arg)
+void	exit_error_message(int error, char *arg)
 {
 	if (error == 1)
 		printf("minislay : exit: too many arguments\n");
@@ -78,14 +78,24 @@ static long long	handle_exit_arguments(t_cmd *cmd)
 void	ft_exit(t_cmd *cmd)
 {
 	long long	exit_code;
+	t_cmd		*head_cmd;
+	t_cmd		*prev;
 
+	head_cmd = cmd;
 	printf("exit\n");
 	exit_code = handle_exit_arguments(cmd);
 	if (exit_code == -1)
 		return ;
 	*(cmd->exit_status) = exit_code;
+	while (head_cmd->next && cmd != head_cmd->next)
+	{
+		prev = head_cmd;
+		head_cmd = head_cmd->next;
+		if (head_cmd == cmd)
+			head_cmd = prev;
+	}
 	if (cmd->env_list)
 		free_env_list(&cmd->env_list);
-	quit_minislay(NULL, cmd, NULL, NULL);
+	quit_minislay(NULL, head_cmd, NULL, NULL);
 	exit(exit_code);
 }
