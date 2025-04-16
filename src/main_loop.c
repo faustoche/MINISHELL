@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 13:03:46 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/15 13:03:56 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 08:42:14 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,11 @@ int	execute_flow(t_cmd *cmd, t_env **env_list)
 void	process_commands(char *input, t_env **env_list, int *last_cmd_code)
 {
 	t_cmd	*cmd;
+	char	*tmp;
 
+	tmp = input;
 	cmd = parse_and_expand(input, *env_list, last_cmd_code);
+	free(tmp);
 	if (!cmd)
 		return ;
 	if (before_execution(cmd) == -1)

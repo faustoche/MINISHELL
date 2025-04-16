@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/15 18:33:36 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 08:42:58 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	free_single_command(t_cmd *cmd, int **last_exit_status_ptr)
 	if (cmd->args)
 	{
 		i = 0;
-		while (cmd->args[i]) // ici pas protege
+		while (cmd->args[i])
 		{
 			ft_memdel(cmd->args[i]);
 			i++;
