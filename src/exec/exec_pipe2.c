@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/08 22:31:37 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/16 13:27:43 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 14:59:11 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,10 @@ void	pipe_execve(t_cmd *current, t_pipe *pipe_data)
 	exit_code = 127;
 	binary_path = find_bin_path(current->args[0], *(pipe_data->env_list));
 	env = env_list_to_array(*(pipe_data->env_list));
+	if (current->args[0][0] == '/' || (current->args[0][0] == '.' && current->args[0][1] == '/'))
+		binary_path = ft_strdup(current->args[0]);
+	else
+		binary_path = find_bin_path(current->args[0], *(pipe_data->env_list));
 	if (!binary_path)
 	{
 		ft_putstr_fd("minislay: command not found\n", 2);

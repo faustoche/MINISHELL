@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 08:03:34 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/15 08:07:14 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 15:09:34 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int	handle_redirection(t_token *token, t_cmd *current, t_cmd *head)
 	{
 		if (!(*token).next)
 			return (print_error_message("Error: expected heredoc delimiter\n"));
-		(*current).heredoc_eof = ft_strdup((*token).next->value);
+		(*current).heredoc_eof = remove_quotes(token->next->value);
 		if (!(*current).heredoc_eof)
 			return (print_error_message("Error: malloc heredoc_delim\n"));
 	}

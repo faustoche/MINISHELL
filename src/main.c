@@ -6,19 +6,11 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 11:14:33 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 14:58:52 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* - volatile : force le compilateur a acceder a 
-			la memoire ou la variable est stockee,
-			pour etre sur que mise a jour bien effectuee
-			dans gestionnaire de signaux.
-	- sig_atomic_t : garantit que acces a la variable ne peuvent
-			etre interrompus ou modifies de facon incomplete. 
-*/
 
 volatile sig_atomic_t	g_received_signal = 0;
 
