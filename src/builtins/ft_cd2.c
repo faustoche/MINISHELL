@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
+/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/13 18:39:10 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/16 18:44:39 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 21:41:46 by faustoche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,10 @@ t_env	*cd_upda_env(t_cmd *cmd, t_env *new_env, char *old_pwd, char *new_dir)
 {
 	*(cmd->exit_status) = 0;
 	if (!(getcwd(new_dir, PATH_MAX)))
-		perror("error retrieving current directory"); // erreur = 1 a faire
+	{
+		perror("error retrieving current directory");
+		*(cmd->exit_status) = 1;
+	}
 	new_env = change_var_value(new_env, "OLDPWD", old_pwd);
 	new_env = change_var_value(new_env, "PWD", new_dir);
 	if (cmd->nb_arg == 2 && ft_strcmp(cmd->args[1], "-") == 0)
