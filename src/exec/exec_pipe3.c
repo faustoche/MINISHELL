@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 09:14:49 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 15:12:49 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 15:40:09 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ static long long	pipe_exit_arguments(t_cmd *cmd)
 	}
 	return (*(cmd->exit_status));
 }
+
 
 void	pipe_child_process(t_cmd *current, t_pipe *pp)
 {

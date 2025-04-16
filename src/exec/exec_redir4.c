@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 08:48:26 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 15:20:41 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/16 16:10:23 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,24 @@ void	handle_child_process(t_cmd *cmd, t_env *env, int pipefd[2], int fd)
 	int	code;
 
 	if (fd != -1)
+	{
 		redir_heredoc(fd);
+		close(fd);
+	}
 	else if (cmd->in)
 		redir_input(cmd->in, cmd->exit_status);
 	if (cmd->out)
+	{
 		redir_output(cmd->out, cmd->append, cmd->exit_status);
+	}
 	(close(pipefd[0]), close(pipefd[1]));
 	if (cmd->args && cmd->args[0])
 	{
+		close(fd);
 		code = redir_execute(cmd, env);
 		exit (code);
 	}
+	close_all_fd(3);
 	exit(EXIT_FAILURE);
 }
 
