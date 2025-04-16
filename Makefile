@@ -41,6 +41,7 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				exec/exec_pipe1.c\
 				exec/exec_pipe2.c\
 				exec/exec_pipe3.c\
+				exec/exec_pipe4.c\
 				exec/exec_redir1.c\
 				exec/exec_redir2.c\
 				exec/exec_redir3.c\
