@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/23 16:50:10 by faustoche         #+#    #+#             */
-/*   Updated: 2025/04/14 12:54:50 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/17 10:16:40 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ static char	*merge_quote_content(char *merged_word, char *quote_content)
 	return (new_merged);
 }
 
-/* Add a non quoted char to the list in progrss */
+/* Add a non quoted char to the list in progress */
 
 static int	process_non_quote_char(t_lexer *lexer, int end, char **merged_word)
 {

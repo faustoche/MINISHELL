@@ -3,23 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cd1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/18 08:47:18 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 21:26:01 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/17 09:50:47 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* chdir retour -1 si chemin invalide? ou si pas d'acces? */
-	// récupérer la commande cd
-	// chercher la variable HOME
-	// sauvegarder l'ancien répertoire (OLDPWD)
-	// exécuter cd et gérer les erreurs
-	// mettre à jour OLDPWD si cd a reussi (dans les variables d'enviro)
-	// recupérer le nouveau repertoire (PWD) et l'enregistrer
-	// nettoyer la mémoire (getcwd utilise malloc) et retourner le statut
 
 void	ft_pwd_cd(void)
 {

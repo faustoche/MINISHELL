@@ -6,13 +6,13 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/15 18:33:25 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/17 10:23:14 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-/* Define token type for each split part of the input according to the macros */
+/* Define token type for each split part of the input according to the macro */
 
 int	get_token_type(char *token, int *command)
 {

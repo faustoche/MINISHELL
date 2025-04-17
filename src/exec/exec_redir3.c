@@ -1,97 +1,92 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   exec_redir3.c                                      :+:      :+:    :+:   */
+/*   exec_redir4.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/09 08:47:52 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 18:49:20 by fcrocq           ###   ########.fr       */
+/*   Created: 2025/04/09 08:48:26 by fcrocq            #+#    #+#             */
+/*   Updated: 2025/04/16 16:10:23 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	free_pipe(t_cmd *cmd, t_env *env_list, char **env)
+void	handle_child_process(t_cmd *cmd, t_env *env, int pipefd[2], int fd)
 {
-	free_commands(cmd);
-	free_env_list(&env_list);
-	free_env_array(env);
+	int	code;
+
+	if (fd != -1)
+	{
+		redir_heredoc(fd);
+		close(fd);
+	}
+	else if (cmd->in)
+		redir_input(cmd->in, cmd->exit_status);
+	if (cmd->out)
+	{
+		redir_output(cmd->out, cmd->append, cmd->exit_status);
+	}
+	(close(pipefd[0]), close(pipefd[1]));
+	if (cmd->args && cmd->args[0])
+	{
+		close(fd);
+		code = redir_execute(cmd, env);
+		exit (code);
+	}
+	close_all_fd(3);
 	exit(EXIT_FAILURE);
 }
 
-void	redir_heredoc(int heredoc_fd)
+void	handle_exit_status_signals(int status, t_cmd *cmd)
 {
-	if (dup2(heredoc_fd, STDIN_FILENO) == -1)
-	{
-		perror("dup2 failed for heredoc");
-		exit(1);
-	}
-	close(heredoc_fd);
+	if (WIFEXITED(status))
+		*(cmd->exit_status) = WEXITSTATUS(status);
+	else if (WIFSIGNALED(status))
+		*(cmd->exit_status) = 128 + WTERMSIG(status);
 }
 
-void	redir_input(char *input_file, int *code)
+static void	init_original_std(int *og_stdin, int *og_stdout)
 {
-	int	fd;
-
-	fd = open_file(input_file, REDIR_IN, code);
-	if (fd == -1)
-	{
-		printf("minislay: %s: Permission denied\n", input_file);
-		close_all_fd(3);
-		exit(1);
-	}
-	if (dup2(fd, STDIN_FILENO) == -1)
-	{
-		perror("dup2 failed");
-		close(fd);
-		close_all_fd(3);
-		exit(1);
-	}
-	close(fd);
+	*og_stdin = -1;
+	*og_stdout = -1;
 }
 
-void	redir_output(char *output_file, int append_mode, int *code)
+int	apply_redirection(t_cmd *cmd, int *og_stdin, int *og_stdout)
 {
-	int	fd;
-
-	if (append_mode)
-		fd = open_file(output_file, REDIR_APPEND, code);
-	else
-		fd = open_file(output_file, REDIR_OUT, code);
-	if (fd == -1)
-	{
-		close_all_fd(3);
-		printf("fd == -1\n");
-		exit(1);
-	}
-	if (dup2(fd, STDOUT_FILENO) == -1)
-	{
-		perror("dup2 failed");
-		close(fd);
-		close_all_fd(3);
-		exit(1);
-	}
-	close(fd);
+	init_original_std(og_stdin, og_stdout);
+	if (cmd->in || cmd->heredoc != -1)
+		*og_stdin = handle_input_redirection(cmd);
+	if (cmd->out)
+		*og_stdout = handle_output_redirection(cmd);
+	if (*og_stdin == -1 || *og_stdout == -1)
+		return (1);
+	return (0);
 }
 
-int	redir_execute(t_cmd *cmd, t_env *env_list)
+int	execute_only_redirections(t_cmd *cmd)
 {
-	char	**env;
-	char	*binary_path;
+	int	original_stdin;
+	int	original_stdout;
 
-	env = env_list_to_array(env_list);
-	binary_path = find_bin_path(cmd->args[0], env_list);
-	if (!binary_path)
+	if (apply_redirection(cmd, &original_stdin, &original_stdout))
 	{
-		*(cmd->exit_status) = 127;
-		fprintf(stderr, ERR_CMD, cmd->args[0]);
-		free_pipe(cmd, env_list, env);
-		exit(127);
+		*(cmd->exit_status) = 1;
+		if (original_stdin != -1)
+			(dup2(original_stdin, STDIN_FILENO), close(original_stdin));
+		if (original_stdout != -1)
+			(dup2(original_stdout, STDOUT_FILENO), close(original_stdout));
+		return (1);
 	}
-	execve(binary_path, cmd->args, env);
-	perror("execve");
-	free(binary_path);
-	free_pipe(cmd, env_list, env);
-	exit(126);
+	if (original_stdin != -1)
+		(dup2(original_stdin, STDIN_FILENO), close(original_stdin));
+	if (original_stdout != -1)
+		(dup2(original_stdout, STDOUT_FILENO), close(original_stdout));
+	if (cmd->heredoc != -1)
+	{
+		close(cmd->heredoc);
+		cmd->heredoc = -1;
+	}
+	*(cmd->exit_status) = 0;
+	return (0);
 }

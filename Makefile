@@ -21,8 +21,6 @@ OBJS_DIR		= obj
 
 MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				main_loop.c\
-				get_next_line/get_next_line.c\
-				get_next_line/get_next_line_utils.c\
 				builtins/ft_cd1.c\
 				builtins/ft_cd2.c\
 				builtins/ft_echo.c\
@@ -34,24 +32,23 @@ MINISHELL = 	$(addprefix $(SRCS_DIR)/, main.c\
 				builtins/ft_unset.c\
 				env/env_copy.c\
 				env/env_init.c\
-				env/env_creation.c\
+				env/env_creation1.c\
+				env/env_creation2.c\
 				exec/exec_cmd.c\
 				exec/exec_cmd2.c\
 				exec/exec_cmd3.c\
 				exec/exec_pipe1.c\
 				exec/exec_pipe2.c\
 				exec/exec_pipe3.c\
-				exec/exec_pipe4.c\
 				exec/exec_redir1.c\
 				exec/exec_redir2.c\
 				exec/exec_redir3.c\
 				exec/exec_redir4.c\
-				exec/exec_redir5.c\
 				exec/exec_builtins.c\
-				exec/exec_utils.c\
+				exec/exec_utils1.c\
 				exec/exec_utils2.c\
 				parsing/parse_heredoc.c\
-				parsing/parse_init.c\
+				parsing/parse_init1.c\
 				parsing/parse_init2.c\
 				parsing/parse_token.c\
 				parsing/parse_redir1.c\

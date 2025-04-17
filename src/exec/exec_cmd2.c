@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/14 14:19:10 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 15:47:07 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/17 10:24:19 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,6 @@ char	*find_bin_path(char *arg, t_env *env_list)
 	if (!split_path)
 		return (NULL);
 	binary_path = create_bin_path(split_path, arg);
-	free_split(split_path);
+	free_env_array(split_path);
 	return (binary_path);
 }

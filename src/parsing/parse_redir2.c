@@ -6,13 +6,11 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 08:03:34 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/17 09:44:24 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/17 10:22:59 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* According to the token, redirect in the right direction */
 
 static int	check_for_current(t_token *token, t_cmd *current, t_cmd *head)
 {

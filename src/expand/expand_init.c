@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 12:01:35 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 10:10:44 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/17 10:09:30 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,6 @@ int	is_quoted(char *str)
 		return (1);
 	return (0);
 }
-
-/* Main function to expand variables */
 
 char	*expand_variable(t_env *env_list, char *str, int *code)
 {
@@ -62,8 +60,6 @@ char	*init_expand_result(const char *str, t_expand *exp)
 	}	
 	return (exp->result);
 }
-
-/* Main expansion loop */
 
 static int	expand_loop_part2(t_expand *exp, int *code)
 {

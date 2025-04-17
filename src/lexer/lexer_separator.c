@@ -6,13 +6,11 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/24 10:08:09 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 09:22:49 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/17 10:18:42 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* Verifier si l'index est un delimitateur */
 
 int	handle_delimiter(t_lexer *lexer, int i)
 {
@@ -35,7 +33,7 @@ int	handle_delimiter(t_lexer *lexer, int i)
 	return (i + len);
 }
 
-static void	toggle_quote_and_copy(char *input, char *processed, t_state *state)
+static void	update_quote_and_copy(char *input, char *processed, t_state *state)
 {
 	char	c;
 
@@ -89,7 +87,7 @@ char	*handle_escape_char(char *input)
 	{
 		if ((input[state.i] == '\'' && !state.doubles)
 			|| (input[state.i] == '"' && !state.singles))
-			toggle_quote_and_copy(input, processed, &state);
+			update_quote_and_copy(input, processed, &state);
 		else if (input[state.i] == '\\' && (state.i + 1) < len)
 			handle_backslash(input, processed, &state);
 		else
