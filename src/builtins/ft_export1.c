@@ -6,36 +6,30 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/20 13:50:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 10:39:21 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/17 08:25:04 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static int	extract_name_value(char *arg, char **name, char **value)
+static int	extract_name_value(char *arg, char **name, char **value, int *code)
 {
-	char	*equal_pos;
-
-	equal_pos = ft_strchr(arg, '=');
-	if (equal_pos)
-	{
-		*name = ft_strndup(arg, equal_pos - arg);
-		*value = ft_strdup(equal_pos + 1);
-	}
-	else
-	{
-		*name = ft_strdup(arg);
-		*value = NULL;
-		return (0);
-	}
+	get_name_value(arg, name, value);
 	if (!is_valid_identifier(*name))
 	{
+		*code = 1;
 		printf(ERR_EXP, *name);
 		free(*name);
 		if (*value)
 			free(*value);
 		*name = NULL;
 		*value = NULL;
+		return (0);
+	}
+	if (!ft_strchr(arg, '='))
+	{
+		free(*name);
+		*name = NULL;
 		return (0);
 	}
 	return (1);
@@ -107,10 +101,8 @@ t_env	*ft_export(t_env *env_list, char *arg, int *code)
 		free_env_list(&env_list);
 		return (no_args_export(new_env_list));
 	}
-	if (!extract_name_value(arg, &name, &value))
+	if (!extract_name_value(arg, &name, &value, code))
 	{
-		if (code)
-			*code = 1;
 		(free(name), free_env_list(&env_list));
 		return (new_env_list);
 	}

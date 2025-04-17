@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 16:27:54 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/17 08:24:23 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,6 +170,7 @@ int		parse_exit_code(char *arg, long long *exit_code);
 void	exit_error_message(int error, char *arg);
 t_env	*ft_export(t_env *env_list, char *arg, int *code);
 int		is_valid_identifier(char *name);
+void	get_name_value(char *arg, char **name, char **value);
 t_env	*no_args_export(t_env *env_list);
 void	ft_pwd(t_cmd *cmd);
 t_env	*ft_unset(t_env *env_list, char *name);

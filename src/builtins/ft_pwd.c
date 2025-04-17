@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 14:51:57 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/14 07:54:54 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/17 08:16:15 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,8 @@ void	ft_pwd(t_cmd *cmd)
 	if (getcwd(cwd, sizeof(cwd)) != NULL)
 		printf("%s\n", cwd);
 	else
-		perror("pwd");
+	{
+		printf("minislay: pwd: no such file or directory\n");
+		*(cmd->exit_status) = 1;
+	}
 }
