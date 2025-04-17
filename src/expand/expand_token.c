@@ -6,13 +6,11 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/27 11:58:53 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 10:11:19 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/17 10:10:04 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* Expand les variables dans un token */
 
 void	expand_variable_in_token(t_token *token, t_env *env_list, int *code)
 {
@@ -30,8 +28,6 @@ void	expand_variable_in_token(t_token *token, t_env *env_list, int *code)
 		}
 	}
 }
-
-/* Fonction principale pour l'expansion des tokens */
 
 void	expand_tokens(t_token *token_list, t_env *env_list, int	*exit_code)
 {

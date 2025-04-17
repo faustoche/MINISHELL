@@ -5,88 +5,47 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/09 08:48:26 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 16:10:23 by fcrocq           ###   ########.fr       */
+/*   Created: 2025/04/14 09:07:24 by fcrocq            #+#    #+#             */
+/*   Updated: 2025/04/17 10:14:42 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	handle_child_process(t_cmd *cmd, t_env *env, int pipefd[2], int fd)
+void	handle_pipe_redirection(t_cmd *cmd, t_env *env_list)
 {
-	int	code;
+	int		pipefd[2];
+	pid_t	pid;
+	int		heredoc_fd;
+	int		status;
 
-	if (fd != -1)
-	{
-		redir_heredoc(fd);
-		close(fd);
-	}
-	else if (cmd->in)
-		redir_input(cmd->in, cmd->exit_status);
-	if (cmd->out)
-	{
-		redir_output(cmd->out, cmd->append, cmd->exit_status);
-	}
-	(close(pipefd[0]), close(pipefd[1]));
-	if (cmd->args && cmd->args[0])
-	{
-		close(fd);
-		code = redir_execute(cmd, env);
-		exit (code);
-	}
-	close_all_fd(3);
-	exit(EXIT_FAILURE);
-}
-
-void	handle_exit_status_signals(int status, t_cmd *cmd)
-{
-	if (WIFEXITED(status))
-		*(cmd->exit_status) = WEXITSTATUS(status);
-	else if (WIFSIGNALED(status))
-		*(cmd->exit_status) = 128 + WTERMSIG(status);
-}
-
-static void	init_original_std(int *og_stdin, int *og_stdout)
-{
-	*og_stdin = -1;
-	*og_stdout = -1;
-}
-
-int	apply_redirection(t_cmd *cmd, int *og_stdin, int *og_stdout)
-{
-	init_original_std(og_stdin, og_stdout);
-	if (cmd->in || cmd->heredoc != -1)
-		*og_stdin = handle_input_redirection(cmd);
-	if (cmd->out)
-		*og_stdout = handle_output_redirection(cmd);
-	if (*og_stdin == -1 || *og_stdout == -1)
-		return (1);
-	return (0);
-}
-
-int	execute_only_redirections(t_cmd *cmd)
-{
-	int	original_stdin;
-	int	original_stdout;
-
-	if (apply_redirection(cmd, &original_stdin, &original_stdout))
-	{
-		*(cmd->exit_status) = 1;
-		if (original_stdin != -1)
-			(dup2(original_stdin, STDIN_FILENO), close(original_stdin));
-		if (original_stdout != -1)
-			(dup2(original_stdout, STDOUT_FILENO), close(original_stdout));
-		return (1);
-	}
-	if (original_stdin != -1)
-		(dup2(original_stdin, STDIN_FILENO), close(original_stdin));
-	if (original_stdout != -1)
-		(dup2(original_stdout, STDOUT_FILENO), close(original_stdout));
+	heredoc_fd = -1;
 	if (cmd->heredoc != -1)
+		heredoc_fd = cmd->heredoc;
+	pid = create_pipe_and_fork(pipefd);
+	if (pid == -1)
+		return ;
+	if (pid == 0)
+		handle_child_process(cmd, env_list, pipefd, heredoc_fd);
+	else
 	{
-		close(cmd->heredoc);
-		cmd->heredoc = -1;
+		handle_signals(SIGINT, CLOSE_IN);
+		(close(pipefd[1]), waitpid(pid, &status, 0));
+		handle_exit_status_signals(status, cmd);
+		if (heredoc_fd != -1)
+		{
+			close(heredoc_fd);
+			cmd->heredoc = -1;
+		}
 	}
-	*(cmd->exit_status) = 0;
-	return (0);
+}
+
+void	execute_redirection(t_cmd *cmd, t_env *env_list)
+{
+	if (!cmd)
+		return ;
+	if (is_builtins(cmd->args[0]))
+		handle_builtin_redirection(cmd, &env_list);
+	else
+		handle_pipe_redirection(cmd, env_list);
 }

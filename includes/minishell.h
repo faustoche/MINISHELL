@@ -6,7 +6,7 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 09:51:22 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/17 08:24:23 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/17 10:24:25 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,6 @@
 # include <dirent.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include "../src/get_next_line/get_next_line.h"
 # include "../libft/libft.h"
 
 /*------------- VARIABLE GLOBALE --------------*/
@@ -312,7 +311,6 @@ int		open_file(char *filename, int token, int *code);
 void	ft_memdel(void *ptr);
 void	free_commands(t_cmd *cmd);
 char	*ft_realloc(char *str, size_t size);
-void	free_split(char **split);
 void	free_env_array(char **env_array);
 void	free_single_command(t_cmd *cmd, int **last_exit_status_ptr);
 void	free_env_list(t_env **env_list);

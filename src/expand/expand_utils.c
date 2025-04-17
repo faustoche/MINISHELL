@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expand_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: faustoche <faustoche@student.42.fr>        +#+  +:+       +#+        */
+/*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/07 11:52:10 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/13 20:10:33 by faustoche        ###   ########.fr       */
+/*   Updated: 2025/04/17 10:10:19 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* Extracts the name of the variable */
 
 char	*extract_variable_name(t_expand *exp, size_t *len)
 {
@@ -31,8 +29,6 @@ char	*extract_variable_name(t_expand *exp, size_t *len)
 	*len = exp->i - start;
 	return (ft_strndup(exp->str + start, *len));
 }
-
-/* Copies the variable value into the result buffer */
 
 int	copy_variable_value(t_expand *exp, char *value, char *name)
 {
@@ -58,8 +54,6 @@ int	copy_variable_value(t_expand *exp, char *value, char *name)
 	return (1);
 }
 
-/* Resizes the result buffer if necessary */
-
 int	resize_result_buffer(t_expand *exp)
 {
 	char	*temp;
@@ -75,8 +69,6 @@ int	resize_result_buffer(t_expand *exp)
 	exp->result = temp;
 	return (1);
 }
-
-/* Checks and resizes buffer if necessary */
 
 int	check_buffer_size(t_expand *exp)
 {

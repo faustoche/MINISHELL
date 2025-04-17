@@ -6,26 +6,11 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/15 08:01:57 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/16 08:42:46 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/17 10:24:13 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	free_split(char **split)
-{
-	int	i;
-
-	if (!split)
-		return ;
-	i = 0;
-	while (split[i])
-	{
-		ft_memdel(split[i]);
-		i++;
-	}
-	free(split);
-}
 
 void	free_env_array(char **env_array)
 {

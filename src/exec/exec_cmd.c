@@ -6,11 +6,13 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/26 15:52:03 by ghieong           #+#    #+#             */
-/*   Updated: 2025/04/16 18:53:07 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/17 09:56:16 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+/* Look for the absolute or relative paths : /usr/bin/ls */
 
 static void	process_abs_relative(t_env *env, t_cmd *cur)
 {
@@ -39,6 +41,8 @@ static void	process_abs_relative(t_env *env, t_cmd *cur)
 		free(bin);
 	}
 }
+
+/* Look for the command in PATH : ls */
 
 static void	process_bin_name(t_env *env, t_cmd *cur)
 {

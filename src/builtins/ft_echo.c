@@ -6,13 +6,11 @@
 /*   By: fcrocq <fcrocq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/06 16:52:28 by fcrocq            #+#    #+#             */
-/*   Updated: 2025/04/14 19:26:02 by fcrocq           ###   ########.fr       */
+/*   Updated: 2025/04/17 09:50:55 by fcrocq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-/* Ajouter un clean propre a la fin */
 
 static size_t	is_newline(t_cmd *cmd, int *newline)
 {
